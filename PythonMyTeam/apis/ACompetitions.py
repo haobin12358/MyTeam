@@ -1,0 +1,29 @@
+# *- coding:utf8 *-
+#引用python类
+from flask_restful import Resource
+#引用项目类
+from common.JudgeData import JudgeData
+from Config.Requests import apis_wrong
+from Config.Logs import PRINT_API_IS
+'''
+    处理查看竞赛信息相关的接口，包含竞赛信息列表和学生信息详情
+    函数名确认接口方法，参数确认接口封装内容
+    根据apis的key确认具体指向
+'''
+class ACompetitons(Resource):
+
+    def get(self, competitions):
+        print PRINT_API_IS.format(competitions)
+
+        judgeData = JudgeData() #实例化
+
+        apis = {
+            "list": "",
+            "abo": ""
+        }
+
+        #判断是否存在该API
+        if judgeData.inData(competitions, apis):
+            return eval(apis[competitions])
+
+        return apis_wrong

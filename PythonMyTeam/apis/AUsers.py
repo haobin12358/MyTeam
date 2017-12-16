@@ -6,6 +6,7 @@ from flask_restful import Resource
 from common.JudgeData import JudgeData
 from Config.Requests import apis_wrong
 from control.CUsers import CUsers
+from Config.Logs import PRINT_API_IS
 
 '''
     处理用户相关的接口，包含注册与登录
@@ -14,7 +15,7 @@ from control.CUsers import CUsers
 '''
 class AUsers(Resource):
     def post(self, users):
-        print "api is " + users + " !"
+        print PRINT_API_IS.format(users)
 
         judgeData = JudgeData()#实例化
 
