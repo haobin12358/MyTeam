@@ -21,7 +21,7 @@ class Students(Base):
     Sname = Column(String(32),nullable=False)
     Sno = Column(String(16),nullable=False)
     Suniversity = Column(String(256),nullable=False)
-    Sschool = Column(String(32),nullable=False)
+    Sschool = Column(String(256),nullable=False)
     Stel = Column(String(16),nullable=False)
     Sgrade = Column(Integer)
     Ssex = Column(Integer)
@@ -35,7 +35,7 @@ class Teachers(Base):
     Tno = Column(String(16),nullable=False)
     Ttel = Column(String(16),nullable=False)
     Tuniversity = Column(String(256),nullable=False)
-    Tschool = Column(String(32),nullable=False)
+    Tschool = Column(String(256),nullable=False)
     Ttime = Column(Integer)
 
 #竞赛信息表
