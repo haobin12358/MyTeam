@@ -18,8 +18,7 @@ class AUsers(Resource):
         print PRINT_API_IS.format(users)
 
         judgeData = JudgeData()#实例化
-
-        control_user = CUsers()
+        control_user = CUsers()#实例化
 
         apis = {
             "register":"control_user.register()",

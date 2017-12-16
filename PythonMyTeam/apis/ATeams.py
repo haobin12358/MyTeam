@@ -5,6 +5,7 @@ from flask_restful import Resource
 from common.JudgeData import JudgeData
 from Config.Requests import apis_wrong
 from Config.Logs import PRINT_API_IS
+from control.CTeams import CTeams
 '''
     处理团队信息相关的接口，包含查看团队，创建团队，申请加入团队等功能
     函数名确认接口方法，参数确认接口封装内容
@@ -17,10 +18,11 @@ class ATeams(Resource):
         print PRINT_API_IS.format(team)
 
         judgeData = JudgeData() #实例化
+        cteams = CTeams() #实例化
 
         apis = {
-            "myteam": "",
-            "teams": ""
+            "myteam": "cteams.myteam_list()",
+            "teams": "cteams.teams_list()"
         }
         #判断是否存在该API
         if judgeData.inData(team, apis):
@@ -46,9 +48,10 @@ class ATeams(Resource):
         print PRINT_API_IS.format(team)
 
         judgeData = JudgeData()  # 实例化
+        cteams = CTeams()  # 实例化
 
         apis = {
-            "myteam": ""
+            "myteam": "cteams.new_myteam()"
         }
         # 判断是否存在该API
         if judgeData.inData(team, apis):

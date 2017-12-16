@@ -5,6 +5,7 @@ from flask_restful import Resource
 from common.JudgeData import JudgeData
 from Config.Requests import apis_wrong
 from Config.Logs import PRINT_API_IS
+from control.CCompetitions import CCompetitions
 '''
     处理查看竞赛信息相关的接口，包含竞赛信息列表和学生信息详情
     函数名确认接口方法，参数确认接口封装内容
@@ -16,10 +17,11 @@ class ACompetitons(Resource):
         print PRINT_API_IS.format(competitions)
 
         judgeData = JudgeData() #实例化
+        ccompetitions = CCompetitions() #实例化
 
         apis = {
-            "list": "",
-            "abo": ""
+            "list": "ccompetitions.competitions_list()",
+            "abo": "ccompetitions.competitions_abo()"
         }
 
         #判断是否存在该API
