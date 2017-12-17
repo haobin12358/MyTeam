@@ -1,6 +1,6 @@
 # -*- coding:utf-8-*-
 #数据库名
-database="zhangwenwendb"
+database="myteam"
 #数据库所在主机ip
 host="localhost"
 #数据库端口
