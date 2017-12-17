@@ -26,7 +26,7 @@ class CUsers():
             return param_miss
         susers = SUsers()
 
-        is_register = susers.register(uuid.uuid4(),form["Uname"],form["Upwd"],form["Utype"])
+        is_register = susers.add_user(uuid.uuid4(),form["Uname"],form["Upwd"],form["Utype"])
 
         if is_register == 0:
             return register_ok
