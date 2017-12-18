@@ -8,8 +8,8 @@ from common.TransformToList import trans_params
 class SUsers():
     def __init__(self):
         try:
-            self.session = DBSession.db_session()
-            self.status = True
+            self.session = DBSession.db_session() #实例化
+            self.status = True #session异常的判断标记
         except Exception, e:
             print e.message
             self.status = False
@@ -34,14 +34,19 @@ class SUsers():
             self.session.add(new_user)
             self.session.commit()
 
-            return 0
+            return True
         except Exception as e:
             # 数据库操作异常的话执行rollback 来回退操作
             self.session.rollback()
             print e.message
-            return 1
+            return False
 
     @trans_params
     # 获取所有的username
     def get_all_user_name(self):
         return self.session.query(model.Uers.Uname).all()
+
+    @trans_params
+    # 根据用户名获取对应密码
+    def get_upwd_by_uname(self, uname):
+        return self.session.query(model.Uers.Upwd==uname).all()

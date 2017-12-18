@@ -13,6 +13,11 @@ register_ok = {
     "messages":"register is ok !"
 }
 
+login_ok = {
+    "status":200,
+    "messages":"login is ok !"
+}
+
 system_error = {
     "status":404,
     "status_code":404100,
@@ -35,6 +40,12 @@ wrong_uname = {
     "status":405,
     "status_code":405102,
     "messages":"The username is not valid !"
+}
+
+error_upwd = {
+    "status":405,
+    "status_code":405101,
+    "messages":"The password is wrong !"
 }
 
 param_miss = {

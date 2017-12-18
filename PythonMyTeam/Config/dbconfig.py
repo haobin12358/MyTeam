@@ -1,4 +1,5 @@
-# -*- coding:utf-8-*-
+# *- coding:utf8 *-
+
 #数据库名
 database="zhangwenwendb"
 #数据库所在主机ip

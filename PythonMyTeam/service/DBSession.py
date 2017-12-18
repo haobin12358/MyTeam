@@ -1,4 +1,4 @@
-# -*- coding:utf-8-*-
+# *- coding:utf8 *-
 from models import model
 from sqlalchemy.orm import sessionmaker
 
