@@ -1,4 +1,5 @@
 # *- coding:utf8 *-
+#引用项目类
 import DBSession
 from models import model
 from common.TransformToList import trans_params
@@ -10,17 +11,17 @@ class SUsers():
         try:
             self.session = DBSession.db_session() #实例化
             self.status = True #session异常的判断标记
-        except Exception, e:
+        except Exception as e:
             print e.message
             self.status = False
 
     # 插入单个user
     def add_user(self, uid, uname, upwd, utype):
         """
-        :param uid:
-        :param uname:
-        :param upwd:
-        :param utype:
+        :param uid: 主键
+        :param uname: 用户名
+        :param upwd: 密码
+        :param utype: 用户类型100-102
         :return: 插入数据正常返回 0,数据库操作异常返回 1
         """
         try:

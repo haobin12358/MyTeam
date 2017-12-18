@@ -2,6 +2,7 @@
 # 引用python类
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, create_engine, Integer, String, Text
+import uuid
 # 引用项目类
 from Config import dbconfig as cfg
 
@@ -12,7 +13,6 @@ mysql_engine = create_engine(DB_PARAMS, echo=True)
 
 # 实例化基础表，这个这个基础类可以关联到数据库的具体字段
 Base = declarative_base()
-
 
 # 用户表
 class Uers(Base):
@@ -114,3 +114,4 @@ if __name__ == "__main__":
     运行该文件就可以在对应的数据库里生成本文件声明的所有table
     '''
     Base.metadata.create_all(mysql_engine)
+
