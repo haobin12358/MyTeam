@@ -46,7 +46,10 @@ class SUsers():
     def get_all_user_name(self):
         return self.session.query(model.Uers.Uname).all()
 
-    @trans_params
     # 根据用户名获取对应密码
     def get_upwd_by_uname(self, uname):
-        return self.session.query(model.Uers.Upwd==uname).all()
+        return self.session.query(model.Uers.Upwd).filter_by(Uname = uname).scalar()
+
+    # 根据用户名获取对应id
+    def get_uid_by_uname(self, uname):
+        return self.session.query(model.Uers.Uid).filter_by(Uname = uname).scalar()

@@ -36,7 +36,10 @@ class CUsers():
         if Upwd != form["Upwd"]:
             return error_upwd
 
-        return login_ok              #requests需要修改#
+        Uid = self.susers.get_uid_by_uname(form["Uname"]) #根据用户名获取数据库的id
+        login_ok["messages"]["Uid"] = Uid #将获取到的内容放置到body中
+
+        return login_ok
 
     #实现注册的数据处理
     def register(self):
