@@ -15,7 +15,9 @@ register_ok = {
 
 login_ok = {
     "status":200,
-    "messages":"login is ok !"
+    "messages":{
+        "message":"login is ok !"
+    }
 }
 
 system_error = {
