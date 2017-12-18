@@ -1,7 +1,8 @@
-# -*- coding:utf-8-*-
+# *- coding:utf8 *-
 # 引用python类
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, create_engine, Integer, String, Text
+# 引用项目类
 from Config import dbconfig as cfg
 
 # 获取和mysql的连接引擎格式 "数据库://用户名:密码@ip(:端口号)/databse名(?charset=字符集)" ()里是可选内容
@@ -23,8 +24,6 @@ class Uers(Base):
 
 
 # 学生信息表
-
-
 class Students(Base):
     __tablename__ = "Students"
     Sid = Column(String(64), primary_key=True)
