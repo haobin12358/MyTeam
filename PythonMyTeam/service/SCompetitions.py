@@ -1,7 +1,7 @@
 # *- coding:utf8 *-
 #引用项目类
 import DBSession
-from models.model import Competitions
+from models import model
 from common.TransformToList import trans_params
 
 #操作competitions表的相关方法
@@ -10,7 +10,6 @@ class SCompetitions():
         try:
             self.session = DBSession.db_session() #实例化
             self.status = True #session异常的判断标记
-            self.new_competition = Competitions() #实例化Competitions表
         except Exception as e:
             print e.message
             self.status = False
@@ -32,20 +31,20 @@ class SCompetitions():
         '''
         try:
             #数据表赋值
-            self.new_competition.Cid = cid
-            self.new_competition.Cname = cname
-            self.new_competition.Cno = cno
-            self.new_competition.Clevel = clevel
-            self.new_competition.Cstart = cstart
-            self.new_competition.Cend = cend
-            self.new_competition.Cmin = cmin
-            self.new_competition.Cmax = cmax
-            self.new_competition.Cown = cown
-            self.new_competition.Cabo = cabo
+            new_competitions = model.Competitions
+            new_competitions.Cid = cid
+            new_competitions.Cname = cname
+            new_competitions.Cno = cno
+            new_competitions.Clevel = clevel
+            new_competitions.Cstart = cstart
+            new_competitions.Cend = cend
+            new_competitions.Cmin = cmin
+            new_competitions.Cmax = cmax
+            new_competitions.Cown = cown
+            new_competitions.Cabo = cabo
             #执行数据库操作
-            self.session.add(self.new_competition)
+            self.session.add(new_competitions)
             self.session.commit()
-
             return True
         except Exception as e:
             #数据库操作异常，回退操作
@@ -54,27 +53,30 @@ class SCompetitions():
             return False
 
     #获取全部竞赛信息列表
-    @trans_params
     def get_competitions_list(self):
-        competitions_list = self.session.query(self.new_competition.Cid,
-                                               self.new_competition.Cname, self.new_competition.Cno,
-                                               self.new_competition.Clevel, self.new_competition.Cstart,
-                                               self.new_competition.Cend).all()
+        competitions_list = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
+                                               model.Competitions.Cno, model.Competitions.Clevel,
+                                               model.Competitions.Cstart, model.Competitions.Cend).all()
         return competitions_list
 
-    #列表分页，目前未完成
-    @trans_params
-    def get_competitions_list(self, page_no, infor_num):
-        competitions_list = self.session.query(self.new_competition.Cid,
-                                               self.new_competition.Cname, self.new_competition.Cno,
-                                               self.new_competition.Clevel, self.new_competition.Cstart,
-                                               self.new_competition.Cend).all()
+    #列表分页
+    def get_competitions_list_by_start_end(self, start_num, infor_num):
+        competitions_list = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
+                                               model.Competitions.Cno, model.Competitions.Clevel,
+                                               model.Competitions.Cstart, model.Competitions.Cend)\
+            .offset(start_num - 1).limit(infor_num).all()
         return competitions_list
 
     #竞赛信息详情
-    @trans_params
     def get_competitions_abo_by_cid(self, cid):
-        competition_abo = self.session.query(self.new_competition).scalar()
+        competition_abo = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
+                                               model.Competitions.Cno, model.Competitions.Clevel,
+                                               model.Competitions.Cstart, model.Competitions.Cend,
+                                               model.Competitions.Cmin, model.Competitions.Cmax,
+                                               model.Competitions.Cown, model.Competitions.Cabo)\
+            .filter_by(Cid = cid).all()
         return competition_abo
 
-
+if __name__ == '__main__':
+    scompetitions = SCompetitions()
+    print ">>>" + str(scompetitions.get_competitions_abo_by_cid("d3500890-e217-4e93-8f65-e433b4f85213"))

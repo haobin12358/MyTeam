@@ -13,6 +13,7 @@ class CUsers():
         self.judgeData = JudgeData() #全局实例化
         self.susers = SUsers()
 
+    #实现登录的数据处理
     def login(self):
         form = request.data #获取前端发送的body体
         print str(form)
