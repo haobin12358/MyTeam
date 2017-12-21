@@ -42,4 +42,23 @@ class CTeachers():
             return system_error
 
     def teachers_abo(self):
-        pass
+        args = request.args
+        print str(args)
+        #判断是否含有参数
+        if str(args) == "" or str(args) == {}:
+            return param_miss
+
+        args = json.loads(args)
+
+        if not self.judgeData.inData("Tid", args):
+            return param_miss
+
+        tid = args["Tid"]
+
+        teacher_abo = self.steachers.get_teacher_abo_by_tid(tid)
+        teacher_use = self.steachers.get_teacher_use_by_tid(tid)
+
+        if teacher_abo is not None:
+            return teacher_abo, teacher_abo#返回体存在问题
+        else:
+            return system_error
