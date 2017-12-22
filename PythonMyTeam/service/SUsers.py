@@ -22,7 +22,7 @@ class SUsers():
         :param uname: 用户名
         :param upwd: 密码
         :param utype: 用户类型100-102
-        :return: 插入数据正常返回 0,数据库操作异常返回 1
+        :return: 插入数据正常返回 True,数据库操作异常返回 False
         """
         try:
             # 实例化一个User对象 并赋值
