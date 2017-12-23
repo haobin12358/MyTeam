@@ -31,7 +31,7 @@ class SCompetitions():
         '''
         try:
             #数据表赋值
-            new_competitions = model.Competitions
+            new_competitions = model.Competitions()
             new_competitions.Cid = cid
             new_competitions.Cname = cname
             new_competitions.Cno = cno

@@ -44,9 +44,11 @@ class SPersonal():
 
             self.session.add(new_student)
             self.session.commit()
+            self.session.close()
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
@@ -78,6 +80,7 @@ class SPersonal():
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
@@ -98,9 +101,11 @@ class SPersonal():
 
             self.session.add(new_tech)
             self.session.commit()
+            self.session.close()
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
@@ -130,6 +135,7 @@ class SPersonal():
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
@@ -155,6 +161,7 @@ class SPersonal():
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
@@ -169,6 +176,7 @@ class SPersonal():
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
@@ -212,6 +220,7 @@ class SPersonal():
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
@@ -227,50 +236,71 @@ class SPersonal():
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
-    def update_student_tech_by_sid(self, sid, student_tech):
+    def update_student_tech_by_stid(self, stid, student_tech):
         """
-        :param sid:
+        :param stid:
         :param student_tech:
         :return:
         """
         try:
-            self.session.query(model.STechs).filter_by(Sid = sid).update(student_tech)
+            self.session.query(model.STechs).filter_by(STid = stid).update(student_tech)
             self.session.commit()
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
-    def update_student_use_by_sid(self, sid, student_use):
+    def update_student_use_by_scid(self, scid, student_use):
         """
-        :param sid:
+        :param scid:
         :param student_use:
         :return:
         """
         try:
-            self.session.query(model.SCuse).filter_by(Sid = sid).update(student_use)
+            self.session.query(model.SCuse).filter_by(SCid = scid).update(student_use)
             self.session.commit()
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
 
-    def update_teacher_ude_by_tid(self, tid, teacher_use):
+    def update_teacher_use_by_tcid(self, tcid, teacher_use):
         """
-        :param tid:
+        :param tcid:
         :param teacher_use:
         :return:
         """
         try:
-            self.session.query(model.TCuse).filter_by(Tid = tid).update(teacher_use)
+            self.session.query(model.TCuse).filter_by(TCid = tcid).update(teacher_use)
             self.session.commit()
 
             return True
         except Exception as e:
+            self.session.rollback()
             print e.message
             return False
+
+    @trans_params
+    def get_stname_by_sid(self, sid):
+        return self.session.query(model.STechs.STname).filter_by(Sid = sid).all()
+
+    @trans_params
+    def get_scname_by_sid(self, sid):
+        return self.session.query(model.SCuse.SCname).filter_by(Sid = sid).all()
+
+    def get_stid_by_stname_and_sid(self, sid, stname):
+        return self.session.query(model.STechs.STid).filter_by(Sid = sid).filter_by(STname = stname).scalar()
+
+    def get_scid_by_scname_and_sid(self, sid, scname):
+        return self.session.query(model.SCuse.SCid).filter_by(Sid = sid).filter_by(SCname = scname).scalar()
+
+    def get_tcid_by_tcname_and_tid(self, tid, tcname):
+        return self.session.query(model.TCuse.TCid).filter_by(Tid = tid).filter_by(TCname = tcname).scalar()

@@ -42,7 +42,7 @@ class APersonal(Resource):
         }
         # 判断是否包含该API
         if judgeData.inData(personal, apis):
-            return apis[personal]
+            return eval(apis[personal])
 
         return apis_wrong
     def delete(self, personal):
@@ -57,6 +57,6 @@ class APersonal(Resource):
         }
         # 判断是否包含该API
         if judgeData.inData(personal, apis):
-            return apis[personal]
+            return eval(apis[personal])
 
         return apis_wrong
