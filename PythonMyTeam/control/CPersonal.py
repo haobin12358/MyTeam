@@ -8,6 +8,7 @@ from common.JudgeData import JudgeData
 from service.SPersonal import SPersonal
 from service.SStudents import SStudents
 from service.STeachers import STeachers
+from common.get_model_return_list import get_model_return_list
 from Config.Requests import param_miss,system_error,add_personal_success,none_permissions,none_identity,wrong_sex\
     ,add_student_tech_success,none_personal,error_tech_level,repeated_stname,repeated_scname,add_personal_use_success\
     ,update_personal_abo_success,update_personal_tech_success,update_personal_use_success,delete_personal_tech_success\
@@ -42,8 +43,38 @@ class CPersonal():
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
-            pass
-        pass
+            sid = self.spersonal.get_sid_by_uid(uid)
+
+            from models.model import Students
+            from models.model import STechs
+            from models.model import SCuse
+            # 获取数据库中数据
+            # 获取学生的基础信息
+            student_abo = get_model_return_list(self.sstudent.get_student_abo_by_sid(sid), Students)
+            # 获取学生的技能信息
+            student_tech = get_model_return_list(self.sstudent.get_student_tech_by_sid(sid), STechs)
+            # 获取学生的竞赛信息
+            student_use = get_model_return_list(self.sstudent.get_student_use_by_sid(sid), SCuse)
+            # 拼装返回结构体
+            student_abo[0]["STech"] = student_tech
+            student_abo[0]["SCUse"] = student_use
+            return student_abo # 返回体需要修改
+        elif utype == 101:
+            tid = self.spersonal.get_tid_by_uid(uid)
+
+            from models.model import TCuse
+            from models.model import Teachers
+            # 获取教师的所有基础信息
+            teacher_abo = get_model_return_list(self.steacher.get_teacher_abo_by_tid(tid), Teachers)
+            # 获取教师的所有竞赛信息
+            teacher_use = get_model_return_list(self.steacher.get_teacher_use_by_tid(tid), TCuse)
+            # 将竞赛信息拼装进教师基础信息中
+            teacher_abo[0]["TCuse"] = teacher_use
+            return teacher_abo
+        elif utype == 102:
+            return none_permissions
+        else:
+            return none_identity
 
     # 新建个人信息
     def create_myinfor(self):
