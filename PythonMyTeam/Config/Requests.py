@@ -1,6 +1,6 @@
 # *- coding:utf8 *-
 
-#放置各种通用的响应body
+# 放置各种通用的响应body
 
 # api未被注册
 apis_wrong = {
@@ -11,59 +11,60 @@ apis_wrong = {
 
 # 注册成功
 register_ok = {
-    "status":200,
-    "messages":"register is ok !"
+    "status": 200,
+    "messages": "register is ok !"
 }
 
 # 登录成功
 login_ok = {
-    "status":200,
-    "messages":{
-        "message":"login is ok !"
+    "status": 200,
+    "messages": {
+        "message": "login is ok !"
     }
 }
 
 # 系统异常
 system_error = {
-    "status":404,
-    "status_code":404100,
-    "messages":"System is abnormal !"
+    "status": 404,
+    "status_code": 404100,
+    "messages": "System is abnormal !"
 }
 
 # 用户名重复
 repeated_name = {
-    "status":405,
-    "status_code":405100,
-    "messages":"Username is occupied !"
+    "status": 405,
+    "status_code": 405100,
+    "messages": "Username is occupied !"
 }
 
 # 密码不合法
 wrong_upwd = {
-    "status":405,
-    "status_code":405101,
-    "messages":"The password is not valid !"
+    "status": 405,
+    "status_code": 405101,
+    "messages": "The password is not valid !"
 }
 
 # 用户名不合法
 wrong_uname = {
-    "status":405,
-    "status_code":405102,
-    "messages":"The username is not valid !"
+    "status": 405,
+    "status_code": 405102,
+    "messages": "The username is not valid !"
 }
 
 # 错误的密码
 error_upwd = {
-    "status":405,
-    "status_code":405101,
-    "messages":"The password is wrong !"
+    "status": 405,
+    "status_code": 405101,
+    "messages": "The password is wrong !"
 }
 
 # 参数缺失
 param_miss = {
-    "status":405,
-    "status_code":405201,
-    "messages":"missing some parameters !"
+    "status": 405,
+    "status_code": 405201,
+    "messages": "missing some parameters !"
 }
+<<<<<<< HEAD
 
 # 新增个人信息成功
 add_personal_success = {
@@ -168,3 +169,5 @@ delete_personal_use_success = {
     "status":200,
     "messages":"Delete personal competitions success !"
 }
+=======
+>>>>>>> f6d0a02c4da2b5d9e09366696433520267a36b60
