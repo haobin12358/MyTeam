@@ -31,11 +31,8 @@ class SCompetitions():
         :return: 插入数据正常时返回0，数据库操作异常返回1
         '''
         try:
-<<<<<<< HEAD
-            #数据表赋值
-=======
+
             # 数据表赋值
->>>>>>> f6d0a02c4da2b5d9e09366696433520267a36b60
             new_competitions = model.Competitions()
             new_competitions.Cid = cid
             new_competitions.Cname = cname

@@ -64,7 +64,6 @@ param_miss = {
     "status_code": 405201,
     "messages": "missing some parameters !"
 }
-<<<<<<< HEAD
 
 # 新增个人信息成功
 add_personal_success = {
@@ -169,5 +168,4 @@ delete_personal_use_success = {
     "status":200,
     "messages":"Delete personal competitions success !"
 }
-=======
->>>>>>> f6d0a02c4da2b5d9e09366696433520267a36b60
+
