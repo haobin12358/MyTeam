@@ -60,7 +60,7 @@ class SPersonal():
         :param tuniversity:
         :param tschool:
         :param ttime:
-        :return:
+        :return: 插入数据正常返回True，数据库操作异常返回False
         """
         try:
             new_teacher = model.Teachers()
@@ -81,13 +81,13 @@ class SPersonal():
             print e.message
             return False
 
-    def add_student_tech_by_uid(self, stid, sid, stname, stlevel):
+    def add_student_tech_by_sid(self, stid, sid, stname, stlevel):
         """
         :param stid:
         :param sid:
         :param stname:
         :param stlevel:
-        :return:
+        :return: 插入数据正常返回True，数据库操作异常返回False
         """
         try:
             new_tech = model.STechs()
@@ -110,4 +110,167 @@ class SPersonal():
     def get_sid_by_uid(self, uid):
         return self.session.query(model.Students.Sid).filter_by(Uid = uid).scalar()
 
+    def add_student_use_by_sid(self, scid, sid, scname, scno):
+        """
+        :param scid:
+        :param sid:
+        :param scname:
+        :param scno:
+        :return: 插入数据正常返回True，数据库操作异常返回False
+        """
+        try:
+            new_student_use = model.SCuse()
+            new_student_use.SCid = scid
+            new_student_use.Sid = sid
+            new_student_use.SCname = scname
+            new_student_use.SCno = scno
 
+            self.session.add(new_student_use)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False
+
+    def add_teacher_use_by_tid(self, tcid, tid, tcname, tcno, tcnum):
+        """
+        :param tcid:
+        :param tid:
+        :param tcname:
+        :param tcno:
+        :param tcnum:
+        :return: 插入数据正常返回True，数据库操作异常返回False
+        """
+        try:
+            new_teacher_use = model.TCuse()
+            new_teacher_use.TCid = tcid
+            new_teacher_use.Tid = tid
+            new_teacher_use.TCname = tcname
+            new_teacher_use.TCno = tcno
+            new_teacher_use.TCnum = tcnum
+
+            self.session.add(new_teacher_use)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False
+
+    def delete_student_tech_by_stid(self, stid):
+        """
+        :param stid:
+        :return:
+        """
+        try:
+            self.session.query(model.STechs).filter_by(STid = stid).delete()
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False
+
+    def delete_student_use_by_scid(self, scid):
+        """
+        :param scid:
+        :return:
+        """
+        try:
+            self.session.query(model.SCuse).filter_by(SCid = scid).delete()
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False
+
+    def delete_teacher_use_by_tcid(self, tcid):
+        """
+        :param tcid:
+        :return:
+        """
+        try:
+            self.session.query(model.TCuse).filter_by(TCid = tcid).delete()
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False
+
+    def update_student_abo_by_uid(self, uid, student_abo):
+        """
+        :param uid:
+        :param student_abo:
+        :return:
+        """
+        try:
+            self.session.query(model.Students).filter_by(Uid = uid).update(student_abo)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False
+
+    def update_teacher_abo_by_uid(self, uid, teacher_abo):
+        """
+        :param uid:
+        :param teacher_abo:
+        :return:
+        """
+        try:
+            self.session.query(model.Teachers).filter_by(Uid = uid).update(teacher_abo)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False
+
+    def update_student_tech_by_sid(self, sid, student_tech):
+        """
+        :param sid:
+        :param student_tech:
+        :return:
+        """
+        try:
+            self.session.query(model.STechs).filter_by(Sid = sid).update(student_tech)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False
+
+    def update_student_use_by_sid(self, sid, student_use):
+        """
+        :param sid:
+        :param student_use:
+        :return:
+        """
+        try:
+            self.session.query(model.SCuse).filter_by(Sid = sid).update(student_use)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False
+
+    def update_teacher_ude_by_tid(self, tid, teacher_use):
+        """
+        :param tid:
+        :param teacher_use:
+        :return:
+        """
+        try:
+            self.session.query(model.TCuse).filter_by(Tid = tid).update(teacher_use)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            print e.message
+            return False

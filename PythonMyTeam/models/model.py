@@ -105,7 +105,7 @@ class TCuse(Base):
     TCid = Column(String(64), primary_key=True)
     Tid = Column(String(64), nullable=False)
     TCname = Column(String(128), nullable=False)
-    TCon = Column(String(16), nullable=False)
+    TCno = Column(String(16), nullable=False)
     TCnum = Column(Integer, nullable=False, default=1)
 
 
