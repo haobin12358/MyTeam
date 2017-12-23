@@ -1,7 +1,7 @@
 # *- coding:utf8 *-
-#引用python类
+# 引用python类
 from flask_restful import Resource
-#引用项目类
+# 引用项目类
 from common.JudgeData import JudgeData
 from Config.Requests import apis_wrong
 from Config.Logs import PRINT_API_IS
@@ -17,14 +17,14 @@ class ATeachers(Resource):
     def get(self, teachers):
         print PRINT_API_IS.format(teachers)
 
-        judgeData = JudgeData() # 实例化
-        cteachers = CTeachers() #实例化
+        judgeData = JudgeData()  # 实例化
+        cteachers = CTeachers()  # 实例化
 
         apis = {
             "list": "cteachers.teachers_list()",
             "abo": "cteachers.teachers_abo()"
         }
-        #判断是否包含该API
+        # 判断是否包含该API
         if judgeData.inData(teachers, apis):
             return eval(apis[teachers])
 

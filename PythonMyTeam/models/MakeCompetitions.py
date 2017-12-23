@@ -1,11 +1,11 @@
 # *- coding:utf8 *-
-#引用python类
+# 引用python类
 import uuid
-#引用项目类
+# 引用项目类
 from Config.CompetitionsList import Competitions_list
 from service.SCompetitions import SCompetitions
 
-#实例化
+# 实例化
 scompetitions = SCompetitions()
 
 if __name__ == "__main__":
