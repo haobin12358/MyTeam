@@ -10,6 +10,8 @@ import analysis from './pages/detail/analysis'
 import count from './pages/detail/count'
 import forecast from './pages/detail/forecast'
 import publish from './pages/detail/publish'
+import './lib/bootstrap/css/bootstrap.min.css'
+import './lib/bootstrap/script/bootstrap.min.js'
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);

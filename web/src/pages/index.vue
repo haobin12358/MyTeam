@@ -43,7 +43,6 @@
     </div>
   </div>
 </template>
-
 <script type="text/ecmascript-6">
   import slideShow from '../components/slideShow'
   export default {
