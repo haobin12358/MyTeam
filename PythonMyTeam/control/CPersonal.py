@@ -45,16 +45,13 @@ class CPersonal():
         if utype == 100:
             sid = self.spersonal.get_sid_by_uid(uid)
 
-            from models.model import Students
-            from models.model import STechs
-            from models.model import SCuse
             # 获取数据库中数据
             # 获取学生的基础信息
-            student_abo = get_model_return_list(self.sstudent.get_student_abo_by_sid(sid), Students)
+            student_abo = get_model_return_list(self.sstudent.get_student_abo_by_sid(sid))
             # 获取学生的技能信息
-            student_tech = get_model_return_list(self.sstudent.get_student_tech_by_sid(sid), STechs)
+            student_tech = get_model_return_list(self.sstudent.get_student_tech_by_sid(sid))
             # 获取学生的竞赛信息
-            student_use = get_model_return_list(self.sstudent.get_student_use_by_sid(sid), SCuse)
+            student_use = get_model_return_list(self.sstudent.get_student_use_by_sid(sid))
             # 拼装返回结构体
             student_abo[0]["STech"] = student_tech
             student_abo[0]["SCUse"] = student_use
@@ -62,12 +59,10 @@ class CPersonal():
         elif utype == 101:
             tid = self.spersonal.get_tid_by_uid(uid)
 
-            from models.model import TCuse
-            from models.model import Teachers
             # 获取教师的所有基础信息
-            teacher_abo = get_model_return_list(self.steacher.get_teacher_abo_by_tid(tid), Teachers)
+            teacher_abo = get_model_return_list(self.steacher.get_teacher_abo_by_tid(tid))
             # 获取教师的所有竞赛信息
-            teacher_use = get_model_return_list(self.steacher.get_teacher_use_by_tid(tid), TCuse)
+            teacher_use = get_model_return_list(self.steacher.get_teacher_use_by_tid(tid))
             # 将竞赛信息拼装进教师基础信息中
             teacher_abo[0]["TCuse"] = teacher_use
             return teacher_abo

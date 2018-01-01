@@ -4,7 +4,7 @@ from flask import request
 # 引用项目类
 from common.JudgeData import JudgeData
 from service.STeachers import STeachers
-from Config.Requests import param_miss, system_error
+from Config.Requests import param_miss, system_error, search_teachers_list_success, search_teachers_abo_success
 from common.get_model_return_list import get_model_return_list
 
 
@@ -24,12 +24,14 @@ class CTeachers():
         args = request.args.to_dict()
         # 判断是否含有参数
         if not args:
-            return self.get_teachers_list()
+            search_teachers_list_success["teacher_list"] = self.get_teachers_list()
+            return search_teachers_list_success
         try:
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回-1
             page_num, page_size = self.judgeData.check_page_params(args)
             start_num = (page_num - 1) * page_size
-            return self.get_teachers_list(start_num, page_size)
+            search_teachers_list_success["teacher_list"] = self.get_teachers_list(start_num, page_size)
+            return search_teachers_list_success
         except Exception as e:
             print e.message
             return system_error
@@ -43,24 +45,20 @@ class CTeachers():
         if not self.steachers.status:
             return system_error
         args = request.args.to_dict()
-        # 判断是否含有参数
-        if not args:
-            return self.get_teachers_list()
-
-        if not self.judgeData.inData("Tid", args):  # 校验参数中是否存在Tid，如果没有，抛出异常
+        # 判断是否含有参数并 校验参数中是否存在Tid，如果没有，抛出异常
+        if not args or not self.judgeData.inData("Tid", args):
             return param_miss
 
         try:
-            from models.model import TCuse
-            from models.model import Teachers
             tid = args["Tid"]  # 获取Tid
             # 获取教师的所有基础信息
-            teacher_abo = get_model_return_list(self.steachers.get_teacher_abo_by_tid(tid), Teachers)
+            teacher_abo = get_model_return_list(self.steachers.get_teacher_abo_by_tid(tid))
             # 获取教师的所有竞赛信息
-            teacher_use = get_model_return_list(self.steachers.get_teacher_use_by_tid(tid), TCuse)
+            teacher_use = get_model_return_list(self.steachers.get_teacher_use_by_tid(tid))
             # 将竞赛信息拼装进教师基础信息中
             teacher_abo[0]["TCuse"] = teacher_use
-            return teacher_abo
+            search_teachers_abo_success["teacher_abo"] = teacher_abo
+            return search_teachers_abo_success
         except Exception as e:
             # 防止系统的莫名错误
             print e.message
@@ -80,6 +78,6 @@ class CTeachers():
         # [teachers_list1, 2, 3...]
         if isinstance(teachers_list, list) and teachers_list:
             from models.model import Teachers
-            return get_model_return_list(teachers_list, Teachers)
+            return get_model_return_list(teachers_list)
         else:
             return []
