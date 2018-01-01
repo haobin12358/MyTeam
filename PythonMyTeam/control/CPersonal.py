@@ -9,22 +9,26 @@ from service.SPersonal import SPersonal
 from service.SStudents import SStudents
 from service.STeachers import STeachers
 from common.get_model_return_list import get_model_return_list
-from Config.Requests import param_miss,system_error,add_personal_success,none_permissions,none_identity,wrong_sex\
-    ,add_student_tech_success,none_personal,error_tech_level,repeated_stname,repeated_scname,add_personal_use_success\
-    ,update_personal_abo_success,update_personal_tech_success,update_personal_use_success,delete_personal_tech_success\
-    ,delete_personal_use_success
+from Config.Requests import param_miss, system_error, add_personal_success,\
+    none_permissions, none_identity, wrong_sex, add_student_tech_success, \
+    none_personal, error_tech_level, repeated_stname, repeated_scname, \
+    add_personal_use_success, update_personal_abo_success, \
+    update_personal_tech_success, update_personal_use_success, \
+    delete_personal_tech_success, delete_personal_use_success, \
+    search_teachers_abo_success, search_student_abo_success
+
 
 # 用于处理个人信息相关数据
 class CPersonal():
     def __init__(self):
-        self.judgeData = JudgeData() # 实例化
+        self.judgeData = JudgeData()  # 实例化
         self.spersonal = SPersonal()
         self.sstudent = SStudents()
         self.steacher = STeachers()
 
     # 获取个人信息
     def myinfor(self):
-        args = request.args.to_dict() # 获取到的参数
+        args = request.args.to_dict()  # 获取到的参数
         print args
         # 判断参数非空
         if not args:
@@ -55,7 +59,8 @@ class CPersonal():
             # 拼装返回结构体
             student_abo[0]["STech"] = student_tech
             student_abo[0]["SCUse"] = student_use
-            return student_abo # 返回体需要修改
+            search_student_abo_success["student_abo"] = student_abo
+            return search_student_abo_success  # 已修改
         elif utype == 101:
             tid = self.spersonal.get_tid_by_uid(uid)
 
@@ -65,7 +70,8 @@ class CPersonal():
             teacher_use = get_model_return_list(self.steacher.get_teacher_use_by_tid(tid))
             # 将竞赛信息拼装进教师基础信息中
             teacher_abo[0]["TCuse"] = teacher_use
-            return teacher_abo
+            search_teachers_abo_success["teacher_abo"] = teacher_abo
+            return search_teachers_abo_success
         elif utype == 102:
             return none_permissions
         else:
@@ -73,9 +79,9 @@ class CPersonal():
 
     # 新建个人信息
     def create_myinfor(self):
-        args = request.args.to_dict() # 获取到的参数
+        args = request.args.to_dict()  # 获取到的参数
         print args
-        form = request.data # 获取到的body体
+        form = request.data  # 获取到的body体
         print form
         # 判断参数非空
         if not args:
@@ -99,9 +105,9 @@ class CPersonal():
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
             # 判断body中的必要参数是否缺失
-            if not self.judgeData.inData("Sname", form) or not self.judgeData.inData("Sno", form)\
-                or not self.judgeData.inData("Suniversity", form) or not self.judgeData.inData("Sschool", form)\
-                or not self.judgeData.inData("Stel", form):
+            if not self.judgeData.inData("Sname", form) or not self.judgeData.inData("Sno", form) \
+                    or not self.judgeData.inData("Suniversity", form) or not self.judgeData.inData("Sschool", form) \
+                    or not self.judgeData.inData("Stel", form):
                 return param_miss
             # 判断body中的非必要参数是否存在
             if not self.judgeData.inData("Sgrade", form):
@@ -112,9 +118,10 @@ class CPersonal():
                 return wrong_sex
 
             # 填写个人信息到数据库
-            add_personal_abo = self.spersonal.add_student_abo_by_uid(uuid.uuid4(), args["Uid"],form["Sname"],form["Sno"],
-                                                                     form["Suniversity"],form["Sschool"],form["Stel"],
-                                                                     form["Sgrade"],form["Ssex"])
+            add_personal_abo = self.spersonal.add_student_abo_by_uid(uuid.uuid4(), args["Uid"], form["Sname"],
+                                                                     form["Sno"],
+                                                                     form["Suniversity"], form["Sschool"], form["Stel"],
+                                                                     form["Sgrade"], form["Ssex"])
             # 判断插入是否成功
             if add_personal_abo:
                 return add_personal_success
@@ -122,9 +129,9 @@ class CPersonal():
                 return system_error
         elif utype == 101:
             # 判断body中的必要参数是否缺失
-            if not self.judgeData.inData("Tname", form) or not self.judgeData.inData("Tno", form)\
-                or not self.judgeData.inData("Ttel", form) or not self.judgeData.inData("Tuniversity", form)\
-                or not self.judgeData.inData("Tschool", form):
+            if not self.judgeData.inData("Tname", form) or not self.judgeData.inData("Tno", form) \
+                    or not self.judgeData.inData("Ttel", form) or not self.judgeData.inData("Tuniversity", form) \
+                    or not self.judgeData.inData("Tschool", form):
                 return param_miss
             # 判断body中的非必要参数是否存在
             if not self.judgeData.inData("Ttime", form):
@@ -132,8 +139,8 @@ class CPersonal():
 
             # 填写个人信息到数据库
             add_personal_abo = self.spersonal.add_teacher_abo_by_uid(uuid.uuid4(), args["Uid"], form["Tname"],
-                                                                    form["Tno"], form["Ttel"], form["Tuniversity"],
-                                                                    form["Tschool"],form["Ttime"])
+                                                                     form["Tno"], form["Ttel"], form["Tuniversity"],
+                                                                     form["Tschool"], form["Ttime"])
             # 判断插入是否成功
             if add_personal_abo:
                 return add_personal_success
@@ -146,9 +153,9 @@ class CPersonal():
 
     # 新建个人技能
     def create_mytech(self):
-        args = request.args.to_dict() # 获取参数
+        args = request.args.to_dict()  # 获取参数
         print args
-        form = request.data # 获取body
+        form = request.data  # 获取body
         print form
 
         # 判断参数非空
@@ -278,7 +285,7 @@ class CPersonal():
 
     # 更新个人信息
     def update_myinfor(self):
-        args = request.args.to_dict() # 获取参数
+        args = request.args.to_dict()  # 获取参数
         print args
         # 判断参数非空
         if not args:
@@ -286,7 +293,7 @@ class CPersonal():
         # 判断参数中包含Uid
         if not self.judgeData.inData("Uid", args):
             return param_miss
-        form = request.data # 获取body体
+        form = request.data  # 获取body体
         print form
         form = json.loads(form)
         # 判断body非空
@@ -335,9 +342,9 @@ class CPersonal():
 
     # 更新个人技能
     def update_mytech(self):
-        args = request.args.to_dict() # 获取参数
+        args = request.args.to_dict()  # 获取参数
         print args
-        form = request.data # 获取body体
+        form = request.data  # 获取body体
         print form
         # 判断参数非空
         if not args:
@@ -388,9 +395,9 @@ class CPersonal():
 
     # 更新个人竞赛简历
     def update_myuse(self):
-        args = request.args.to_dict() # 获取参数
+        args = request.args.to_dict()  # 获取参数
         print args
-        form = request.data # 获取body体
+        form = request.data  # 获取body体
         print form
         # 判断参数非空
         if not args:
@@ -494,7 +501,6 @@ class CPersonal():
             return none_permissions
         else:
             return none_identity
-
 
     def delete_myuse(self):
         args = request.args.to_dict()  # 获取参数
