@@ -6,7 +6,7 @@ import json
 from common.JudgeData import JudgeData
 from common.get_model_return_list import get_model_return_list
 from service.SCompetitions import SCompetitions
-from Config.Requests import param_miss, system_error
+from Config.Requests import param_miss, system_error, search_competitions_list_success, search_competition_abo_success
 
 
 # 处理竞赛信息相关数据
@@ -22,14 +22,15 @@ class CCompetitions():
         args = request.args.to_dict()
         # 判断是否含有参数
         if not args:
-            return self.get_competition_list()
+            search_competitions_list_success["competition_list"] = self.get_competition_list()
+            return search_competitions_list_success
         try:
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回-1
             page_num, page_size = self.judgeData.check_page_params(args)
 
             start_num = (page_num - 1) * page_size
-
-            return self.get_competition_list(start_num, page_size)
+            search_competitions_list_success["competition_list"] = self.get_competition_list(start_num, page_size)
+            return search_competitions_list_success
         except Exception as e:
             print e.message
             return system_error
@@ -39,17 +40,15 @@ class CCompetitions():
         if not self.scompetitions.status:
             return system_error
         args = request.args.to_dict()
-        # 判断是否含有参数
-        if not args:
-            return param_miss
-        if not self.judgeData.inData("Cid", args):  # 似乎不是很必要存在这个方法
+        # 判断是否含有参数并判断是否含有Cid参数
+        if not args or not self.judgeData.inData("Cid", args):
             return param_miss
 
         cid = args["Cid"]
         try:
-            from models.model import Competitions
             competition_abo = self.scompetitions.get_competitions_abo_by_cid(cid)
-            return get_model_return_list(competition_abo, Competitions)
+            search_competition_abo_success["competition_abo"] = get_model_return_list(competition_abo)
+            return search_competition_abo_success
         except Exception as e:
             print e.message
             return system_error
@@ -62,7 +61,6 @@ class CCompetitions():
             competitions_list = self.scompetitions.get_competitions_list()
         # [competitions1, 2, 3...]
         if isinstance(competitions_list, list) and competitions_list:
-            from models.model import Competitions
-            return get_model_return_list(competitions_list, Competitions)
+            return get_model_return_list(competitions_list)
         else:
             return []

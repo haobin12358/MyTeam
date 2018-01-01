@@ -169,3 +169,38 @@ delete_personal_use_success = {
     "messages":"Delete personal competitions success !"
 }
 
+# 检索竞赛详情成功
+search_competition_abo_success = {
+    "status": 200,
+    "messages": "Search competition abo success !"
+}
+
+# 检索所有竞赛信息成功
+search_competitions_list_success = {
+    "status": 200,
+    "messages": "Search competitions list success !"
+}
+
+# 检索所有学生信息成功
+search_student_list_success = {
+    "status": 200,
+    "messages": "Search student list success !"
+}
+
+# 检索学生详情成功
+search_student_abo_success = {
+    "status": 200,
+    "messages": "Search student abo success !"
+}
+
+# 检索所有教师信息成功
+search_teachers_list_success = {
+    "status": 200,
+    "messages": "Search teacher list success !"
+}
+
+# 检索教师详情成功
+search_teachers_abo_success = {
+    "status": 200,
+    "messages": "Search teacher abo success !"
+}

@@ -1,11 +1,10 @@
 # *- coding:utf8 *-
 # 引用Python类
 from flask import request
-import json
 # 引用项目类
 from common.JudgeData import JudgeData
 from service.SStudents import SStudents
-from Config.Requests import param_miss, system_error
+from Config.Requests import param_miss, system_error, search_student_list_success, search_student_abo_success
 from common.get_model_return_list import get_model_return_list
 
 
@@ -25,12 +24,14 @@ class CStudents():
         args = request.args.to_dict()
         # 判断是否含有参数
         if not args:
-            return self.get_students_list()
+            search_student_list_success["student_list"] = self.get_students_list()
+            return search_student_list_success
         try:
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回-1
             page_num, page_size = self.judgeData.check_page_params(args)
             start_num = (page_num - 1) * page_size
-            return self.get_students_list(start_num, page_size)
+            search_student_list_success["student_list"] = self.get_students_list(start_num, page_size)
+            return search_student_list_success
         except Exception as e:
             print e.message
             return system_error
@@ -44,29 +45,24 @@ class CStudents():
         if not self.sstudents.status:
             return system_error
         args = request.args.to_dict()
-        # 判断是否含有参数
-        if not args:
-            return param_miss
-
-        if not self.judgeData.inData("Sid", args):  # 校验参数中是否存在Sid，如果没有，抛出异常
+        # 判断是否含有参数并校验参数中是否存在Sid，如果没有，抛出异常
+        if not args or not self.judgeData.inData("Sid", args):
             return param_miss
 
         try:
             sid = args["Sid"]
-            from models.model import Students
-            from models.model import STechs
-            from models.model import SCuse
             # 获取数据库中数据
             # 获取学生的基础信息
-            student_abo = get_model_return_list(self.sstudents.get_student_abo_by_sid(sid), Students)
+            student_abo = get_model_return_list(self.sstudents.get_student_abo_by_sid(sid))
             # 获取学生的技能信息
-            student_tech = get_model_return_list(self.sstudents.get_student_tech_by_sid(sid), STechs)
+            student_tech = get_model_return_list(self.sstudents.get_student_tech_by_sid(sid))
             # 获取学生的竞赛信息
-            student_use = get_model_return_list(self.sstudents.get_student_use_by_sid(sid), SCuse)
+            student_use = get_model_return_list(self.sstudents.get_student_use_by_sid(sid))
             # 拼装返回结构体
             student_abo[0]["STech"] = student_tech
             student_abo[0]["SCUse"] = student_use
-            return student_abo
+            search_student_abo_success["student_abo"] = student_abo
+            return search_student_abo_success
         except Exception as e:
             # 防止系统的莫名错误
             print e.message
@@ -85,7 +81,6 @@ class CStudents():
             students_list = self.sstudents.get_students_list()
         # [students_list1, 2, 3...]
         if isinstance(students_list, list) and students_list:
-            from models.model import Students
-            return get_model_return_list(students_list, Students)
+            return get_model_return_list(students_list)
         else:
             return []

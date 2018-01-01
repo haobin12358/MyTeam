@@ -42,7 +42,7 @@ class SUsers():
             print e.message
             return False
 
-    @trans_params
+    # @trans_params
     # 获取所有的username
     def get_all_user_name(self):
         return self.session.query(model.Uers.Uname).all()
