@@ -69,9 +69,17 @@ class Competitions(Base):
 class Teams(Base):
     __tablename__ = "Teams"
     TEid = Column(String(64), primary_key=True)
-    Sid = Column(String(64), nullable=False)
-    TStyle = Column(Integer, nullable=False)
+    TEname = Column(String(256), nullable=False)   # 团队名称
+    Cid = Column(String(64), nullable=False)
+    TEuse = Column(Integer, nullable=False)   # 是否可用
 
+# 团队学生关联表
+class TStudent(Base):
+    __tablename__ = "TStudent"
+    TSid = Column(String(64), primary_key=True)
+    Sid = Column(String(64), nullable=False)
+    TStype = Column(Integer, nullable=False)   # 成员类型
+    TSsubject = Column(Integer, nullable=False)  # 审批流程  0待审核 1已通过 2已拒绝 3已退出
 
 # 团队教师关联表
 class TTeacher(Base):
