@@ -72,13 +72,15 @@ class Teams(Base):
     TEname = Column(String(256), nullable=False)   # 团队名称
     Cid = Column(String(64), nullable=False)
     TEuse = Column(Integer, nullable=False)   # 是否可用
+    TEnum = Column(Integer, nullable=False)   # 团队人数限制，增加判断竞赛人数功能，默认为竞赛人数最大值，无最大值时显示0
 
 # 团队学生关联表
 class TStudent(Base):
     __tablename__ = "TStudent"
     TSid = Column(String(64), primary_key=True)
+    TEid = Column(String(64), nullable=False)
     Sid = Column(String(64), nullable=False)
-    TStype = Column(Integer, nullable=False)   # 成员类型
+    TStype = Column(Integer, nullable=False)   # 成员类型   0创建人 1管理员 2其他成员
     TSsubject = Column(Integer, nullable=False)  # 审批流程  0待审核 1已通过 2已拒绝 3已退出
 
 # 团队教师关联表
@@ -87,7 +89,18 @@ class TTeacher(Base):
     TTid = Column(String(64), primary_key=True)
     TEid = Column(String(64), nullable=False)
     Tid = Column(String(64), nullable=False)
+    TTsubject = Column(Integer, nullable=False)  # 审批流程  0待审核 1已通过 2已拒绝 3已退出
 
+# 团队任务表
+class TTasks(Base):
+    __tablename__ = "TTasks"
+    Tkid = Column(String(64), primary_key=True)
+    Tkname = Column(String(64), nullable=False) # 任务名称
+    Tkabo = Column(Text) # 任务详情
+    TEid = Column(String(64), nullable=False)  # 关联团队id
+    Sid = Column(String(64), nullable=False)  # 处理人
+    Tkstatus = Column(Integer, nullable=False)  # 任务状态 0待处理 1已处理 2被驳回 3延期中 4已结束
+    Tktime = Column(String(64),nullable=False)  # 创建时间  类型需要交流
 
 # 学生技能表
 class STechs(Base):

@@ -82,6 +82,11 @@ class SCompetitions():
             .filter_by(Cid=cid).all()
         return competition_abo
 
+    # 根据id获取竞赛名称和竞赛届次
+    def get_competitions_name_and_no_by_cid(self, cid):
+        competitions_name_and_no = self.session.query(model.Competitions.Cname, model.Competitions.Cno)\
+            .filter_by(Cid=cid).scalar()
+        return competitions_name_and_no
 
 if __name__ == '__main__':
     scompetitions = SCompetitions()
