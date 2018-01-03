@@ -21,7 +21,6 @@ class ATeams(Resource):
         cteams = CTeams() #实例化
 
         apis = {
-            "myteam": "cteams.myteam_list()",
             "allteam": "cteams.teams_list()",
             "teamabo": "cteams.teams_abo()"
         }
@@ -61,7 +60,7 @@ class ATeams(Resource):
         cteams = CTeams()  # 实例化
 
         apis = {
-            "deleteteam": "cteams.delete_myteam()",
+            "deleteteam": "cteams.delete_team()",
             "deletestudent": "cteams.delete_student()",
             "deletetask": "cteams.delete_task()",
             "deleteteacher": "cteams.delete_teacher()"
