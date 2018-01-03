@@ -22,7 +22,8 @@ class ATeams(Resource):
 
         apis = {
             "myteam": "cteams.myteam_list()",
-            "teams": "cteams.teams_list()"
+            "allteam": "cteams.teams_list()",
+            "teamabo": "cteams.teams_abo()"
         }
         #判断是否存在该API
         if judgeData.inData(team, apis):
@@ -34,9 +35,18 @@ class ATeams(Resource):
         print PRINT_API_IS.format(team)
 
         judgeData = JudgeData()  # 实例化
+        cteams = CTeams()
 
         apis = {
-
+            "newteam": "cteams.new_team()",
+            "updateteam": "cteams.update_team()",
+            "addstudent": "cteams.add_student()",
+            "addteacher": "cteams.add_teacher()",
+            "substudent": "cteams.sub_student()",
+            "subteacher": "cteams.sub_teacher()",
+            "addtask": "cteams.add_task()",
+            "subtask": "cteams.sub_task()",
+            "updatetask": "cteams.update_task()"
         }
         # 判断是否存在该API
         if judgeData.inData(team, apis):
@@ -51,7 +61,10 @@ class ATeams(Resource):
         cteams = CTeams()  # 实例化
 
         apis = {
-            "myteam": "cteams.new_myteam()"
+            "deleteteam": "cteams.delete_myteam()",
+            "deletestudent": "cteams.delete_student()",
+            "deletetask": "cteams.delete_task()",
+            "deleteteacher": "cteams.delete_teacher()"
         }
         # 判断是否存在该API
         if judgeData.inData(team, apis):
