@@ -39,3 +39,7 @@ class STeachers():
         teacher_use = self.session.query(model.TCuse.TCid, model.TCuse.Tid, model.TCuse.TCname, model.TCuse.TCno, model.TCuse.TCnum) \
             .filter_by(Tid=tid).all()
         return teacher_use
+
+    # 根据教师id获取用户id
+    def get_uid_by_tid(self, tid):
+        return self.session.query(model.Teachers.Uid).filter_by(Tid = tid).scalar()

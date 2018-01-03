@@ -46,3 +46,7 @@ class SStudents():
         student_use = self.session.query(model.SCuse.SCid, model.SCuse.Sid, model.SCuse.SCname, model.SCuse.SCno) \
             .filter_by(Sid=sid).all()
         return student_use
+
+    # 根据学生id获取用户id
+    def get_uid_by_sid(self, sid):
+        return self.session.query(model.Students.Uid).filter_by(Sid = sid).scalar()

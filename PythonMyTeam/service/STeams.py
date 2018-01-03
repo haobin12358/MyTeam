@@ -49,3 +49,98 @@ class STeams():
         task_list = self.session.query(model.TTasks.Tkname, model.TTasks.Sid, model.TTasks.Tkstatus)\
             .filter_by(TEid=teid).order_by(model.TTasks.Tktime).desc().all()
         return task_list
+
+    # 创建团队
+    def add_team(self, teid, tename, cid, teuse, tenum):
+        """
+        :param teid:
+        :param tename:
+        :param cid:
+        :param teuse:
+        :param tenum:
+        :return: 插入数据正常返回True，数据库操作异常返回False
+        """
+        try:
+            new_team = model.Teams()
+            new_team.TEid = teid
+            new_team.TEname = tename
+            new_team.Cid = cid
+            new_team.TEuse = teuse
+            new_team.TEnum = tenum
+
+            self.session.add(new_team)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print e.message
+            return False
+
+    # 创建团队与学生的关联信息
+    def add_student_in_team(self, tsid, teid, sid, tstype, tssubject):
+        """
+        :param tsid:
+        :param teid:
+        :param sid:
+        :param tstype:
+        :param tssubject:
+        :return: 插入数据正常返回True，数据库操作异常返回False
+        """
+        try:
+            new_student_in_team = model.TStudent()
+            new_student_in_team.TSid = tsid
+            new_student_in_team.TEid = teid
+            new_student_in_team.Sid = sid
+            new_student_in_team.TStype = tstype
+            new_student_in_team.TSsubject = tssubject
+
+            self.session.add(new_student_in_team)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print e.message
+            return False
+
+    # 创建团队与教师的关联信息
+    def add_teacher_in_team(self, ttid, teid, tid, ttsubject):
+        """
+        :param ttid:
+        :param teid:
+        :param tid:
+        :param ttsubject:
+        :return: 插入数据正常返回True，数据库操作异常返回False
+        """
+        try:
+            new_teacher_in_team = model.TTeacher()
+            new_teacher_in_team.TTid = ttid
+            new_teacher_in_team.TEid = teid
+            new_teacher_in_team.Tid = tid
+            new_teacher_in_team.TTsubject = ttsubject
+
+            self.session.add(new_teacher_in_team)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print e.message
+            return False
+
+    # 删除团队，应用于系统异常情况
+    def delete_team_by_teid(self, teid):
+        """
+        :param teid:
+        :return: 删除数据正常返回True，数据库操作异常返回False
+        """
+        try:
+            self.session.query(model.Teams).filter_by(TEid=teid).delete()
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print e.message
+            return False

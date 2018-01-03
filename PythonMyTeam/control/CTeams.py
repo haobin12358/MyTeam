@@ -2,17 +2,27 @@
 #引用python类
 from flask import request
 import json
+import uuid
 
 #引用项目类
 from common.JudgeData import JudgeData
 from service.STeams import STeams
-from Config.Requests import system_error, param_miss
+from service.SPersonal import SPersonal
+from service.SInfor import SInfor
+from service.SStudents import SStudents
+from service.STeachers import STeachers
+from Config.Requests import system_error, param_miss, new_team_success
+from Config.Logs import WRITE_STUDENT_TEAM_ERROR, NEW_INVITATION
 
 #用于处理团队相关数据
 class CTeams():
     def __init__(self):
         self.steams = STeams()
         self.judgeData = JudgeData()#实例化
+        self.spersonal = SPersonal()
+        self.sinfor = SInfor()
+        self.sstudent = SStudents()
+        self.steacher = STeachers()
 
     # 展现团队列表，场景应用于团队信息和个人团队信息
     def teams_list(self):
@@ -22,9 +32,68 @@ class CTeams():
     def team_abo(self):
         return system_error
 
-    # 新建团队，入口在竞赛信息和团队板块的创建团队
+    # 新建团队（创建团队信息表和团队学生表的主要人员），入口在竞赛信息和团队板块的创建团队
     def new_team(self):
-        return system_error
+        args = request.args.to_dict() # 获取参数
+        print args
+        # 判断参数非空
+        if not args:
+            return param_miss
+        # 判断参数中含有Uid
+        if not self.judgeData.inData("Uid", args):
+            return param_miss
+
+        uid = args["Uid"]
+
+        data = request.data # 获取body体
+        # 判断body体非空
+        if data == {} or str(data) == "":
+            return param_miss
+        data = json.loads(data)
+
+        # 判断body体中含有必要参数
+        if not self.judgeData.inData("TEname", data) or not self.judgeData.inData("Cid", data) \
+            or not self.judgeData.inData("TEnum", data):
+            return param_miss
+
+        tename = data["TEname"]
+        cid = data["Cid"]
+        tenum = data["TEnum"]
+        teid = uuid.uuid4()
+
+        sid = self.spersonal.get_sid_by_uid(uid)
+
+        # 创建团队信息
+        add_team = self.steams.add_team(teid, tename, cid, 701, tenum)
+
+        if not add_team:
+            return system_error
+
+        # 写入团队创始人信息
+        add_team_student = self.steams.add_student_in_team(uuid.uuid4(), teid, sid, 1000, 1101)
+
+        if not add_team_student:
+            delete_team = self.steams.delete_team_by_teid(teid)
+            if delete_team:
+                print WRITE_STUDENT_TEAM_ERROR
+            return system_error
+
+        # 如果data中含有students的信息，那么写入团队成员信息，这个函数重新写
+        if self.judgeData.inData("Students", data):
+            for row in data["Students"]:
+                if self.judgeData.inData("Sid", row):
+                    add_team_student_list = self.steams.add_student_in_team(uuid.uuid4(), teid, row["Sid"], 1002, 1100)
+                    uid = self.sstudent.get_uid_by_sid(row["Sid"])
+                    add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid)  # 这里需要判断一下分步异常的问题
+
+        if self.judgeData.inData("Teachers", data):
+            for row in data["Teachers"]:
+                if self.judgeData.inData("Tid", row):
+                    add_team_teacher_list = self.steams.add_teacher_in_team(uuid.uuid4(), teid, row["Tid"], 1100)
+                    uid = self.steacher.get_uid_by_tid(row["Tid"])
+                    add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid) # 这里需要判断一下分步异常的问题
+
+        return new_team_success
 
     # 更新团队信息，入口在团队信息详情，可更新数据不包含竞赛信息，如更新竞赛信息，等同新建，并关闭该团队，同步该团队的全部信息
     def update_team(self):

@@ -204,3 +204,9 @@ search_teachers_abo_success = {
     "status": 200,
     "messages": "Search teacher abo success !"
 }
+
+# 创建团队成功
+new_team_success = {
+    "status": 200,
+    "messages": "Create team success !"
+}

@@ -80,8 +80,8 @@ class TStudent(Base):
     TSid = Column(String(64), primary_key=True)
     TEid = Column(String(64), nullable=False)
     Sid = Column(String(64), nullable=False)
-    TStype = Column(Integer, nullable=False)   # 成员类型   0创建人 1管理员 2其他成员
-    TSsubject = Column(Integer, nullable=False)  # 审批流程  0待审核 1已通过 2已拒绝 3已退出
+    TStype = Column(Integer, nullable=False)   # 成员类型   1000创建人 1001管理员 1002其他成员
+    TSsubject = Column(Integer, nullable=False)  # 审批流程  1100待审核 1101已通过 1102已拒绝 1103已退出
 
 # 团队教师关联表
 class TTeacher(Base):
@@ -101,6 +101,16 @@ class TTasks(Base):
     Sid = Column(String(64), nullable=False)  # 处理人
     Tkstatus = Column(Integer, nullable=False)  # 任务状态 0待处理 1已处理 2被驳回 3延期中 4已结束
     Tktime = Column(String(64),nullable=False)  # 创建时间  类型需要交流
+
+# 个人信息表
+class Perinfor(Base):
+    __tablename__ = "Perinfor"
+    Pid = Column(String(64), primary_key=True)
+    Uid = Column(String(64), nullable=False)
+    Pmessage = Column(Text, nullable=False) # 消息内容
+    Pstatus = Column(Integer, nullable=False) # 消息处理状态  1201已读 1200未读
+    Ptype = Column(Integer) # 消息类型 901邀请 902任务 903通知 904其他
+    Cid = Column(String(64))
 
 # 学生技能表
 class STechs(Base):
