@@ -53,9 +53,6 @@
     },
     data() {
       return {
-        isInfoToggle:true,//默认展开
-        isTeamToggle:true,//默认展开
-        isMypProfileToggle:true,//默认展开
         invTime: 2000,
         slides: [
           {
