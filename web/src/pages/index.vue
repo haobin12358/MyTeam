@@ -2,16 +2,13 @@
   <div class="index-wrap">
     <div class="index-left">
       <div class="index-left-block">
-        <h2>常用项</h2>
-        <template v-for="product in productList">
-          <h3>{{ product.title}}</h3>
-          <ul>
-            <li v-for="item in product.list" class="mt10">
-              <a :href="item.url">{{ item.name }}</a>
-              <span v-if="item.hot" class="hot-tag">HOT</span>
+        <template v-for="(menu, index) in menuList">
+          <h3 class="menuTitle" @click="toggle(index)">{{menu.title}}</h3>
+          <ul v-show="menu.isToggle">
+            <li v-for="item in menu.list" class="mt10">
+              <a :href="item.url">{{ item }}</a>
             </li>
           </ul>
-          <div v-if="!product.last" class="hr"></div>
         </template>
       </div>
       <div class="index-left-block lastest-news">
@@ -43,11 +40,16 @@
     </div>
   </div>
 </template>
-<script type="text/ecmascript-6">
+<script  type="text/ecmascript-6">
   import slideShow from '../components/slideShow'
   export default {
     components:{
       slideShow
+    },
+    methods:{
+      toggle:function(index){
+        this.menuList[index].isToggle=!(this.menuList[index].isToggle)
+       }
     },
     data() {
       return {
@@ -155,11 +157,34 @@
             toKey: 'studyPlan',
           }
         ],
+        menuList:[
+          {
+            name:"Info",
+            title:"信息",
+            list: ["个人信息","学生信息","教师信息","竞赛信息"],
+            isToggle:true
+          },
+          {
+            name:"Team",
+            title:"团队",
+            list:["团队查询","创建团队"],
+            isToggle:true
+          },
+          {
+            name:"MyProfile",
+            title:"我的",
+            list:  ["我创建的团队","我参与的团队"],
+            isToggle:true
+          }
+        ]
       }
     }
   }
 </script>
 <style scoped>
+  .menuTitle{
+    background-color: #b2c5d5;
+  }
   .mt10{
     margin-top:10px;
   }
