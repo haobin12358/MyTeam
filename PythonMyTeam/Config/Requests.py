@@ -210,3 +210,9 @@ new_team_success = {
     "status": 200,
     "messages": "Create team success !"
 }
+
+# 更新团队成功
+update_team_success = {
+    "status": 200,
+    "messages": "Update team success !"
+}

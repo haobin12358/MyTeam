@@ -144,3 +144,24 @@ class STeams():
             self.session.rollback()
             print e.message
             return False
+
+    # 根据学生id，获取学生在团队中的身份
+    def get_tstype_by_sid(self, sid):
+        return self.session.query(model.TStudent.TStype).filter_by(Sid=sid).scalar()
+
+    # 更新团队信息表
+    def update_teams_by_teid(self, teid, update_team_item):
+        """
+        :param teid:
+        :param update_team_item:
+        :return: 更新数据正常返回True，数据库操作异常返回False
+        """
+        try:
+            self.session.query(model.Teams).filter_by(TEid=teid).update(update_team_item)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print e.message
+            return False

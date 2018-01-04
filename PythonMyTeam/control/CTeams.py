@@ -11,7 +11,8 @@ from service.SPersonal import SPersonal
 from service.SInfor import SInfor
 from service.SStudents import SStudents
 from service.STeachers import STeachers
-from Config.Requests import system_error, param_miss, new_team_success
+from service.SCompetitions import SCompetitions
+from Config.Requests import system_error, param_miss, new_team_success, none_permissions, update_team_success
 from Config.Logs import WRITE_STUDENT_TEAM_ERROR, NEW_INVITATION
 
 #用于处理团队相关数据
@@ -23,6 +24,7 @@ class CTeams():
         self.sinfor = SInfor()
         self.sstudent = SStudents()
         self.steacher = STeachers()
+        self.scompetitions = SCompetitions()
 
     # 展现团队列表，场景应用于团队信息和个人团队信息
     def teams_list(self):
@@ -78,7 +80,7 @@ class CTeams():
                 print WRITE_STUDENT_TEAM_ERROR
             return system_error
 
-        # 如果data中含有students的信息，那么写入团队成员信息，这个函数重新写
+        # 如果data中含有students的信息，那么写入团队成员信息，这个函数重构
         if self.judgeData.inData("Students", data):
             for row in data["Students"]:
                 if self.judgeData.inData("Sid", row):
@@ -95,9 +97,53 @@ class CTeams():
 
         return new_team_success
 
-    # 更新团队信息，入口在团队信息详情，可更新数据不包含竞赛信息，如更新竞赛信息，等同新建，并关闭该团队，同步该团队的全部信息
+    # 更新团队信息，入口在团队信息详情，可更新数据不包含竞赛信息的大部分内容，如更新竞赛信息，只能更新竞赛的等级
     def update_team(self):
-        return system_error
+        update_team_item = {}  # 新建空的json变量
+
+        args = request.args.to_dict() # 获取参数
+        print args
+        # 判断参数非空
+        if not args:
+            return param_miss
+        # 判断参数中含有Uid
+        if not self.judgeData.inData("Uid", args):
+            return param_miss
+
+        uid = args["Uid"]
+        sid = self.spersonal.get_sid_by_uid(uid) # 获取sid
+        tstype = self.steams.get_tstype_by_sid(sid) # 获取成员身份判断权限
+
+        # 不是团队创建者或管理员，提醒没有权限
+        if tstype != 1000 or tstype != 1001:
+            return none_permissions
+
+        # 如果具有权限，继续执行
+        data = request.data # 获取body体
+        # 判断body体非空
+        if data == {} or str(data) == "":
+            return param_miss
+        data = json.loads(data)
+
+        # 判断body体中含有必要参数
+        if not self.judgeData.inData("TEname", data) or not self.judgeData.inData("Cname", data) \
+            or not self.judgeData.inData("TEnum", data) or not self.judgeData.inData("Cno", data) \
+                or not self.judgeData.inData("Clevel", data) or not self.judgeData.inData("TEid", data):
+            return param_miss
+
+        cid = self.scompetitions.get_cid_by_cname_cno_clevel(data["Cname"], data["Cno"], data["Clevel"])
+        teid = data["TEid"]
+        update_team_item["TEid"] = data["TEid"]
+        update_team_item["TEname"] = data["TEname"]
+        update_team_item["Cid"] = cid
+        update_team_item["TEuse"] = 701 # 被废弃的团队是不可修改的，所以可修改的状态默认为701
+        update_team_item["TEnum"] = data["TEnum"]
+        # 更新团队表
+        response_of_update = self.steams.update_teams_by_teid(teid, update_team_item)
+
+        if not response_of_update:
+            return system_error
+        return update_team_success
 
     # 邀请学生与申请加入团队，1.入口在学生信息和团队详情中2.入口在团队信息列表中
     def add_student(self):

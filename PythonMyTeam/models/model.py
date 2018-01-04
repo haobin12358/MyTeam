@@ -71,7 +71,7 @@ class Teams(Base):
     TEid = Column(String(64), primary_key=True)
     TEname = Column(String(256), nullable=False)   # 团队名称
     Cid = Column(String(64), nullable=False)
-    TEuse = Column(Integer, nullable=False)   # 是否可用
+    TEuse = Column(Integer, nullable=False)   # 是否可用701可用，702不可用
     TEnum = Column(Integer, nullable=False)   # 团队人数限制，增加判断竞赛人数功能，默认为竞赛人数最大值，无最大值时显示0
 
 # 团队学生关联表

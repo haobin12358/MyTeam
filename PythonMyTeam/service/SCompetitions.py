@@ -88,6 +88,12 @@ class SCompetitions():
             .filter_by(Cid=cid).scalar()
         return competitions_name_and_no
 
+    # 根据竞赛名称、届次、等级获取竞赛id
+    def get_cid_by_cname_cno_clevel(self, cname, cno, clevel):
+        cid = self.session.query(model.Competitions.Cid).filter_by(Cname=cname).filter_by(Cno=cno)\
+            .filter_by(Clevel=clevel).scalar()
+        return cid
+
 if __name__ == '__main__':
     scompetitions = SCompetitions()
     a = scompetitions.get_competitions_abo_by_cid("6e120ed9-0334-4780-ac77-68c7b2832a4e")
