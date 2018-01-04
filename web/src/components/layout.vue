@@ -2,7 +2,7 @@
 <div>
   <div class="app-header">
     <div class="header-left">
-      <div class="header-logo"></div>
+      <div class="header-title">竞赛系统</div>
     </div>
     <div class="header-right">
       <span @click="showAboutDialog">登录</span>|
