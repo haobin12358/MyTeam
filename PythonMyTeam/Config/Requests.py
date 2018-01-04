@@ -216,3 +216,9 @@ update_team_success = {
     "status": 200,
     "messages": "Update team success !"
 }
+
+# 已成功发送邀请
+invent_success = {
+    "status": 200,
+    "messages": "The invitation has been successfully sent !"
+}

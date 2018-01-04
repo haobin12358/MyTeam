@@ -12,8 +12,9 @@ from service.SInfor import SInfor
 from service.SStudents import SStudents
 from service.STeachers import STeachers
 from service.SCompetitions import SCompetitions
-from Config.Requests import system_error, param_miss, new_team_success, none_permissions, update_team_success
-from Config.Logs import WRITE_STUDENT_TEAM_ERROR, NEW_INVITATION
+from Config.Requests import system_error, param_miss, new_team_success, none_permissions, update_team_success, \
+    invent_success
+from Config.Logs import WRITE_STUDENT_TEAM_ERROR, NEW_INVITATION, NEW_REQUEST
 
 #用于处理团队相关数据
 class CTeams():
@@ -145,13 +146,82 @@ class CTeams():
             return system_error
         return update_team_success
 
-    # 邀请学生与申请加入团队，1.入口在学生信息和团队详情中2.入口在团队信息列表中
+    # 邀请学生与申请加入团队，1.入口在学生信息和团队详情中2.入口在团队信息列表中(邀请为0，申请为1，用instatus标记)
     def add_student(self):
-        return system_error
+        args = request.args.to_dict() # 获取参数
+        print args
+        # 判断参数非空
+        if not args:
+            return param_miss
+        # 判断参数中含有Uid
+        if not self.judgeData.inData("TEid", args) or not self.judgeData.inData("Instatus", args):
+            return param_miss
+
+        teid = args["TEid"]
+        instatus = args["Instatus"]
+
+        data = request.data # 获取body体
+        # 判断body体非空
+        if data == {} or str(data) == "":
+            return param_miss
+        data = json.loads(data)
+
+        # 判断body体中含有必要参数
+        if not self.judgeData.inData("Sid", data):
+            return param_miss
+
+        sid = data["Sid"]
+        cid = self.steams.get_cid_by_teid(teid)
+
+        # 创建学生团队关联，创建通知信息
+        response_of_student_and_team = self.steams.add_student_in_team(uuid.uuid4(), teid, sid, 1002, 1100)
+        if instatus == 0:
+            uid = self.sstudent.get_uid_by_sid(sid)
+            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid)
+        else:
+            creator_sid = self.steams.get_sid_by_teid(teid)
+            uid = self.sstudent.get_student_use_by_sid(creator_sid)
+            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_REQUEST, 1200, 905, None)
+
+        if not response_of_student_and_team or not response_of_infor:
+            return system_error
+
+        return invent_success
 
     # 邀请教师，入口在教师信息和团队详情中
     def add_teacher(self):
-        return system_error
+        args = request.args.to_dict() # 获取参数
+        print args
+        # 判断参数非空
+        if not args:
+            return param_miss
+        # 判断参数中含有Uid
+        if not self.judgeData.inData("TEid", args):
+            return param_miss
+
+        teid = args["TEid"]
+
+        data = request.data # 获取body体
+        # 判断body体非空
+        if data == {} or str(data) == "":
+            return param_miss
+        data = json.loads(data)
+
+        # 判断body体中含有必要参数
+        if not self.judgeData.inData("Tid", data):
+            return param_miss
+
+        tid = data["Tid"]
+        uid = self.steacher.get_uid_by_tid(tid)
+        cid = self.steams.get_cid_by_teid(teid)
+
+        # 创建学生团队关联，创建通知信息
+        response_of_student_and_team = self.steams.add_teacher_in_team(uuid.uuid4(), teid, tid, 1100)
+        response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid)
+
+        if not response_of_student_and_team or not response_of_infor:
+            return system_error
+        return invent_success
 
     # 学生同意加入、通过学生申请，入口在我的信息中
     def sub_student(self):

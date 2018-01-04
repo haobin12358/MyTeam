@@ -109,7 +109,7 @@ class Perinfor(Base):
     Uid = Column(String(64), nullable=False)
     Pmessage = Column(Text, nullable=False) # 消息内容
     Pstatus = Column(Integer, nullable=False) # 消息处理状态  1201已读 1200未读
-    Ptype = Column(Integer) # 消息类型 901邀请 902任务 903通知 904其他
+    Ptype = Column(Integer) # 消息类型 901邀请 902任务 903通知 904其他 905申请
     Cid = Column(String(64))
 
 # 学生技能表

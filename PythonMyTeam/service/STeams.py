@@ -165,3 +165,11 @@ class STeams():
             self.session.rollback()
             print e.message
             return False
+
+    # 根据团队id获取竞赛id
+    def get_cid_by_teid(self, teid):
+        return self.session.query(model.Teams.Cid).filter_by(TEid=teid).scalar()
+
+    # 获取团队的创建者sid
+    def get_sid_by_teid(self, teid):
+        return self.session.query(model.TStudent.Sid).filter_by(TEid=teid).filter_by(TStype=1000).scalar()
