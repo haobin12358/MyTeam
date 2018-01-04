@@ -177,11 +177,11 @@ class CTeams():
         response_of_student_and_team = self.steams.add_student_in_team(uuid.uuid4(), teid, sid, 1002, 1100)
         if instatus == 0:
             uid = self.sstudent.get_uid_by_sid(sid)
-            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid)
+            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid, teid, None)
         else:
             creator_sid = self.steams.get_sid_by_teid(teid)
             uid = self.sstudent.get_student_use_by_sid(creator_sid)
-            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_REQUEST, 1200, 905, None)
+            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_REQUEST, 1200, 905, None, None, sid)  # 逻辑有点乱
 
         if not response_of_student_and_team or not response_of_infor:
             return system_error
@@ -217,7 +217,7 @@ class CTeams():
 
         # 创建学生团队关联，创建通知信息
         response_of_student_and_team = self.steams.add_teacher_in_team(uuid.uuid4(), teid, tid, 1100)
-        response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid)
+        response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid, teid, None)
 
         if not response_of_student_and_team or not response_of_infor:
             return system_error
@@ -225,6 +225,32 @@ class CTeams():
 
     # 学生同意加入、通过学生申请，入口在我的信息中
     def sub_student(self):
+        args = request.args.to_dict() # 获取参数
+        print args
+        # 判断参数非空
+        if not args:
+            return param_miss
+        # 判断参数中含有Uid
+        if not self.judgeData.inData("Uid", args):
+            return param_miss
+
+        uid = args["Uid"]
+
+        data = request.data # 获取body体
+        # 判断body体非空
+        if data == {} or str(data) == "":
+            return param_miss
+        data = json.loads(data)
+
+        # 判断body体中含有必要参数
+        if not self.judgeData.inData("TEid", data):
+            return param_miss
+
+        teid = data["TEid"]
+
+        # 根据团队id获取当前团队成员的数量，与团队最大数量进行对比，超过则加入失败
+        
+
         return system_error
 
     # 教师同意加入，入口在我的信息中

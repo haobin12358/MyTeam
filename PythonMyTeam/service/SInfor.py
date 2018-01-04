@@ -15,7 +15,7 @@ class SInfor():
             self.status = False
 
     # 创建信息
-    def add_infor(self, pid, uid, pmessage, pstatus, ptype, cid):
+    def add_infor(self, pid, uid, pmessage, pstatus, ptype, cid, teid, sid):
         """
         :param pid:
         :param uid:
@@ -23,6 +23,7 @@ class SInfor():
         :param pstatus:
         :param ptype:
         :param cid:
+        :param teid:
         :return: 插入数据正常返回True，数据库操作异常返回False
         """
         try:
@@ -33,6 +34,8 @@ class SInfor():
             new_infor.Pstatus = pstatus
             new_infor.Ptype = ptype
             new_infor.Cid = cid
+            new_infor.TEid = teid
+            new_infor.Sid = sid
 
             self.session.add(new_infor)
             self.session.commit()
