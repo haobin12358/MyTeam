@@ -50,3 +50,7 @@ class SStudents():
     # 根据学生id获取用户id
     def get_uid_by_sid(self, sid):
         return self.session.query(model.Students.Uid).filter_by(Sid = sid).scalar()
+
+    # 根据学生id获取学生姓名
+    def get_sname_by_sid(self, sid):
+        return self.session.query(model.Students.Sname).filter_by(Sid = sid).scalar()

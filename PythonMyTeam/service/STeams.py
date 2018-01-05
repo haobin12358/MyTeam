@@ -3,6 +3,7 @@
 from models import model
 import DBSession
 from common.TransformToList import trans_params
+from Config.SQLs import SQL_FOR_SELECT_COUNT_IN_TEAM, SQL_FOR_SELECT_TCOUNT_IN_TEAM
 
 # 操作teams表的相关方法
 class STeams():
@@ -173,3 +174,65 @@ class STeams():
     # 获取团队的创建者sid
     def get_sid_by_teid(self, teid):
         return self.session.query(model.TStudent.Sid).filter_by(TEid=teid).filter_by(TStype=1000).scalar()
+
+    # 根据团队id获取团队当前的学生数目
+    def get_count_by_teid(self, teid):
+        sql = SQL_FOR_SELECT_COUNT_IN_TEAM.format(teid)
+        print sql
+        return self.session.execute(sql)
+
+    # 根据团队id获取团队成员数目
+    def get_tenum_by_teid(self, teid):
+        return self.session.query(model.Teams.TEnum).filter_by(TEid=teid).scalar()
+
+    # 根据团队id获取团队当前的学生数目
+    def get_tcount_by_teid(self, teid):
+        sql = SQL_FOR_SELECT_TCOUNT_IN_TEAM.format(teid)
+        print sql
+        return self.session.execute(sql)
+
+    # 根据团队id和学生id获取tsid
+    def get_tsid_by_teid_sid(self, teid, sid):
+        return self.session.query(model.TStudent.TSid).filter_by(TEid=teid).filter_by(Sid=sid).scalar()
+
+    # 根据团队id和教师id获取ttid
+    def get_ttid_by_teid_tid(self, teid, tid):
+        return self.session.query(model.TTeacher.TTid).filter_by(TEid=teid).filter_by(Tid=tid).scalar()
+
+    # 根据tsid更新tstudent表
+    def update_tstudent_by_tsid(self, tsid, tstudent_item):
+        """
+        :param tsid:
+        :param tstudent_item:
+        :return: 更新数据正常返回True，数据库操作异常返回False
+        """
+        try:
+            self.session.query(model.TStudent).filter_by(TSid=tsid).update(tstudent_item)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print e.message
+            return False
+
+    # 根据ttid更新tteacher表
+    def update_tteacher_by_ttid(self, ttid, tteacher_item):
+        """
+        :param ttid:
+        :param tteacher_item:
+        :return: 更新数据正常返回True，数据库操作异常返回False
+        """
+        try:
+            self.session.query(model.TTeacher).filter_by(TTid=ttid).update(tteacher_item)
+            self.session.commit()
+
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print e.message
+            return False
+
+    # 根据团队id获取团队名称
+    def get_tename_by_teid(self, teid):
+        return self.session.query(model.Teams.TEname).filter_by(TEid=teid).scalar()

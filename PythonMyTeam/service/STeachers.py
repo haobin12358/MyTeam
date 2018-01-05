@@ -43,3 +43,7 @@ class STeachers():
     # 根据教师id获取用户id
     def get_uid_by_tid(self, tid):
         return self.session.query(model.Teachers.Uid).filter_by(Tid = tid).scalar()
+
+    # 根据教师id获取教师姓名
+    def get_tname_by_tid(self, tid):
+        return self.session.query(model.Teachers.Tname).filter_by(Tid = tid).scalar()

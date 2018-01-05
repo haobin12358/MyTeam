@@ -222,3 +222,16 @@ invent_success = {
     "status": 200,
     "messages": "The invitation has been successfully sent !"
 }
+
+# 团队人数已满
+team_is_full = {
+    "status": 405,
+    "status_code": 405209,
+    "messages": "The number of teams is full !"
+}
+
+# 成功加入团队
+join_team_success = {
+    "status": 200,
+    "messages": "Join the team successfully !"
+}
