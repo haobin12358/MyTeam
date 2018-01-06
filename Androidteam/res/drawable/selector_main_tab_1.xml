@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_checked="true" android:drawable="@drawable/ic_main_tab_1_p"></item>
+	<item android:drawable="@drawable/ic_main_tab_1"></item>
+	
+	<!-- 点击样式变换，下同 -->
+</selector>

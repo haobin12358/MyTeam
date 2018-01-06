@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 颜色样式表 -->
+<resources>
+    <color name="cLightBlue">#f1faff</color>
+    <color name="cText">#4a4a4a</color>
+    <color name="cWhite">#ffffff</color>
+    <color name="cToolLine">#C8E8FF</color>
+    <color name="cBlackBlue">#e0007bc7</color>
+    <color name="cBlack">#000000</color>
+    <color name="cTest">#542587</color>
+    <color name="cHint">#cccccc</color>
+    <color name="cTranslucent">#50000000</color>
+    <color name="cBlue">#007AFF</color>
+    <color name="cSettingsShadow">#0F000000</color>
+    <color name="cGrayText">#9e9e9e</color>
+    <color name="cLine">#e2e2e2</color>
+    <color name="cGroup">#B8E6FA</color>
+    <color name="cTitleBar">#7766ccff</color>
+    <color name="cGroupGray">#F3F3F3</color>
+    <color name="bGray">#0fe0ffff</color>
+    <color name="cGray">#dcdcdc</color>
+    <color name="cRed">#FF0000</color>
+    <color name="cRedBG">#990000</color>
+</resources>

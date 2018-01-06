@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 尺寸样式表 -->
+<resources>
+    <dimen name="textSize_larger">20sp</dimen>
+    <dimen name="textSize_large">18sp</dimen>
+    <dimen name="textSize_normal">16sp</dimen>
+    <dimen name="textSize_small">14sp</dimen>
+    <dimen name="textSize_smaller">12sp</dimen>
+    <dimen name="textSize_smallerr">8sp</dimen>
+
+    <dimen name="space_frame_larger">35dip</dimen>
+    <dimen name="space_frame_large">30dip</dimen>
+    <dimen name="space_frame_middle">25dip</dimen>
+    <dimen name="space_frame_small">20dip</dimen>
+    <dimen name="space_frame_smaller">15dip</dimen>
+    <dimen name="space_frame">10dip</dimen>
+    <dimen name="space_frame_smallest">5dip</dimen>
+    <dimen name="space_view">5dip</dimen>
+    <dimen name="space_search">3dip</dimen>
+    
+    <dimen name="titlebar_height">45dip</dimen>
+    
+    
+    <dimen name="space_frame_login">20dip</dimen>
+    
+    
+    <dimen name="settings_linearlayout_height">30dp</dimen>
+    <dimen name="settings_linearlayout_width">240dp</dimen>
+    <dimen name="wo_space_height">20dp</dimen>
+    
+    <dimen name="img">60sp</dimen>
+    <dimen name="img_smaller">70sp</dimen>
+    <dimen name="img_smalle">75sp</dimen>
+    <dimen name="img_small">80sp</dimen>
+    <dimen name="img_middle">90sp</dimen>
+    <dimen name="img_normal">100sp</dimen>
+    <dimen name="img_large">110sp</dimen>
+    <dimen name="img_larger">120sp</dimen>
+    
+    
+    <dimen name="user_img">50sp</dimen>
+    <dimen name="user_name">50dp</dimen>
+    <dimen name="user_other">80dp</dimen> 
+    <dimen name="wo_margin_top">12dp</dimen>   
+    <dimen name="wo_margin_left">20dp</dimen>
+    <dimen name="yong_hu_zhong_xin_width">240dp</dimen>
+    
+</resources>

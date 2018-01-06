@@ -1,0 +1,74 @@
+<resources>
+
+    <string name="app_name">123</string>
+    
+    <string name="network_unused">请检查网络</string>
+    
+    <string name="que_ding">确定</string>
+    
+    <!-- 主activity -->
+    <string name="gou_wu">购物</string>
+    <string name="ding_dan">订单</string>
+    <string name="quan_zi">圈子</string>
+    <string name="ge_ren_zhong_xin">个人中心</string>
+    
+    <string name="zi_xun_xiang_qing">资讯详情</string>
+    <string name="ce_shi">测试</string>
+    
+    <!-- 商品详情页 -->
+    <string name="fa_bu_ren">发布人：</string>
+    <string name="fa_bu_ri_qi">发布日期：</string>
+    <string name="shang_pin_wei_zhi">商品位置：</string>
+    <string name="gou_mai">购买</string>
+    <string name="shang_pin_xiang_qing">商品详情</string>
+    <string name="biao_ti">标题</string>
+    
+    
+    <!-- 资讯评论listitem -->
+    <string name="yong_hu_ming">用户名</string>
+    <string name="xiang_xi_nei_rong">详细内容</string>
+    
+    <!-- 商品list使用字符 -->
+    <string name="shang_pin_ming_cheng">商品名称</string>
+    <string name="jia_ge">价格</string>
+    <string name="yi_shou_shu_mu">已售数目:</string>
+    <string name="jia_ge_fu_hao">￥</string>
+    
+    <!-- 圈子list使用内容 -->
+    <string name="re_men_ping_lun">热门评论：</string>
+    <string name="ping_lun_nei_rong">评论内容</string>
+    <string name="dian_zan_shu">点赞数</string>
+    
+    <!-- 评论alert -->
+    <string name="ti_jiao_ping_lun">提交评论</string>
+    <string name="ti_jiao">提交</string>
+    <string name="qu_xiao">取消</string>
+    <string name="fa_bu_shi_jian">发布时间</string>
+    <string name="yong_hu_hui_fu">用户回复:</string>
+    <string name="ping_lun_shi_jian">评论时间</string>
+    
+    <!-- 订单list -->
+    <string name="shi_jian">时间</string>
+    <string name="zhuang_tai">状态</string>
+    
+    <!-- 用户中心 -->
+    <string name="yong_hu_zhong_xin">用户中心</string>
+    <string name="ping_lu_guan_li">评论管理</string>
+	<string name="wo_de_ding_dan">我的订单</string>
+	<string name="wo_de_idol">上下架商品</string>
+	<string name="lian_xi_wo_men">联系我们</string>
+	<string name="wo_de_quan_zi">我的圈子</string>
+	<string name="she_zhi">个人设置</string>
+	<string name="liu_lan_li_shi">浏览历史</string>
+	<!-- 登录 -->
+	<string name="wei_deng_lu">未登录</string>
+	<string name="dian_ji_deng_lu">点击登录</string>
+	
+	<string name="ping_lun">评论</string>
+	
+	<string name="guan_zhu_de_idol">上下架商品</string>
+	<string name="yong_hu_xin_xi_xiu_gai">用户信息修改</string>
+	<string name="zhang_hu_yu_an_quan">账户与安全</string>
+	<string name="tui_chu">退出</string>
+
+</resources>
