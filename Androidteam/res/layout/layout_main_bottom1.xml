@@ -5,9 +5,6 @@
     android:background="@color/cTitleBar"
     android:orientation="horizontal" >
     
-    <!-- button -->
-    <!-- 为什么layout_height不是fill_parent,如何确定的TextView的高度？ 根据内容物大小和间距-->
-
     <TextView
         android:id="@+id/bar_text1"
         style="@style/radio_bottom"
@@ -19,24 +16,7 @@
         android:gravity="center"
         android:text="@string/gou_wu"
         android:textColor="@color/cText" />
-
-    <!-- style指整体的修饰 -->
-    <!-- 空button做什么？ -->
-    <!-- drawableTop用来设置TextView中图片在文字上面 -->
-    <!-- android:gravity="center"容器内部的组件/文字居中显示 -->
-    <!-- android:layout_gravity="center"容器相对于父容器居中显示 -->
-    <TextView
-        android:id="@+id/bar_text2"
-        style="@style/radio_bottom"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:button="@null"
-        android:drawableTop="@drawable/selector_main_tab_2"
-        android:gravity="center"
-        android:text="@string/ding_dan"
-        android:textColor="@color/cText" />   
-    
+ 
     <RelativeLayout
         android:id="@+id/bar_text3_layout"
         android:layout_width="0dip"
@@ -65,8 +45,17 @@
            android:textColor="@color/cWhite" 
            android:text="*"/>
     </RelativeLayout>
-
-
     
+    <TextView
+        android:id="@+id/bar_text2"
+        style="@style/radio_bottom"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:button="@null"
+        android:drawableTop="@drawable/selector_main_tab_2"
+        android:gravity="center"
+        android:text="@string/ding_dan"
+        android:textColor="@color/cText" />
 
 </LinearLayout>
