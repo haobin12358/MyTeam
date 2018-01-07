@@ -46,10 +46,12 @@ class CUsers():
     def register(self):
 
         form = request.data #获取前端发送的body体
-        print str(form)
+        print request.values
+        #print str(form)
         #判断body体不为空
         if str(form) == "" or str(form) == "[]":
             return param_miss
+        print form
         form = json.loads(form)
 
         #判断必要参数存在

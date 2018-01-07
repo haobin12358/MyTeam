@@ -4,8 +4,6 @@
     
     <string name="network_unused">请检查网络</string>
     
-    <string name="que_ding">确定</string>
-    
     <!-- 主activity -->
     <string name="xin_xi">信息</string>
     <string name="tuan_dui">团队</string>
@@ -31,7 +29,6 @@
     
     
     <!-- 资讯评论listitem -->
-    <string name="yong_hu_ming">用户名</string>
     <string name="xiang_xi_nei_rong">详细内容</string>
     
     <!-- 商品list使用字符 -->
@@ -66,9 +63,6 @@
 	<string name="wo_de_quan_zi">我的圈子</string>
 	<string name="she_zhi">个人设置</string>
 	<string name="liu_lan_li_shi">浏览历史</string>
-	<!-- 登录 -->
-	<string name="wei_deng_lu">未登录</string>
-	<string name="dian_ji_deng_lu">点击登录</string>
 	
 	<string name="ping_lun">评论</string>
 	
@@ -76,5 +70,29 @@
 	<string name="yong_hu_xin_xi_xiu_gai">用户信息修改</string>
 	<string name="zhang_hu_yu_an_quan">账户与安全</string>
 	<string name="tui_chu">退出</string>
-
+	
+	<!-- 注册 -->
+	<string name="yong_hu_ming">用户名：</string>
+	<string name="mi_ma">密  码：</string>
+	<string name="wo_shi_xue_sheng">我是学生</string>
+	<string name="wo_shi_jiao_shi">我是教师</string>
+	<string name="zhu_ce">注册</string>
+	<string name="ti_xing">提醒</string>
+	<string name="qing_shu_ru_yong_hu_ming">请输入用户名</string>
+	<string name="qing_shu_ru_mi_ma">请输入密码</string>
+	<string name="qing_xuan_ze_lei_xing">请选择类型</string>
+	<string name="qing_tian_xie_xin_xi">请填写信息</string>
+	<string name="zhu_ce_cheng_gong">注册成功</string>
+	<string name="que_ding">确定</string>
+	<!-- 登录 -->
+	<string name="deng_lu">登录</string>
+	<string name="deng_lu_cheng_gong">登录成功</string>
+	<!-- 返回错误相关 -->
+	<string name="xi_tong_yi_chang">系统异常</string>
+	<string name="yong_hu_ming_chong_fu">用户名重复</string>
+	<string name="yong_hu_ming_bu_he_fa">用户名不合法</string>
+	<string name="mi_ma_bu_he_fa">密码不合法</string>
+	<string name="wei_zhi_cuo_wu">未知错误</string>
+	<string name="yong_hu_bu_cun_zai">用户不存在</string>
+	<string name="mi_ma_cuo_wu">密码错误</string>
 </resources>
