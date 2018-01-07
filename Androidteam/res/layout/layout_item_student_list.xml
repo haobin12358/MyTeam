@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/bGray" >
+
+    <TextView
+            android:id="@+id/tv_name"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/xing_ming"
+            android:gravity="center" />
+    <TextView
+            android:id="@+id/tv_school"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/xue_yuan"
+            android:gravity="center" />
+    <TextView
+            android:id="@+id/tv_grade"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/nian_ji"
+            android:gravity="center" />
+</LinearLayout>

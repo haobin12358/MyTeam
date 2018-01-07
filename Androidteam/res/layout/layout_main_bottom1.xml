@@ -14,7 +14,7 @@
         android:button="@null"
         android:drawableTop="@drawable/selector_main_tab_1"
         android:gravity="center"
-        android:text="@string/gou_wu"
+        android:text="@string/xin_xi"
         android:textColor="@color/cText" />
  
     <RelativeLayout
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:drawableTop="@drawable/selector_main_tab_3"
-            android:text="@string/quan_zi"
+            android:text="@string/wo_de_xin_xi"
             android:textColor="@color/cText" />
 
         <TextView
@@ -55,7 +55,7 @@
         android:button="@null"
         android:drawableTop="@drawable/selector_main_tab_2"
         android:gravity="center"
-        android:text="@string/ding_dan"
+        android:text="@string/tuan_dui"
         android:textColor="@color/cText" />
 
 </LinearLayout>

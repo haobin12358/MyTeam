@@ -7,14 +7,20 @@
     <string name="que_ding">确定</string>
     
     <!-- 主activity -->
-    <string name="gou_wu">购物</string>
-    <string name="ding_dan">订单</string>
-    <string name="quan_zi">圈子</string>
+    <string name="xin_xi">信息</string>
+    <string name="tuan_dui">团队</string>
+    <string name="wo_de_xin_xi">我的信息</string>
     <string name="ge_ren_zhong_xin">个人中心</string>
     
     <string name="zi_xun_xiang_qing">资讯详情</string>
     <string name="ce_shi">测试</string>
-    
+
+    <!-- 学生信息查询页-->
+    <string name="xing_ming">姓名</string>
+    <string name="xue_yuan">学院</string>
+    <string name="nian_ji">年级</string>
+    <string name="cha_xun">查询</string>
+    <string name="zhi">-</string>
     <!-- 商品详情页 -->
     <string name="fa_bu_ren">发布人：</string>
     <string name="fa_bu_ri_qi">发布日期：</string>
