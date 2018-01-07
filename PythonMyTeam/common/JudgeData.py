@@ -18,11 +18,3 @@ class JudgeData():
         except Exception as e:
             print e.message
             return -1, -1
-
-
-
-
-
-
-
-

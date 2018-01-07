@@ -80,3 +80,53 @@ Competitions_list = [
         "Cabo": "测试竞赛信息专用"
     }
 ]
+
+Teachers_list = [
+    {
+        "Tname": "杭州",
+        "Tno": "0001",
+        "Ttel": "13588046135",
+        "Tuniversity": "hdu",
+        "Tschool": "Management School",
+        "Ttime": 1
+    },
+    {
+        "Tname": "杭州",
+        "Tno": "0001",
+        "Ttel": "13588046135",
+        "Tuniversity": "第三代大学",
+        "Tschool": "萌不死你",
+        "Ttime": 1
+    },
+    {
+        "Tname": "测试1",
+        "Tno": "0003",
+        "Ttel": "13588046135",
+        "Tuniversity": "杭州电子科技大学",
+        "Tschool": "Management School",
+        "Ttime": 1
+    },
+    {
+        "Tname": "测试2",
+        "Tno": "0002",
+        "Ttel": "13588046135",
+        "Tuniversity": "欠收拾大学",
+        "Tschool": "打不死你",
+        "Ttime": 1
+    },
+    {
+        "Tname": "测试3",
+        "Tno": "0005",
+        "Ttel": "13588046135",
+        "Tuniversity": "肥嘟嘟大学",
+        "Tschool": "吃不死你",
+        "Ttime": 1
+    },
+    {
+        "Tname": "测试4",
+        "Tno": "0004",
+        "Ttel": "13588046135",
+        "Tuniversity": "浙江大学",
+        "Tschool": "理想学院HSS",
+        "Ttime": 1
+    }]

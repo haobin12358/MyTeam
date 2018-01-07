@@ -22,9 +22,11 @@ class CTeachers():
         if not self.steachers.status:
             return system_error
         args = request.args.to_dict()
+
+        params = {}
         # 判断是否含有参数
         if not args:
-            search_teachers_list_success["teacher_list"] = self.get_teachers_list()
+            search_teachers_list_success["teacher_list"] = self.get_teachers_list(**params)
             return search_teachers_list_success
         try:
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回-1
