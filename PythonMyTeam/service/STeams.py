@@ -146,10 +146,6 @@ class STeams():
             print e.message
             return False
 
-    # 根据学生id，获取学生在团队中的身份
-    def get_tstype_by_sid(self, sid):
-        return self.session.query(model.TStudent.TStype).filter_by(Sid=sid).scalar()
-
     # 更新团队信息表
     def update_teams_by_teid(self, teid, update_team_item):
         """
@@ -236,3 +232,7 @@ class STeams():
     # 根据团队id获取团队名称
     def get_tename_by_teid(self, teid):
         return self.session.query(model.Teams.TEname).filter_by(TEid=teid).scalar()
+
+    # 根据团队id和学生id获取成员类型
+    def get_tstype_by_teid_sid(self, teid, sid):
+        return self.session.query(model.TStudent.TStype).filter_by(TEid=teid).filter_by(Sid=sid).scalar()

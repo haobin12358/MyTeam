@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <FrameLayout
+        android:id="@+id/fl_fragment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <!-- 间隔view -->
+    <!-- view对齐 -->
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/cToolLine" />
+    
+    <!-- 调用已经写好的button -->
+
+    <include layout="@layout/layout_main_bottom1" />
+    
+
+</LinearLayout>

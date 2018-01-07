@@ -1,10 +1,10 @@
 # *- coding:utf8 *-
-#引用python类
+# 引用python类
 from flask import request
 import json
 import uuid
 
-#引用项目类
+# 引用项目类
 from common.JudgeData import JudgeData
 from service.STeams import STeams
 from service.SPersonal import SPersonal
@@ -13,11 +13,11 @@ from service.SStudents import SStudents
 from service.STeachers import STeachers
 from service.SCompetitions import SCompetitions
 from Config.Requests import system_error, param_miss, new_team_success, none_permissions, update_team_success, \
-    invent_success, team_is_full, join_team_success
+    invent_success, team_is_full, join_team_success, delete_team_success
 from Config.Logs import WRITE_STUDENT_TEAM_ERROR, NEW_INVITATION, NEW_REQUEST, JOIN_TEAM_SUCCESS,\
     TEACHER_JOIN_TEAM_SUCCESS
 
-#用于处理团队相关数据
+# 用于处理团队相关数据
 class CTeams():
     def __init__(self):
         self.steams = STeams()
@@ -114,13 +114,7 @@ class CTeams():
 
         uid = args["Uid"]
         sid = self.spersonal.get_sid_by_uid(uid) # 获取sid
-        tstype = self.steams.get_tstype_by_sid(sid) # 获取成员身份判断权限
 
-        # 不是团队创建者或管理员，提醒没有权限
-        if tstype != 1000 or tstype != 1001:
-            return none_permissions
-
-        # 如果具有权限，继续执行
         data = request.data # 获取body体
         # 判断body体非空
         if data == {} or str(data) == "":
@@ -135,6 +129,13 @@ class CTeams():
 
         cid = self.scompetitions.get_cid_by_cname_cno_clevel(data["Cname"], data["Cno"], data["Clevel"])
         teid = data["TEid"]
+        tstype = self.steams.get_tstype_by_teid_sid(teid, sid)  # 获取成员身份判断权限
+
+        # 不是团队创建者或管理员，提醒没有权限
+        if tstype != 1000 or tstype != 1001:
+            return none_permissions
+
+        # 如果具有权限，继续执行
         update_team_item["TEid"] = data["TEid"]
         update_team_item["TEname"] = data["TEname"]
         update_team_item["Cid"] = cid
@@ -350,10 +351,75 @@ class CTeams():
 
     # 删除团队，入口在我的团队中，实际修改团队的可用属性
     def delete_team(self):
-        return system_error
+        args = request.args.to_dict()  # 获取参数
+        print args
+        # 判断参数非空
+        if not args:
+            return param_miss
+        # 判断参数中含有Uid
+        if not self.judgeData.inData("Uid", args):
+            return param_miss
+
+        uid = args["Uid"]
+
+        data = request.data  # 获取body体
+        # 判断body体非空
+        if data == {} or str(data) == "":
+            return param_miss
+        data = json.loads(data)
+
+        # 判断body体中含有必要参数
+        if not self.judgeData.inData("TEid", data):
+            return param_miss
+
+        teid = data["TEid"]
+        sid = self.spersonal.get_sid_by_uid(uid)
+        tstype = self.steams.get_tstype_by_teid_sid(teid, sid)
+
+        if tstype != 1000:
+            return none_permissions
+
+        teuse = 702
+
+        update_team_item = {}
+        update_team_item["TEid"] = teid
+        update_team_item["TEuse"] = teuse
+
+        response_of_update_team = self.steams.update_teams_by_teid(teid, update_team_item)
+
+        if not response_of_update_team:
+            return system_error
+        return delete_team_success
 
     # 删除团队学生，入口在团队详情中，实际修改团队学生表的属性
     def delete_student(self):
+        args = request.args.to_dict()  # 获取参数
+        print args
+        # 判断参数非空
+        if not args:
+            return param_miss
+        # 判断参数中含有Uid
+        if not self.judgeData.inData("Uid", args):
+            return param_miss
+
+        uid = args["Uid"]
+
+        data = request.data  # 获取body体
+        # 判断body体非空
+        if data == {} or str(data) == "":
+            return param_miss
+        data = json.loads(data)
+
+        # 判断body体中含有必要参数
+        if not self.judgeData.inData("TEid", data):
+            return param_miss
+
+        teid = data["TEid"]
+        sid = self.spersonal.get_sid_by_uid(uid)
+        tstype = self.steams.get_tstype_by_teid_sid(teid, sid)
+
+        if tstype != 1000 :
+            return none_permissions
         return system_error
 
     # 删除团队教师，入口在团队详情中，实际修改团队教师表的属性

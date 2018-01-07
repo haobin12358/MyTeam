@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cTitleBar"
+    android:orientation="horizontal" >
+    
+    <TextView
+        android:id="@+id/bar_text1"
+        style="@style/radio_bottom"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:button="@null"
+        android:drawableTop="@drawable/selector_main_tab_1"
+        android:gravity="center"
+        android:text="@string/gou_wu"
+        android:textColor="@color/cText" />
+ 
+    <RelativeLayout
+        android:id="@+id/bar_text3_layout"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/bar_text3"
+            style="@style/radio_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:drawableTop="@drawable/selector_main_tab_3"
+            android:text="@string/quan_zi"
+            android:textColor="@color/cText" />
+
+        <TextView
+            android:id="@+id/num_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/bar_text3"
+            android:background="@drawable/btn_red"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
+            android:visibility="gone"
+           android:textColor="@color/cWhite" 
+           android:text="*"/>
+    </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/bar_text2"
+        style="@style/radio_bottom"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:button="@null"
+        android:drawableTop="@drawable/selector_main_tab_2"
+        android:gravity="center"
+        android:text="@string/ding_dan"
+        android:textColor="@color/cText" />
+
+</LinearLayout>
