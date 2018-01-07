@@ -5,15 +5,18 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.etech.myteam.R;
 import com.etech.myteam.common.HttppostEntity;
+import com.etech.myteam.common.StringToJSON;
 import com.etech.myteam.global.AppConst;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -43,8 +46,7 @@ public class RegisterActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		init();
-		
-		btn1.setOnClickListener(register_button);
+		setListener();
 	}
 	
 	//注册所有组件
@@ -57,6 +59,11 @@ public class RegisterActivity extends Activity{
 		rb1 = (RadioButton)findViewById(R.id.rb_1);
 		rb2 = (RadioButton)findViewById(R.id.rb_2);
 		btn1 = (Button)findViewById(R.id.btn_1);
+	}
+	
+	//设置响应事件
+	private void setListener(){
+		btn1.setOnClickListener(register_button);
 	}
 	
 	//获取填写的内容
@@ -85,6 +92,7 @@ public class RegisterActivity extends Activity{
 		return true;
 	}
 	
+	//设置获取结果变量
 	private String result_register;
 	//封装数据传输
 	private void postText(){
@@ -101,7 +109,7 @@ public class RegisterActivity extends Activity{
 		HttppostEntity httppost = new HttppostEntity();
 		try {
 			result_register = httppost.doPost(obj, register_url);
-			Log.e("result_register",result_register);
+			Log.e("result",result_register);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.e("post", "error");
@@ -109,6 +117,7 @@ public class RegisterActivity extends Activity{
 		}
 	}
 	
+	//注册按键对应的响应内容
 	private OnClickListener register_button = new OnClickListener(){
 
 		@Override
@@ -120,8 +129,60 @@ public class RegisterActivity extends Activity{
 						postText();
 					}
 				}.start();
+				JSONObject json_obj = StringToJSON.toJSONObject(result_register);
+				if(json_obj.optInt("status") == 200){
+					new AlertDialog.Builder(RegisterActivity.this)
+						.setTitle(R.string.ti_xing)
+						.setMessage(R.string.zhu_ce_cheng_gong)
+						.setPositiveButton(R.string.que_ding, (android.content.DialogInterface.OnClickListener) positive)
+						.show();
+					
+				}else if(json_obj.optInt("status") == 404){
+					new AlertDialog.Builder(RegisterActivity.this)
+					.setTitle(R.string.ti_xing)
+					.setMessage(R.string.xi_tong_yi_chang)
+					.show();
+				}else if(json_obj.optInt("status") == 405){
+					//根据不同的返回码提示不同内容
+					if(json_obj.optInt("status_code") == 405100){
+						//用户名重复
+						new AlertDialog.Builder(RegisterActivity.this)
+							.setTitle(R.string.ti_xing)
+							.setMessage(R.string.yong_hu_ming_chong_fu)
+							.show();
+					}else if(json_obj.optInt("status_code") == 405101){
+						//密码不合法
+						new AlertDialog.Builder(RegisterActivity.this)
+							.setTitle(R.string.ti_xing)
+							.setMessage(R.string.mi_ma_bu_he_fa)
+							.show();
+					}else if(json_obj.optInt("status_code") == 405102){
+						//用户名不合法
+						new AlertDialog.Builder(RegisterActivity.this)
+							.setTitle(R.string.ti_xing)
+							.setMessage(R.string.yong_hu_ming_bu_he_fa)
+							.show();
+					}
+				}else{
+					new AlertDialog.Builder(RegisterActivity.this)
+						.setTitle(R.string.ti_xing)
+						.setMessage(R.string.wei_zhi_cuo_wu)
+						.show();
+				}
+				Log.e("register","ok");
 			}
-			Log.e("register","ok");
+		}
+	};
+	
+	//设置弹出框后的处理方式
+	private OnClickListener positive = new OnClickListener(){
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+			startActivity(intent);
+			finish();
 		}
 		
 	};

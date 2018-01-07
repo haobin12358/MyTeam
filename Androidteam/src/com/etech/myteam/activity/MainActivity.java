@@ -2,6 +2,9 @@ package com.etech.myteam.activity;
 
 
 import com.etech.myteam.R;
+import com.etech.myteam.fragment.InforFragment;
+import com.etech.myteam.fragment.PersonFragment;
+import com.etech.myteam.fragment.TeamFragment;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -14,35 +17,55 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity{
 	
-	private TextView tv1,tv2,tv3,tv4;
+	//定义组件变量
+	private TextView tv1, tv2, tv3;
+	//定义默认参数
 	private int index = 0;
+	private String Uid = null;
 	
+	//主线程+主要生命周期
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+		init();
+		setListener();
+		getBd();
+		SwitchFragment(index);
+	}
+	
+	//注册所有组件
+	private void init(){
 		tv1 = (TextView)findViewById(R.id.bar_text1);
-		tv1.setOnClickListener(tabClickListener);
 		tv2 = (TextView)findViewById(R.id.bar_text2);
-		tv2.setOnClickListener(tabClickListener);
 		tv3 = (TextView)findViewById(R.id.bar_text3);
+	}
+	
+	//设置响应事件
+	private void setListener(){
+		tv1.setOnClickListener(tabClickListener);
+		tv2.setOnClickListener(tabClickListener);
 		findViewById(R.id.bar_text3).setOnClickListener(tabClickListener);
+	}
+	
+	//获取从上一个界面传来的值
+	private void getBd(){
 		Intent intent = getIntent();
 		try{
 			Bundle bd = intent.getExtras();
 			int n = bd.getInt("index");
-			if (n == 0 || n == 1 || n == 2 || n == 3 || n == 4 || n == 5) {
+			if (n == 0 || n == 1 || n == 2) {
 				index = n;
 			}
+			Uid = bd.getString("Uid");
 		}catch (Exception e) {
 			e.printStackTrace();
 			Log.e("changeError", "false");
 			index = 0;
 		}
-		SwitchFragment(index);
 	}
 	
+	//底部导航栏响应事件
 	private OnClickListener tabClickListener = new OnClickListener(){
 
 		@Override
@@ -53,21 +76,18 @@ public class MainActivity extends Activity{
 				setTextColorChecked(tv1, 0);
 				setTextColorUnChecked(tv2, 1);
 				setTextColorUnChecked(tv3, 2);
-				setTextColorUnChecked(tv4, 3);
 				SwitchFragment(0);
 				break;
 			case R.id.bar_text2:
 				setTextColorUnChecked(tv1, 0);
 				setTextColorChecked(tv2, 1);
 				setTextColorUnChecked(tv3, 2);
-				setTextColorUnChecked(tv4, 3);
 				SwitchFragment(1);
 				break;
 			case R.id.bar_text3:
 				setTextColorUnChecked(tv1, 0);
 				setTextColorUnChecked(tv2, 1);
 				setTextColorChecked(tv3, 2);
-				setTextColorUnChecked(tv4, 3);
 				SwitchFragment(2);
 				break;
 			}
@@ -75,6 +95,7 @@ public class MainActivity extends Activity{
 		
 	};
 	
+	//底部导航栏颜色变化功能（点击后）
 	private void setTextColorChecked(TextView tv, int index){
 		tv.setTextColor(getResources().getColor(R.color.cBlue));
 		if(index == 0){
@@ -89,6 +110,7 @@ public class MainActivity extends Activity{
 		}
 	}
 	
+	//底部导航栏颜色变化功能（点击前）
 	private void setTextColorUnChecked(TextView tv, int index){
 		tv.setTextColor(getResources().getColor(R.color.cText));
 		if(index == 0){
@@ -103,59 +125,54 @@ public class MainActivity extends Activity{
 		}
 	}
 	
+	//定义fragment变量，实现具体界面功能
+	private InforFragment f1;
+	private TeamFragment f2;
+	private PersonFragment f3;
+	
+	//底部导航栏切换功能
 	private void SwitchFragment(int id){
 		FragmentTransaction transaction = this.getFragmentManager()
 				.beginTransaction();
 		switch(id){
 		case 0:
 			hideFragment(transaction);
-			/*
 			if(f1 == null){
-				f1 = new ShoppingFragment();
+				f1 = new InforFragment();
 				transaction.add(R.id.fl_fragment_layout, f1);
 			}
 			transaction.show(f1);
-			*/
 			break;
 		case 1:
 			hideFragment(transaction);
-			/*
 			if(f2 == null){
-				f2 = new SListFragment();
+				f2 = new TeamFragment();
 				transaction.add(R.id.fl_fragment_layout, f2);
 			}
 			transaction.show(f2);
-			*/
 			break;
 		case 2:
 			hideFragment(transaction);
-			/*
 			if(f3 == null){
-				f3 = new SqualFragment();
+				f3 = new PersonFragment();
 				transaction.add(R.id.fl_fragment_layout, f3);
 			}
 			transaction.show(f3);
-			*/
 			break;
 		}
 		transaction.commitAllowingStateLoss();
 	}
-	protected void onResume(){
-		super.onResume();
-	}
 
+	//隐藏fragment功能
 	private void hideFragment(FragmentTransaction transaction){
-		/*
+		
 		if(f1 != null){
 			transaction.hide(f1);
 		}if(f2 != null){
 			transaction.hide(f2);
 		}if(f3 != null){
 			transaction.hide(f3);
-		}if(f4 != null){
-			transaction.hide(f4);
 		}
-		*/
 	}
 
 
