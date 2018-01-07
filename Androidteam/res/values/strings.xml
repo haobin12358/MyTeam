@@ -25,7 +25,6 @@
     
     
     <!-- 资讯评论listitem -->
-    <string name="yong_hu_ming">用户名</string>
     <string name="xiang_xi_nei_rong">详细内容</string>
     
     <!-- 商品list使用字符 -->
@@ -70,5 +69,12 @@
 	<string name="yong_hu_xin_xi_xiu_gai">用户信息修改</string>
 	<string name="zhang_hu_yu_an_quan">账户与安全</string>
 	<string name="tui_chu">退出</string>
+	
+	<!-- 注册 -->
+	<string name="yong_hu_ming">用户名：</string>
+	<string name="mi_ma">密  码：</string>
+	<string name="wo_shi_xue_sheng">我是学生</string>
+	<string name="wo_shi_jiao_shi">我是教师</string>
+	<string name="zhu_ce">注册</string>
 
 </resources>
