@@ -1,20 +1,34 @@
 # *- coding:utf8 *-
 # 用于判断数组中是否含有某个参数
-
+from MyException import ParamsNotExitError
+from .get_count import get_count
 
 class JudgeData():
 
     def inData(self, param, jsonitem):
         return bool(param in jsonitem.keys())
 
-    def check_page_params(self, jsonitem):
-        # 参数成对存在，判断是否缺失
-        if not self.inData("page_num", jsonitem) or not self.inData("page_size", jsonitem):
-            return -1, -1
+    def check_gotta_params(self, jsonitem, gotta_params):
+        result_prams = filter(lambda x: x not in jsonitem, gotta_params)
+        if result_prams:
+            raise ParamsNotExitError(result_prams)
+
+    def check_page_params(self, jsonitem, model_name):
+        # 判断是否缺失 page_num page_size 必须存在
+
+        if "page_num" not in jsonitem or "page_size" not in jsonitem:
+            raise ParamsNotExitError()
         try:
             page_num = int(jsonitem.get("page_num"))
             page_size = int(jsonitem.get("page_size"))
-            return page_num if page_num >= 1 else 1, page_size if page_size >= 1 else 1
-        except Exception as e:
-            print e.message
-            return -1, -1
+            count_num = get_count(model_name)
+            page_num = page_num if page_num >= 1 else 1
+            page_size = page_size if page_size >= 1 else 1
+            if page_size * page_num > count_num:
+                page_num = count_num / page_size
+            page_num = page_num if page_num >= 1 else 1
+            page_size = page_size if page_size >= 1 else 1
+            return page_num, page_size
+        except ValueError as e:
+            e.message = "the pagenum = {0} pagesize = {1} is not right"
+            raise ValueError(e)

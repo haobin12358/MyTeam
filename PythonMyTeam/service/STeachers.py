@@ -3,8 +3,7 @@
 from common.TransformToList import trans_params
 from models import model
 from DBSession import db_session
-from common.AddFilter import add_filter
-
+from sqlalchemy import func
 
 # 操作teachers表的相关方法
 class STeachers():
@@ -22,11 +21,11 @@ class STeachers():
     #                                        model.Teachers.Ttime).all()
     #     return teachers_list
 
-    # 分页获取教师信息列表
-    def get_teachers_list_by_start_end(self, start_num, infor_num):
-        teachers_list = self.session.query(model.Teachers.Tid, model.Teachers.Tname, model.Teachers.Tschool,
-                                           model.Teachers.Ttime).offset(start_num).limit(infor_num).all()
-        return teachers_list
+    # # 分页获取教师信息列表
+    # def get_teachers_list_by_start_end(self, start_num, infor_num):
+    #     teachers_list = self.session.query(model.Teachers.Tid, model.Teachers.Tname, model.Teachers.Tschool,
+    #                                        model.Teachers.Ttime).offset(start_num).limit(infor_num).all()
+    #     return teachers_list
 
     # 根据tid获取教师信息详情
     def get_teacher_abo_by_tid(self, tid):
@@ -50,22 +49,11 @@ class STeachers():
         return self.session.query(model.Teachers.Tname).filter_by(Tid = tid).scalar()
 
     # 根据教师姓名或学院或任教时间查询教师
-    # todo 尝试封装为一个方法
-    def get_teachers_list(self, **kwargs):
-        start_num = kwargs.pop("start_num", 0)
-        page_size = kwargs.pop("page_size", 10)
+    def get_teachers_list(self, start_num, page_size, params):
         sql = self.session.query(model.Teachers.Tid, model.Teachers.Tname,
-                                 model.Teachers.Tschool, model.Teachers.Ttime)
-        sql = add_filter(kwargs, sql, "Teachers")
+                                 model.Teachers.Tschool, model.Teachers.Ttime).filter(*params)
         return sql.offset(start_num).limit(page_size).all()
 
-if __name__ == "__main__":
-    params = {
-        "page_size": 2
-        # "Ttime": 1,
-        # "Tname": "测试3",
-        # "Tschool": ""
-    }
-    s = STeachers().get_teachers_list(**params)
-    for i in s:
-        print i
+    def get_all_count(self):
+        s = self.session.query(func.count(eval("model.Teachers.Tid"))).scalar()
+        return s

@@ -6,7 +6,8 @@ from common.JudgeData import JudgeData
 from service.STeachers import STeachers
 from Config.Requests import param_miss, system_error, search_teachers_list_success, search_teachers_abo_success
 from common.get_model_return_list import get_model_return_list
-
+from common.MyException import ParamsNotExitError
+from common.get_str import get_str
 
 # 用于处理教师信息相关数据
 class CTeachers():
@@ -22,18 +23,29 @@ class CTeachers():
         if not self.steachers.status:
             return system_error
         args = request.args.to_dict()
-
-        params = {}
+        from models.model import Teachers
         # 判断是否含有参数
-        if not args:
-            search_teachers_list_success["teacher_list"] = self.get_teachers_list(**params)
-            return search_teachers_list_success
         try:
-            # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回-1
-            page_num, page_size = self.judgeData.check_page_params(args)
+            # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回具体错误
+            page_num, page_size = self.judgeData.check_page_params(args, "Teachers")  # 这里有error 如果带条件查询，那么可能会查询不到数据
+
             start_num = (page_num - 1) * page_size
-            search_teachers_list_success["teacher_list"] = self.get_teachers_list(start_num, page_size)
+
+            params = []
+            if "Ttime" in args:
+                params.append(Teachers.Ttime == args.get("Ttime"))
+            if "Tname" in args:
+                name = get_str(args, "Tname")
+                params.append(Teachers.Tname.like("%{0}%".format(name)))
+            if "Tschool" in args:
+                school = get_str(args, "Tschool")
+                params.append(Teachers.Tschool.like("%{0}%".format(school)))
+
+            search_teachers_list_success["teacher_list"] = self.get_teachers_list(start_num, page_size, params)
             return search_teachers_list_success
+        except (ParamsNotExitError, ValueError) as e:
+            print e.message
+            return param_miss
         except Exception as e:
             print e.message
             return system_error
@@ -66,20 +78,18 @@ class CTeachers():
             print e.message
             return system_error
 
-    def get_teachers_list(self, start_num=-1, page_size=-1):
+    def get_teachers_list(self, start_num, page_size, params):
         """
-        判断是否是分页查询，以此来执行不同的数据库操作动作。获取不同的数据内容
-        :param start_num: 分页查询的页数 如果不是分页查询，该值为2
-        :param page_size: 分页查询的每页记录数，如果不是分页查询，该值为-1
-        :return:
+        获取数据中所有教师内容
+        :param start_num: 分页查询的页数
+        :param page_size: 分页查询的每页记录数
+        :param params 筛选条件 后端根据请求下发参数自动生成
+        :return:teachers_list type is list default []
         """
-        if start_num >= 0 and page_size > 0:
-            teachers_list = self.steachers.get_teachers_list_by_start_end(start_num, page_size)
-        else:
-            teachers_list = self.steachers.get_teachers_list()
+
+        teachers_list = self.steachers.get_teachers_list(start_num, page_size, params)
         # [teachers_list1, 2, 3...]
         if isinstance(teachers_list, list) and teachers_list:
-            from models.model import Teachers
             return get_model_return_list(teachers_list)
         else:
             return []

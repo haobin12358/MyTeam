@@ -58,12 +58,12 @@ class SCompetitions():
             return False
 
     # 获取全部竞赛信息列表
+    """
     def get_competitions_list(self):
         competitions_list = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
                                                model.Competitions.Cno, model.Competitions.Clevel,
                                                model.Competitions.Cstart, model.Competitions.Cend).all()
         return competitions_list
-
     # 列表分页
     def get_competitions_list_by_start_end(self, start_num, infor_num):
         competitions_list = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
@@ -71,6 +71,7 @@ class SCompetitions():
                                                model.Competitions.Cstart, model.Competitions.Cend) \
             .offset(start_num).limit(infor_num).all()
         return competitions_list
+    """
 
     # 竞赛信息详情
     def get_competitions_abo_by_cid(self, cid):
@@ -93,6 +94,13 @@ class SCompetitions():
         cid = self.session.query(model.Competitions.Cid).filter_by(Cname=cname).filter_by(Cno=cno)\
             .filter_by(Clevel=clevel).scalar()
         return cid
+
+    # 根据竞赛名称或竞赛等级或时间查询竞赛
+    def get_competitions_list(self, start_num, page_size, params):
+        sql = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
+                                 model.Competitions.Clevel, model.Competitions.Cstart,
+                                 model.Competitions.Cend, model.Competitions.Cno).filter(*params)
+        return sql.offset(start_num).limit(page_size).all()
 
 if __name__ == '__main__':
     scompetitions = SCompetitions()

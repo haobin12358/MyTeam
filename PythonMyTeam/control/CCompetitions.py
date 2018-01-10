@@ -4,7 +4,9 @@ from flask import request
 import json
 # 引用项目类
 from common.JudgeData import JudgeData
+from common.MyException import ParamsNotExitError
 from common.get_model_return_list import get_model_return_list
+from common.get_str import get_str
 from service.SCompetitions import SCompetitions
 from Config.Requests import param_miss, system_error, search_competitions_list_success, search_competition_abo_success
 
@@ -21,16 +23,26 @@ class CCompetitions():
             return system_error
         args = request.args.to_dict()
         # 判断是否含有参数
-        if not args:
-            search_competitions_list_success["competition_list"] = self.get_competition_list()
-            return search_competitions_list_success
+        params = []
         try:
+            from models.model import Competitions
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回-1
-            page_num, page_size = self.judgeData.check_page_params(args)
-
+            page_num, page_size = self.judgeData.check_page_params(args, "Competitions")
             start_num = (page_num - 1) * page_size
-            search_competitions_list_success["competition_list"] = self.get_competition_list(start_num, page_size)
+            if "Cend" in args:
+                params.append(Competitions.Cstart >= args.get("Cstart"))
+            if "Cstart" in args:
+                params.append(Competitions.Tname <= args.get("Cend"))
+            if "Cname" in args:
+                name = get_str(args, "Cname")
+                params.append(Competitions.Cname.like("%{0}%".format(name)))
+            if "Clevel" in args:
+                params.append(Competitions.Clevel == args.get("Clevel"))
+            search_competitions_list_success["competition_list"] = self.get_competition_list(start_num, page_size, params)
             return search_competitions_list_success
+        except (ParamsNotExitError, ValueError) as e:
+            print e.message
+            return param_miss
         except Exception as e:
             print e.message
             return system_error
@@ -53,12 +65,9 @@ class CCompetitions():
             print e.message
             return system_error
 
-    def get_competition_list(self, start_num=-1, page_size=-1):
-        # 判断是否是分页查询
-        if start_num >= 0 and page_size > 0:
-            competitions_list = self.scompetitions.get_competitions_list_by_start_end(start_num, page_size)
-        else:
-            competitions_list = self.scompetitions.get_competitions_list()
+    def get_competition_list(self, start_num, page_size, params):
+        # 根据筛选条件查询全部竞赛信息
+        competitions_list = self.scompetitions.get_competitions_list(start_num, page_size, params)
         # [competitions1, 2, 3...]
         if isinstance(competitions_list, list) and competitions_list:
             return get_model_return_list(competitions_list)

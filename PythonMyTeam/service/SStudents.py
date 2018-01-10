@@ -13,7 +13,7 @@ class SStudents():
         except Exception as e:
             print e.message
             self.status = False
-
+    """
     # 获取全部的学生信息列表
     def get_students_list(self):
         students_list = self.session.query(model.Students.Sid, model.Students.Sname, model.Students.Sschool,
@@ -26,7 +26,7 @@ class SStudents():
                                            model.Students.Uid, model.Students.Sgrade).offset(start_num - 1) \
             .limit(infor_num).all()
         return students_list
-
+    """
     # 获取学生信息详情
     def get_student_abo_by_sid(self, sid):
         student_abo = self.session.query(model.Students.Sid, model.Students.Uid, model.Students.Sname,
@@ -54,3 +54,9 @@ class SStudents():
     # 根据学生id获取学生姓名
     def get_sname_by_sid(self, sid):
         return self.session.query(model.Students.Sname).filter_by(Sid = sid).scalar()
+
+    # 根据学生姓名或学院或年级查询学生
+    def get_students_list(self, start_num, page_size, params):
+        sql = self.session.query(model.Students.Sid, model.Students.Sname,
+                                 model.Students.Sschool, model.Students.Sgrade).filter(*params)
+        return sql.offset(start_num).limit(page_size).all()

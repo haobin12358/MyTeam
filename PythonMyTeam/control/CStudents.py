@@ -6,6 +6,8 @@ from common.JudgeData import JudgeData
 from service.SStudents import SStudents
 from Config.Requests import param_miss, system_error, search_student_list_success, search_student_abo_success
 from common.get_model_return_list import get_model_return_list
+from common.get_str import get_str
+from common.MyException import ParamsNotExitError
 
 
 # 用于处理学生信息相关的数据
@@ -23,14 +25,23 @@ class CStudents():
             return system_error
         args = request.args.to_dict()
         # 判断是否含有参数
-        if not args:
-            search_student_list_success["student_list"] = self.get_students_list()
-            return search_student_list_success
+        params = []
         try:
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回-1
-            page_num, page_size = self.judgeData.check_page_params(args)
+            page_num, page_size = self.judgeData.check_page_params(args, "Students")
             start_num = (page_num - 1) * page_size
-            search_student_list_success["student_list"] = self.get_students_list(start_num, page_size)
+            from models.model import Students
+            if "start" in args:
+                params.append(Students.Sgrade >= args.get("start"))
+            if "end" in args:
+                params.append(Students.Sgrade <= args.get("end"))
+            if "Sname" in args:
+                name = get_str(args, "Sname")
+                params.append(Students.Sname.like("%{0}%".format(name)))
+            if "Sschool" in args:
+                school = get_str(args, "Sschool")
+                params.append(Students.Sschool.like("%{0}%".format(school)))
+            search_student_list_success["student_list"] = self.get_students_list(start_num, page_size, params)
             return search_student_list_success
         except Exception as e:
             print e.message
@@ -68,17 +79,15 @@ class CStudents():
             print e.message
             return system_error
 
-    def get_students_list(self, start_num=-1, page_size=-1):
+    def get_students_list(self, start_num, page_size, params):
         """
-        判断是否是分页查询，以此来执行不同的数据库操作动作。获取不同的数据内容
-        :param start_num: 分页查询的页数 如果不是分页查询，该值为2
-        :param page_size: 分页查询的每页记录数，如果不是分页查询，该值为-1
+        获取所有的学生数据内容
+        :param start_num: 分页查询的页数
+        :param page_size: 分页查询的每页记录数
+        :param params: 筛选条件，由后端生成
         :return:
         """
-        if start_num >= 0 and page_size > 0:
-            students_list = self.sstudents.get_students_list_by_start_end(start_num, page_size)
-        else:
-            students_list = self.sstudents.get_students_list()
+        students_list = self.sstudents.get_students_list(start_num, page_size, params)
         # [students_list1, 2, 3...]
         if isinstance(students_list, list) and students_list:
             return get_model_return_list(students_list)
