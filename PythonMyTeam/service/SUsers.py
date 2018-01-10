@@ -54,3 +54,7 @@ class SUsers():
     # 根据用户名获取对应id
     def get_uid_by_uname(self, uname):
         return self.session.query(model.Uers.Uid).filter_by(Uname = uname).scalar()
+
+    # 根据用户id获取用户类型
+    def get_utype_by_uid(self, uid):
+        return self.session.query(model.Uers.Utype).filter_by(Uid = uid).scalar()
