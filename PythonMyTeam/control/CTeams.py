@@ -13,7 +13,7 @@ from service.SStudents import SStudents
 from service.STeachers import STeachers
 from service.SCompetitions import SCompetitions
 from Config.Requests import system_error, param_miss, new_team_success, none_permissions, update_team_success, \
-    invent_success, team_is_full, join_team_success, delete_team_success
+    invent_success, team_is_full, join_team_success, delete_team_success, delete_student_from_team_success
 from Config.Logs import WRITE_STUDENT_TEAM_ERROR, NEW_INVITATION, NEW_REQUEST, JOIN_TEAM_SUCCESS,\
     TEACHER_JOIN_TEAM_SUCCESS
 
@@ -420,11 +420,60 @@ class CTeams():
 
         if tstype != 1000 :
             return none_permissions
-        return system_error
+
+        tsid = self.steams.get_tsid_by_teid_sid(teid, sid)
+
+        delete_student = {}
+        delete_student["TSsubject"] = 1103
+
+        response_of_delete_student = self.steams.update_tstudent_by_tsid(tsid, delete_student)
+
+        if not response_of_delete_student:
+            return system_error
+
+        return delete_student_from_team_success
 
     # 删除团队教师，入口在团队详情中，实际修改团队教师表的属性
     def delete_teacher(self):
-        return system_error
+        args = request.args.to_dict()  # 获取参数
+        print args
+        # 判断参数非空
+        if not args:
+            return param_miss
+        # 判断参数中含有Uid
+        if not self.judgeData.inData("Uid", args):
+            return param_miss
+
+        uid = args["Uid"]
+
+        data = request.data  # 获取body体
+        # 判断body体非空
+        if data == {} or str(data) == "":
+            return param_miss
+        data = json.loads(data)
+
+        # 判断body体中含有必要参数
+        if not self.judgeData.inData("TEid", data):
+            return param_miss
+
+        teid = data["TEid"]
+        tid = self.spersonal.get_tid_by_uid(uid)
+        tstype = self.steams.get_tstype_by_teid_sid(teid, tid)
+
+        if tstype != 1000 :
+            return none_permissions
+
+        tsid = self.steams.get_tsid_by_teid_sid(teid, tid)
+
+        delete_student = {}
+        delete_student["TSsubject"] = 1103
+
+        response_of_delete_student = self.steams.update_tstudent_by_tsid(tsid, delete_student)
+
+        if not response_of_delete_student:
+            return system_error
+
+        return delete_student_from_team_success
 
     # 删除团队任务，入口在团队详情中
     def delete_task(self):

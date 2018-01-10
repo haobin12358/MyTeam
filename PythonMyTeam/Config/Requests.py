@@ -241,3 +241,9 @@ delete_team_success = {
     "status": 200,
     "messages": "Delete team success !"
 }
+
+# 删除成员成功
+delete_student_from_team_success = {
+    "status": 200,
+    "messages": "Delete student from team success !"
+}
