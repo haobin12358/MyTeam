@@ -38,7 +38,10 @@ class CUsers():
             return error_upwd
 
         Uid = self.susers.get_uid_by_uname(form["Uname"]) #根据用户名获取数据库的id
+        Utype = self.susers.get_utype_by_uid(Uid)
+
         login_ok["messages"]["Uid"] = Uid #将获取到的内容放置到body中
+        login_ok["messages"]["Utype"] = Utype
 
         return login_ok
 

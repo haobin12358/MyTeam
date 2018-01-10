@@ -74,6 +74,7 @@ public class LoginActivity extends Activity{
 	};
 	
 	private String Uid;
+	private int Utype;
 	
 	//登录按键响应事件
 	private OnClickListener login_button = new OnClickListener(){
@@ -92,6 +93,7 @@ public class LoginActivity extends Activity{
 					String messages = json_obj.optString("messages");
 					JSONObject json_messages = StringToJSON.toJSONObject(messages);
 					Uid = json_messages.optString("Uid");
+					Utype = json_messages.optInt("Utype");
 					new AlertDialog.Builder(LoginActivity.this)
 						.setTitle(R.string.ti_xing)
 						.setMessage(R.string.deng_lu_cheng_gong)
@@ -135,6 +137,7 @@ public class LoginActivity extends Activity{
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 			intent.putExtra("Uid", Uid);
+			intent.putExtra("Utype", Utype);
 			intent.putExtra("index", 0);
 			startActivity(intent);
 			finish();

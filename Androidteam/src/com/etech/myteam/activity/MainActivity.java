@@ -22,6 +22,7 @@ public class MainActivity extends Activity{
 	//定义默认参数
 	private int index = 0;
 	private String Uid = null;
+	private int Utype = 0;
 	
 	//主线程+主要生命周期
 	@Override
@@ -58,6 +59,7 @@ public class MainActivity extends Activity{
 				index = n;
 			}
 			Uid = bd.getString("Uid");
+			Utype = bd.getInt("Utpe");
 		}catch (Exception e) {
 			e.printStackTrace();
 			Log.e("changeError", "false");
