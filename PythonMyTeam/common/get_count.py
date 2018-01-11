@@ -13,7 +13,7 @@ model_id = {
 
 
 # todo 获取的是全部数据，如果有筛选，无法感知
-def get_count(model_name):
+def get_count(model_name, params):
     """
     获取某个数据表中的全部数据
     :param model_name:
@@ -22,4 +22,4 @@ def get_count(model_name):
     if model_name not in model_id:
         return 0
 
-    return db_session.query(func.count(eval(model_id.get(model_name)))).scalar()
+    return db_session.query(func.count(eval(model_id.get(model_name)))).filter(*params).scalar()

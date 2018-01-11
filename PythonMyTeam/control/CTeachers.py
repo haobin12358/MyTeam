@@ -9,6 +9,7 @@ from common.get_model_return_list import get_model_return_list
 from common.MyException import ParamsNotExitError
 from common.get_str import get_str
 
+
 # 用于处理教师信息相关数据
 class CTeachers():
     def __init__(self):
@@ -27,10 +28,7 @@ class CTeachers():
         # 判断是否含有参数
         try:
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回具体错误
-            page_num, page_size = self.judgeData.check_page_params(args, "Teachers")  # 这里有error 如果带条件查询，那么可能会查询不到数据
-
-            start_num = (page_num - 1) * page_size
-
+            page_num, page_size = self.judgeData.check_page_params(args)
             params = []
             if "Ttime" in args:
                 params.append(Teachers.Ttime == args.get("Ttime"))
@@ -41,7 +39,11 @@ class CTeachers():
                 school = get_str(args, "Tschool")
                 params.append(Teachers.Tschool.like("%{0}%".format(school)))
 
+            page_num, count = JudgeData.check_page_value(page_num, page_size, "Teachers", params)
+            start_num = (page_num - 1) * page_size
             search_teachers_list_success["teacher_list"] = self.get_teachers_list(start_num, page_size, params)
+            search_teachers_list_success["count"] = count
+            search_teachers_list_success["page_num"] = page_num
             return search_teachers_list_success
         except (ParamsNotExitError, ValueError) as e:
             print e.message

@@ -26,9 +26,8 @@ class CCompetitions():
         params = []
         try:
             from models.model import Competitions
-            # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均返回-1
-            page_num, page_size = self.judgeData.check_page_params(args, "Competitions")
-            start_num = (page_num - 1) * page_size
+            # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空报错
+            page_num, page_size = self.judgeData.check_page_params(args)
             if "Cend" in args:
                 params.append(Competitions.Cstart >= args.get("Cstart"))
             if "Cstart" in args:
@@ -38,7 +37,14 @@ class CCompetitions():
                 params.append(Competitions.Cname.like("%{0}%".format(name)))
             if "Clevel" in args:
                 params.append(Competitions.Clevel == args.get("Clevel"))
-            search_competitions_list_success["competition_list"] = self.get_competition_list(start_num, page_size, params)
+            page_num, count = JudgeData.check_page_value(
+                page_num, page_size, "Competitions", params)
+
+            start_num = (page_num - 1) * page_size
+            search_competitions_list_success["competition_list"] = self.get_competition_list(
+                start_num, page_size, params)
+            search_competitions_list_success["count"] = count
+            search_competitions_list_success["page_num"] = page_num
             return search_competitions_list_success
         except (ParamsNotExitError, ValueError) as e:
             print e.message
