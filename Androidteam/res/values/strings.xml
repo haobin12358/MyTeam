@@ -14,7 +14,6 @@
     <string name="ce_shi">测试</string>
 
     <!-- 学生信息查询页-->
-    <string name="xing_ming">姓名</string>
     <string name="xue_yuan">学院</string>
     <string name="nian_ji">年级</string>
     <string name="cha_xun">查询</string>
@@ -96,5 +95,15 @@
 	<string name="yong_hu_bu_cun_zai">用户不存在</string>
 	<string name="mi_ma_cuo_wu">密码错误</string>
 	<!-- 个人信息 -->
+	<string name="ge_ren_xin_xi">个人信息</string>
 	<string name="xing_ming">姓名</string>
+	<string name="xue_hao">学号</string>
+	<string name="jiao_gong_hao">教工号</string>
+	<string name="lian_xi_fang_shi">联系方式</string>
+	<string name="ren_jiao_shi_jian">任教时间</string>
+	<string name="xue_xiao">学校</string>
+	<string name="xing_bie">性别</string>
+	<string name="ji_neng">技能</string>
+	<string name="jing_sai_jing_li">竞赛经历</string>
+	<string name="ren_wu">任务</string>
 </resources>

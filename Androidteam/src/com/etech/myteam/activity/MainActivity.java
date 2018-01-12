@@ -20,7 +20,7 @@ public class MainActivity extends Activity{
 	//定义组件变量
 	private TextView tv1, tv2, tv3;
 	//定义默认参数
-	private int index = 0;
+	private int index = 2;
 	private String Uid = null;
 	private int Utype = 0;
 	
@@ -31,7 +31,7 @@ public class MainActivity extends Activity{
 		setContentView(R.layout.activity_main);
 		init();
 		setListener();
-		getBd();
+		//getBd();
 		SwitchFragment(index);
 	}
 	
@@ -63,7 +63,7 @@ public class MainActivity extends Activity{
 		}catch (Exception e) {
 			e.printStackTrace();
 			Log.e("changeError", "false");
-			index = 0;
+			index = 2;
 		}
 	}
 	
