@@ -6,6 +6,29 @@
         android:background="@color/cTitleBar"
         android:orientation="vertical" >
     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button 
+            android:id="@+id/btn_1"
+            android:layout_width="wrap_content"
+            android:layout_weight= "1"
+            android:layout_height="wrap_content"
+            android:text="@string/xue_sheng"/>
+        <Button
+            android:id="@+id/btn_2"
+            android:layout_width="wrap_content"
+            android:layout_weight= "1"
+            android:layout_height="wrap_content"
+            android:text="@string/jiao_shi"/>
+        <Button
+            android:id="@+id/btn_3"
+            android:layout_weight= "1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/jing_sai"/>"
+    </LinearLayout>
+    <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -47,7 +70,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
     </LinearLayout>
-
+    <include 
+        android:id="@+id/include1"
+        layout="@layout/layout_item_student_list"/>"
     <ListView
             android:id="@+id/student_list"
             android:layout_width="match_parent"
