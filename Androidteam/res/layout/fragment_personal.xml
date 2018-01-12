@@ -180,6 +180,11 @@
     		    android:layout_height="wrap_content">
     		    
     		</ListView>
+    		<Button 
+    		    android:id="@+id/btn_1"
+    		    android:layout_height="wrap_content"
+    		    android:layout_width="fill_parent"
+    		    android:text="@string/xing_ming"/>
         </LinearLayout>
         
     </ScrollView>
