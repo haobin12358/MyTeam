@@ -72,10 +72,19 @@
     </LinearLayout>
     <include 
         android:id="@+id/include1"
-        layout="@layout/layout_item_student_list"/>"
+        layout="@layout/layout_item_student_list"/>
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"/>
+
     <ListView
-            android:id="@+id/student_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/cGray"></ListView>
+        android:id="@+id/student_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cGray" >
+</ListView>
+
 </LinearLayout>
