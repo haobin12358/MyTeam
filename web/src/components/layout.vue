@@ -59,6 +59,13 @@
 
 
   /*业务css--start*/
+  .header-title{
+    color: white;
+    font-size: 20px;
+    line-height: 60px;
+    float: left;
+    margin-left: 40px;
+  }
   .app-header{
     height: 60px;
     background-color: #97CBFF;

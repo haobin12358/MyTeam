@@ -1,5 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import  VueRouter from 'vue-router'
 import  VueResource from 'vue-resource'
@@ -13,7 +11,7 @@ import publish from './pages/detail/publish'
 import './lib/bootstrap/css/bootstrap.min.css'
 import './lib/bootstrap/script/bootstrap.min.js'
 
-Vue.config.productionTip = false;
+//Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(VueResource);
 let router = new VueRouter({
@@ -21,7 +19,42 @@ let router = new VueRouter({
   routes: [
     {
       path: '/',
-      component: IndexPage
+      component: IndexPage,
+      //redirect:'/detail/count',// 默认路由
+      children: [
+        {
+          path: 'momShopCar',
+          component: analysis
+        },
+        {
+          path: 'personalInfo',
+          component: count
+        },
+        {
+          path: 'personalInfo',
+          component: forecast
+        },
+        {
+          path: 'personalInfo',
+          component: publish
+        },
+        {
+          path: 'personalInfo',
+          component: analysis
+        },
+        {
+          path: 'personalInfo',
+          component: count
+        },
+        {
+          path: 'personalInfo',
+          component: forecast
+        },
+        {
+          path: 'personalInfo',
+          component: publish
+        }
+      ]
     },
     {
       path: '/detail',
