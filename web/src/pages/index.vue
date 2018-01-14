@@ -4,11 +4,16 @@
       <div class="index-left-block">
         <template v-for="(menu, index) in menuList">
           <h3 class="menuTitle" @click="toggle(index)">{{menu.title}}</h3>
-          <ul v-show="menu.isToggle">
-            <li v-for="item in menu.list" class="mt10">
-              <a :href="item.url">{{ item }}</a>
-            </li>
-          </ul>
+          <transition name="fade">
+            <ul v-show="menu.isToggle">
+              <!--<li v-for="item in menu.list" class="mt10">-->
+                <!--<a :href="item.url">{{ item.name }}</a>-->
+              <!--</li>-->
+              <router-link v-for="i in menu.list" :to="{ path: i.path }" tag="li" active-class="active">
+                {{ i.name }}
+              </router-link>
+            </ul>
+          </transition>
         </template>
       </div>
       <div class="index-left-block lastest-news">
@@ -20,36 +25,45 @@
         </ul>
       </div>
     </div>
+
     <div class="index-right">
-      <slide-show :slides="slides" :inv="invTime"></slide-show>
-      <div class="index-board-list">
-        <div
-          class="index-board-item"
-          v-for="(item, index) in boardList"
-          :class="[{'line-last' : index % 2 !== 0}, 'index-board-' + item.id]">
-          <div class="index-board-item-inner">
-            <h2>{{ item.title }}</h2>
-            <p>{{ item.description }}</p>
-            <div class="index-board-button">
-              <!--router-link是vue-router组件提供的标签，to属性就是要跳转的路径-->
-              <router-link class="button" :to="{path: 'detail/' + item.toKey}">立即跳转</router-link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!--<slide-show :slides="slides" :inv="invTime"></slide-show>-->
+      <!--<div class="index-board-list">-->
+        <!--<div-->
+          <!--class="index-board-item"-->
+          <!--v-for="(item, index) in boardList"-->
+          <!--:class="[{'line-last' : index % 2 !== 0}, 'index-board-' + item.id]">-->
+          <!--<div class="index-board-item-inner">-->
+            <!--<h2>{{ item.title }}</h2>-->
+
+            <!--<p>{{ item.description }}</p>-->
+
+            <!--<div class="index-board-button">-->
+              <!--&lt;!&ndash;router-link是vue-router组件提供的标签，to属性就是要跳转的路径&ndash;&gt;-->
+              <!--<router-link class="button" :to="{path: 'detail/' + item.toKey}">立即跳转</router-link>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+
+
+      <!--路由填充区域-->
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>
-<script  type="text/ecmascript-6">
+<script type="text/ecmascript-6">
   import slideShow from '../components/slideShow'
   export default {
-    components:{
+    components: {
       slideShow
     },
-    methods:{
-      toggle:function(index){
-        this.menuList[index].isToggle=!(this.menuList[index].isToggle)
-       }
+    methods: {
+      toggle: function (index) {
+        this.menuList[index].isToggle = !(this.menuList[index].isToggle)
+      }
     },
     data() {
       return {
@@ -119,16 +133,16 @@
         },
         newsList: [
           {
-            title:"老妈的减肥计划",
-            url:"https://www.baidu.com"
+            title: "老妈的减肥计划",
+            url: "https://www.baidu.com"
           },
           {
-            title:"老爸的抽烟计划",
-            url:"https://www.baidu.com"
+            title: "老爸的抽烟计划",
+            url: "https://www.baidu.com"
           },
           {
-            title:"前端大牛成长之路",
-            url:"https://www.baidu.com"
+            title: "前端大牛成长之路",
+            url: "https://www.baidu.com"
           }
         ],
         boardList: [
@@ -157,24 +171,54 @@
             toKey: 'studyPlan',
           }
         ],
-        menuList:[
+        menuList: [
           {
-            name:"Info",
-            title:"信息",
-            list: ["个人信息","学生信息","教师信息","竞赛信息"],
-            isToggle:true
+            name: "Info",
+            title: "信息",
+            list:[
+              {
+                name:"个人信息",
+                path:"momShopCar"
+              },{
+                name:"学生信息",
+                path:""
+              },{
+                name:"教师信息",
+                path:""
+              },{
+                name:"竞赛信息",
+                path:""
+              }
+            ],
+            isToggle: true
           },
           {
-            name:"Team",
-            title:"团队",
-            list:["团队查询","创建团队"],
-            isToggle:true
+            name: "Team",
+            title: "团队",
+            list:[
+              {
+                name:"团队查询",
+                path:""
+              },{
+                name:"创建团队",
+                path:""
+              }
+            ],
+            isToggle: true
           },
           {
-            name:"MyProfile",
-            title:"我的",
-            list:  ["我创建的团队","我参与的团队"],
-            isToggle:true
+            name: "MyProfile",
+            title: "我的",
+            list:[
+              {
+                name:"我创建的团队",
+                path:""
+              },{
+                name:"我参与的团队",
+                path:""
+              }
+            ],
+            isToggle: true
           }
         ]
       }
@@ -182,49 +226,65 @@
   }
 </script>
 <style scoped>
-  .menuTitle{
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .2s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+    opacity: 0
+  }
+  .menuTitle {
     background-color: #b2c5d5;
   }
-  .mt10{
-    margin-top:10px;
+
+  .mt10 {
+    margin-top: 10px;
   }
+
   .index-wrap {
     width: 1200px;
     margin: 0 auto;
     overflow: hidden;
   }
+
   .index-left {
     float: left;
     width: 300px;
     text-align: left;
   }
+
   .index-right {
     float: left;
     width: 900px;
   }
+
   .index-left-block {
     margin: 15px;
     background: #fff;
     box-shadow: 0 0 1px #b7c0d3;
   }
+
   .index-left-block .hr {
     margin-bottom: 20px;
     border: 1px solid #c0c0c0;
   }
+
   .index-left-block h2 {
     background: #addce3;
     color: #fff;
     padding: 10px 15px;
     margin-bottom: 20px;
   }
+
   .index-left-block h3 {
     padding: 0 15px 5px 15px;
     font-weight: bold;
     color: #222;
   }
+
   .index-left-block ul {
     padding: 10px 15px;
   }
+
   .index-left-block li {
     padding: 5px;
   }
@@ -232,6 +292,7 @@
   .index-board-list {
     overflow: hidden;
   }
+
   .index-board-item {
     float: left;
     width: 400px;
@@ -241,10 +302,12 @@
     margin-right: 20px;
     margin-bottom: 20px;
   }
+
   .index-board-item-inner {
     min-height: 125px;
     padding-left: 120px;
   }
+
   .index-board-car .index-board-item-inner {
     background: url(../assets/images/1.gif) no-repeat;
   }
@@ -252,18 +315,22 @@
   .index-board-loud .index-board-item-inner {
     background: url(../assets/images/2.gif) no-repeat;
   }
+
   .index-board-earth .index-board-item-inner {
     background: url(../assets/images/3.gif) no-repeat;
   }
+
   .index-board-hill .index-board-item-inner {
     background: url(../assets/images/4.gif) no-repeat;
   }
+
   .index-board-item h2 {
     font-size: 18px;
     font-weight: bold;
     color: #000;
     margin-bottom: 15px;
   }
+
   .line-last {
     margin-right: 0;
   }
@@ -276,16 +343,20 @@
     line-height: 30px;
     background-color: #a4d4f6;
   }
-  .index-board-button a{
-    color:white;
+
+  .index-board-button a {
+    color: white;
   }
+
   .lastest-news {
     min-height: 512px;
   }
+
   .hot-tag {
     background: red;
     color: #fff;
   }
+
   .new-item {
     display: inline-block;
     width: 230px;

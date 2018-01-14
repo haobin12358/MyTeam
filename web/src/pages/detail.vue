@@ -12,7 +12,7 @@
     </div>
     <!--面包屑导航栏-->
     <div class="font14">
-      <router-link class="crumbs" :to="{path:'/'}"  tag="li">{{ "Home < "}}</router-link>
+      <router-link class="crumbs" :to="{path:'/'}" tag="li">{{ "Home < "}}</router-link>
       <span>{{$route.path.replace('/','')}}</span>
     </div>
     <div class="detail-right">
@@ -25,7 +25,8 @@
 
 <script scoped>
   export default {
-    data () {
+    data ()
+  {
     return {
       products: [
         {
@@ -57,7 +58,8 @@
         '/detail/studyPlan': require("../assets/images/4.gif")
       }
     }
-  },
+  }
+  ,
   computed: {
     productIcon()
     {
@@ -68,19 +70,22 @@
 </script>
 
 <style>
-  .font15{
+  .font15 {
     font-size: 15px;
   }
-  .crumbs{
+
+  .crumbs {
     cursor: pointer;
     color: blue;
     text-decoration: none;
     float: left;
     margin-left: 23px;
   }
-  .crumbs:hover{
-    text-decoration: underline ;
+
+  .crumbs:hover {
+    text-decoration: underline;
   }
+
   .detail-wrap {
     width: 1200px;
     margin: 0 auto;
@@ -168,7 +173,7 @@
   .sales-board-des {
     border-top: 20px solid #f0f2f5;
     padding: 15px 20px;
-    margin:0px 0px 50px 0px;
+    margin: 0px 0px 50px 0px;
   }
 
   .sales-board-des p {
