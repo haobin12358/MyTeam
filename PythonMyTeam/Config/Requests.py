@@ -65,6 +65,13 @@ param_miss = {
     "messages": "missing some parameters !"
 }
 
+# 参数校验不通过
+param_notright = {
+    "status": 405,
+    "status_code": 405301,
+    "messages": "{0}"
+}
+
 # 新增个人信息成功
 add_personal_success = {
     "status": 200,
