@@ -1,4 +1,8 @@
 # *- coding:utf8 *-
+# 兼容linux系统
+import sys
+import os
+sys.path.append(os.path.dirname(os.getcwd())) # 增加系统路径
 # 引用项目类
 from common.TransformToList import trans_params
 from models import model

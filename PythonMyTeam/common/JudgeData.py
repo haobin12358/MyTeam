@@ -1,4 +1,8 @@
 # *- coding:utf8 *-
+# 兼容linux系统
+import sys
+import os
+sys.path.append(os.path.dirname(os.getcwd())) # 增加系统路径
 # 用于判断数组中是否含有某个参数
 from MyException import ParamsNotExitError
 from .get_count import get_count

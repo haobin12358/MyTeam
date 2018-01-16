@@ -1,4 +1,9 @@
 # *- coding:utf8 *-
+# 兼容linux系统
+import sys
+import os
+sys.path.append(os.path.dirname(os.getcwd())) # 增加系统路径
+# 应用项目类
 from models import model
 from service.DBSession import get_session
 from sqlalchemy import func

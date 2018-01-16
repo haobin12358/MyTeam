@@ -1,4 +1,8 @@
 # *- coding:utf8 *-
+# 兼容linux系统
+import sys
+import os
+sys.path.append(os.path.dirname(os.getcwd())) # 增加系统路径
 # 引用Python类
 from flask import request
 # 引用项目类

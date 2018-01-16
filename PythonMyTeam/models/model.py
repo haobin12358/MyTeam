@@ -1,4 +1,8 @@
 # *- coding:utf8 *-
+# 兼容linux系统
+import sys
+import os
+sys.path.append(os.path.dirname(os.getcwd())) # 增加系统路径
 # 引用python类
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, create_engine, Integer, String, Text
