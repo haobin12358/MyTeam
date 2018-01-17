@@ -8,7 +8,8 @@ from flask import request
 # 引用项目类
 from common.JudgeData import JudgeData
 from service.STeachers import STeachers
-from Config.Requests import param_miss, system_error, search_teachers_list_success, search_teachers_abo_success
+from Config.Requests import param_miss, system_error, search_teachers_list_success, \
+    search_teachers_abo_success, param_notright
 from common.get_model_return_list import get_model_return_list
 from common.MyException import ParamsNotExitError
 from common.get_str import get_str
@@ -49,9 +50,12 @@ class CTeachers():
             search_teachers_list_success["count"] = count
             search_teachers_list_success["page_num"] = page_num
             return search_teachers_list_success
-        except (ParamsNotExitError, ValueError) as e:
+        except ParamsNotExitError as e:
             print e.message
             return param_miss
+        except ValueError as e:
+            print e.message
+            return param_notright
         except Exception as e:
             print e.message
             return system_error

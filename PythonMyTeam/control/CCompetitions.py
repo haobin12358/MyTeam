@@ -12,7 +12,8 @@ from common.MyException import ParamsNotExitError
 from common.get_model_return_list import get_model_return_list
 from common.get_str import get_str
 from service.SCompetitions import SCompetitions
-from Config.Requests import param_miss, system_error, search_competitions_list_success, search_competition_abo_success
+from Config.Requests import param_miss, system_error, search_competitions_list_success, \
+    search_competition_abo_success, param_notright
 
 
 # 处理竞赛信息相关数据
@@ -50,9 +51,12 @@ class CCompetitions():
             search_competitions_list_success["count"] = count
             search_competitions_list_success["page_num"] = page_num
             return search_competitions_list_success
-        except (ParamsNotExitError, ValueError) as e:
+        except ParamsNotExitError as e:
             print e.message
             return param_miss
+        except ValueError as e:
+            print e.message
+            return param_notright
         except Exception as e:
             print e.message
             return system_error
