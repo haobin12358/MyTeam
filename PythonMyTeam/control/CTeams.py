@@ -10,6 +10,9 @@ import uuid
 
 # 引用项目类
 from common.JudgeData import JudgeData
+from common.get_model_return_list import get_model_return_list
+from common.get_str import get_str
+from common.MyException import ParamsNotExitError
 from service.STeams import STeams
 from service.SPersonal import SPersonal
 from service.SInfor import SInfor
@@ -34,7 +37,42 @@ class CTeams():
 
     # 展现团队列表，场景应用于团队信息和个人团队信息
     def teams_list(self):
-        return system_error
+
+        if not self.steams.status:  # 校验数据库是否连接异常
+            return system_error
+        args = request.args.to_dict()
+        # 判断是否含有参数
+        params = []
+        try:
+            # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均报错
+            page_num, page_size = self.judgeData.check_page_params(args)
+            from models.model import Students
+            if "start" in args:
+                params.append(Students.Sgrade >= args.get("start"))
+            if "end" in args:
+                params.append(Students.Sgrade <= args.get("end"))
+            if "TEname" in args:
+                tename = get_str(args, "TEname")
+                # params.append(Students.Sname.like("%{0}%".format(name)))
+            if "Cname" in args:
+                cname = get_str(args, "Cname")
+                # params.append(Students.Sschool.like("%{0}%".format(school)))
+
+            page_num, count = JudgeData.check_page_value(page_num, page_size, "Students", params)
+            start_num = (page_num - 1) * page_size
+            # search_student_list_success["student_list"] = self.get_students_list(start_num, page_size, params)
+            # search_student_list_success["count"] = count
+            # search_student_list_success["page_num"] = page_num
+            # return search_student_list_success
+        except(ParamsNotExitError)as e:
+            print e.message
+            return param_miss
+        except ValueError as e:
+            print e.message
+            # return param_notright.fromkeys(e.message)
+        except Exception as e:
+            print e.message
+            return system_error
 
     # 团队信息详情，根据团队唯一ID进行检索
     def team_abo(self):
