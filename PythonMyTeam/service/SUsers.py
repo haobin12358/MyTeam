@@ -48,6 +48,7 @@ class SUsers():
 
     # @trans_params
     # 获取所有的username
+    @trans_params
     def get_all_user_name(self):
         return self.session.query(model.Uers.Uname).all()
 

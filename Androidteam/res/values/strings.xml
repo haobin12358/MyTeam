@@ -115,4 +115,13 @@
 	<string name="ji_neng">技能</string>
 	<string name="jing_sai_jing_li">竞赛经历</string>
 	<string name="ren_wu">任务</string>
+	<string name="bian_ji">编辑</string>
+	<string name="qing_xian_tian_xie_ge_ren_xin_xi">请先填写个人信息</string>
+	<string name="xin_zeng">新增</string>
+	<string name="qing_shu_ru">请输入</string>
+	<string name="zhi_dui_wu">支队伍</string>
+	
+	<!-- 性别 -->
+	<string name="nan">男</string>
+	<string name="nv">女</string>
 </resources>
