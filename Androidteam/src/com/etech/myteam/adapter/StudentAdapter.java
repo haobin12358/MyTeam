@@ -6,6 +6,7 @@ import com.etech.myteam.entity.StudentListEntity;
 import com.etech.myteam.R;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ public class StudentAdapter extends BaseAdapter {
 	public List<StudentListEntity> entitys;
 	private Context context;
 	public StudentAdapter(List<StudentListEntity> entitys,Context context){
+		Log.e("Start adapter", "init");
+		Log.e("entitys", entitys.toString());
 		this.context = context;
 		this.entitys = entitys;
 	}
@@ -40,6 +43,7 @@ public class StudentAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		Log.e("Start item", "init");
 		ViewHolder holder;
 		if (convertView == null){
 			convertView = LayoutInflater.from(context).inflate(R.layout.layout_item_student_list, null);
@@ -53,11 +57,13 @@ public class StudentAdapter extends BaseAdapter {
 		}
 		
 		StudentListEntity entity = entitys.get(position);
+		Log.e("info", Integer.toString(entity.getGrade()));
 		holder.Sname.setText(entity.getName());
-		holder.Sgrade.setText(entity.getGrade());
+		holder.Sgrade.setText(String.valueOf(entity.getGrade()));
 		holder.Sscool.setText(entity.getSchool());
 		holder.btn_doit.setText(entity.getBtn_name());
 		convertView.setTag(holder);
+		Log.e("end item", "init");
 		return convertView;
 	}
 	public class ViewHolder{
