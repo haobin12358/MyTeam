@@ -103,4 +103,6 @@ ENV/
 */.idea/*
 
 #bin
-*/bin/*
+bin/*
+#bin
+Androidteam/bin/*

@@ -46,6 +46,7 @@ public class InforFragment extends Fragment{
 	private Spinner spinner;
 	private String name, school, start, end;
 	private String result_info;
+	private List<Integer> data_list = new ArrayList<Integer>();
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -58,23 +59,16 @@ public class InforFragment extends Fragment{
 			}
 		} 
 		
-		try {
-			
-			init(view);
-			Log.e("Info", "init over");
-		} catch (JSONException e) {
-			Log.e("json error", "no status");
-			e.printStackTrace();
-		}		
-		
+		init(view);
+		Log.e("Info", "init over");
 		adapter = new StudentAdapter(entitys, getActivity());
 		Log.e("adapter over", "over");
 		list.setAdapter(adapter);
 		return view;
 	}
 	
-	private void init(View view) throws JSONException{
-		JSONObject jsonobj = StringToJSON.toJSONObject(result_info);
+	private void init(View view){
+		
 		
 		tv_1 = (TextView)view.findViewById(R.id.tv_1);
 		tv_2 = (TextView)view.findViewById(R.id.tv_2);
@@ -82,58 +76,66 @@ public class InforFragment extends Fragment{
 		btn_doit = (Button)view.findViewById(R.id.btn_doit);
 		spinner = (Spinner) view.findViewById(R.id.spinner1);
 		list = (ListView) view.findViewById(R.id.student_list);
-		List<Integer> data_list = new ArrayList<Integer>();
-
-		if ((Integer)jsonobj.get("status") != 200){
-			Log.e("status error ", "the status is not 200 ");
-			return ;
-		}
-		int count = (Integer) jsonobj.get("count");
-		for(int i=1;i <= (count/10) + 1;i++) {
-			data_list.add(i);
-		}
-		if (entitys != null){
-			entitys.clear();
-		}
-		
-		JSONArray data;
-		switch (infoType) {
-		case 0:
-			data = (JSONArray) jsonobj.get("student_list");	
-			break;
-		case 1:
-			data = (JSONArray) jsonobj.get("teacher_list");
-			break;
-		case 2:
-			data = (JSONArray) jsonobj.get("competition_list");
-			break;
-		default:
-			data = null;
-			break;
-		}
-		String btn_value = infoType == 2? "申请加入":"邀请";
-		for (int i = 0; i <data.length(); i++){
-			StudentListEntity entity = new StudentListEntity();
-			JSONObject item = data.getJSONObject(i);
-			
-			switch (infoType) {
-			case 0:
-				entity.setStudentInfo(item, btn_value);
-				break;
-			case 1:
-				entity.setTeacherInfo(item, btn_value);
-				break;
-			case 2:
-				entity.setCompetitionInfo(item, btn_value);
-				break;
-			default:
-				Log.e("Error","the infotype is not match");
-				break;
-			}
-			entitys.add(entity);
-		}
+		initdata();
 		ArrayAdapter<Integer> arr_adapter = new ArrayAdapter<Integer>(getActivity(),R.layout.spinner_item,data_list);
 		spinner.setAdapter(arr_adapter);
+	}
+	
+	public void initdata(){
+		try{
+			JSONObject jsonobj = StringToJSON.toJSONObject(result_info);
+			if ((Integer)jsonobj.get("status") != 200){
+				Log.e("status error ", "the status is not 200 ");
+				return ;
+			}
+			int count = (Integer) jsonobj.get("count");
+			for(int i=1;i <= (count/10) + 1;i++) {
+				data_list.add(i);
+			}
+			if (entitys != null){
+				entitys.clear();
+			}
+			
+			JSONArray data;
+			switch (infoType) {
+			case 0:
+				data = (JSONArray) jsonobj.get("student_list");	
+				break;
+			case 1:
+				data = (JSONArray) jsonobj.get("teacher_list");
+				break;
+			case 2:
+				data = (JSONArray) jsonobj.get("competition_list");
+				break;
+			default:
+				data = null;
+				break;
+			}
+			String btn_value = infoType == 2? "申请加入":"邀请";
+			for (int i = 0; i <data.length(); i++){
+				StudentListEntity entity = new StudentListEntity();
+				JSONObject item = data.getJSONObject(i);
+				
+				switch (infoType) {
+				case 0:
+					entity.setStudentInfo(item, btn_value);
+					break;
+				case 1:
+					entity.setTeacherInfo(item, btn_value);
+					break;
+				case 2:
+					entity.setCompetitionInfo(item, btn_value);
+					break;
+				default:
+					Log.e("Error","the infotype is not match");
+					break;
+				}
+				entitys.add(entity);
+			}
+		} catch (Exception e){
+			Log.e("error", "get info error");
+		}
+		
 	}
 	
 	public void get_info(){
