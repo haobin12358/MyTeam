@@ -33,8 +33,8 @@ public class MyTeamAdapter extends BaseAdapter{
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 1;//测试用
-		//return entitys.size();
+		//return 1;//测试用
+		return entitys.size();
 	}
 
 	/*
@@ -60,16 +60,20 @@ public class MyTeamAdapter extends BaseAdapter{
 		// TODO Auto-generated method stub
 		ViewHolder holder;
 		if(convertView == null){
-			LayoutInflater.from(context).inflate(R.layout.layout_item_myteam_list, null);
+			convertView = LayoutInflater.from(context)
+					.inflate(R.layout.layout_item_myteam_list, null);
 			holder = new ViewHolder();
 			holder.Cname = (TextView)convertView.findViewById(R.id.tv_1);
 			holder.TEname = (TextView)convertView.findViewById(R.id.tv_2);
+
 		}else{
 			holder = (ViewHolder)convertView.getTag();
-		}
+		}		
 		MyTeamEntity entity = entitys.get(position);
 		holder.Cname.setText(entity.getCname());
 		holder.TEname.setText(entity.getTEname());
+		//holder.Cname.setText("比赛1");
+		//holder.TEname.setText("团队名");
 		return convertView;
 	}
 	

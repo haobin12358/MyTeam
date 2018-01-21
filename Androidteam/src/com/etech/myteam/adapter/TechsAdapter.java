@@ -34,8 +34,8 @@ public class TechsAdapter extends BaseAdapter{
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 1;//测试用
-		//return entitys.size();
+		//return 1;//测试用
+		return entitys.size();
 	}
 
 	/*
@@ -59,7 +59,7 @@ public class TechsAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		ViewHolder holder;
+		ViewHolder holder = null;
 		if(convertView == null){
 			convertView = LayoutInflater.from(context).inflate(R.layout.layout_item_tech_list, null);
 			holder = new ViewHolder();
@@ -71,6 +71,7 @@ public class TechsAdapter extends BaseAdapter{
 		TechsEntity entity = entitys.get(position);
 		holder.STname.setText(entity.getSTname());
 		holder.STlevel.setText(entity.getSTlevel());
+		convertView.setTag(holder);
 		return convertView;
 	}
 	

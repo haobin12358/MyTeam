@@ -10,7 +10,7 @@ public class UsesEntity {
 	private String Uid;//用户id，对应sid和tid
 	private String Cname;//竞赛名称，对应scname和tcname
 	private String Cno;//竞赛结果，对应scno和tcno
-	private int TCnum;//对应的队伍数量，与tid共存
+	private String TCnum;//对应的队伍数量，与tid共存
 	
 	public String getId() {
 		return id;
@@ -36,10 +36,10 @@ public class UsesEntity {
 	public void setCno(String cno) {
 		Cno = cno;
 	}
-	public int getTCnum() {
+	public String getTCnum() {
 		return TCnum;
 	}
-	public void setTCnum(int tCnum) {
+	public void setTCnum(String tCnum) {
 		TCnum = tCnum;
 	}
 	

@@ -16,7 +16,7 @@
         android:src="@drawable/returnto" />
     
     <TextView
-        android:id="@+id/tv"
+        android:id="@+id/tv_title"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
@@ -26,14 +26,14 @@
         android:textSize="@dimen/textSize_large" />
     
     
-    <ImageView
-        android:id="@+id/iv_2"
+    <TextView
+        android:id="@+id/tv_editbutton"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="right|center"
         android:layout_marginRight="@dimen/space_frame"
         android:gravity="right|center"
-        android:src="@drawable/iconfont_tixing" />
+        android:text="@string/xing_ming"/>
 
     
 </FrameLayout>

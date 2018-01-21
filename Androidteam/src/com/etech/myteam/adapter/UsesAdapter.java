@@ -6,6 +6,7 @@ import com.etech.myteam.R;
 import com.etech.myteam.entity.UsesEntity;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +38,8 @@ public class UsesAdapter extends BaseAdapter{
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 1;//测试用
-		//return entitys.size();
+		//return 1;//测试用
+		return entitys.size();
 	}
 
 	/*
@@ -62,9 +63,10 @@ public class UsesAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		ViewHolder holder;
-		if(convertView == null){
-			convertView = LayoutInflater.from(context).inflate(R.layout.layout_item_uses_list, null);
+		ViewHolder holder = null;
+		if(convertView == null){	
+			convertView = LayoutInflater.from(context)
+					.inflate(R.layout.layout_item_uses_list, null);
 			holder = new ViewHolder();
 			if(Utype == 100 || Utype == 101){
 				holder.Cname = (TextView)convertView.findViewById(R.id.tv_1);
@@ -78,11 +80,16 @@ public class UsesAdapter extends BaseAdapter{
 			holder = (ViewHolder)convertView.getTag();
 		}
 		UsesEntity entity = entitys.get(position);
+		Log.e("entitys", entity.getCname());
 		holder.Cname.setText(entity.getCname());
 		holder.Cno.setText(entity.getCno());
 		if(Utype == 101){
 			holder.TCnum.setText(entity.getTCnum());
 		}
+		//holder.Cname.setText("竞赛1");
+		//holder.Cno.setText("一等奖");
+		//holder.TCnum.setText("1");
+		convertView.setTag(holder);
 		return convertView;
 	}
 	private class ViewHolder{

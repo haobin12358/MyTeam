@@ -28,7 +28,7 @@
             		android:id="@+id/et_1"
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="@string/xing_ming"
+            		android:hint="@string/xing_ming"
             		android:layout_weight="1"
             	/>
         		<TextView 
@@ -42,7 +42,7 @@
             		android:id="@+id/et_2"
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="@string/xing_ming"
+            		android:hint="@string/xing_ming"
             		android:layout_weight="1"
             	/>
     		</LinearLayout>
@@ -61,7 +61,7 @@
             		android:id="@+id/et_3"
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="@string/xing_ming"
+            		android:hint="@string/xing_ming"
             		android:layout_weight="1"
             	/>
         		<TextView 
@@ -75,7 +75,7 @@
             		android:id="@+id/et_4"
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="@string/xing_ming"
+            		android:hint="@string/xing_ming"
             		android:layout_weight="1"
             	/>
     		</LinearLayout>
@@ -94,7 +94,7 @@
             		android:id="@+id/et_5"
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="@string/xing_ming"
+            		android:hint="@string/xing_ming"
             		android:layout_weight="1"
             	/>
         	</LinearLayout>
@@ -113,7 +113,7 @@
             		android:id="@+id/et_6"
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="@string/xing_ming"
+            		android:hint="@string/xing_ming"
             		android:layout_weight="1"
             	/>
     		</LinearLayout>
@@ -132,7 +132,7 @@
             		android:id="@+id/et_7"
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="@string/xing_ming"
+            		android:hint="@string/xing_ming"
             		android:layout_weight="1"
             	/>
     		</LinearLayout>

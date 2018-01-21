@@ -11,7 +11,7 @@ public class AppConst {
 	//for hbin wifi-ip
 	//public static String sBaseURL = "39.174.39.43";
 	//for shuaibinliu pc-ip
-	public static String sBaseURL = "192.168.0.104";
+	public static String sBaseURL = "120.79.182.43";
 	
 	//实战url
 	public static int iApiPort = 7443;
