@@ -31,7 +31,7 @@ public class InforFragment extends Fragment{
 	private int index;
 	private String Uid;
 	private int Utype;
-	private int infoType;// 0:学生list、1:教师list、2:竞赛list
+	private int infoType = 0;// 0:学生list、1:教师list、2:竞赛list
 //	private Map type_map = 
 	private String url = "http://"+AppConst.sServerURL ;
 	private String student_list = "/students/list";
@@ -69,48 +69,52 @@ public class InforFragment extends Fragment{
 		
 		ArrayAdapter<Integer> arr_adapter = new ArrayAdapter<Integer>(getActivity(),R.layout.spinner_item,data_list);
 		spinner.setAdapter(arr_adapter);
-		infoType = 0;
 	}
 	
 	//获取从上一个界面传来的值
 	private void getBd(){
 		Intent intent = getActivity().getIntent();
+		Bundle bd = intent.getExtras();
 		try{
-			Bundle bd = intent.getExtras();
 			int n = bd.getInt("index");
 			if (n == 0 || n == 1 || n == 2) {
 				index = n;
+			}else{
+				index = 0;
 			}
-			Uid = bd.getString("Uid");
-			Utype = bd.getInt("Utpe");
 		}catch (Exception e) {
 			e.printStackTrace();
 			Log.e("changeError", "false");
 			index = 0;
 		}
+		try{
+			Uid = bd.getString("Uid");
+			Utype = bd.getInt("Utpe");
+		}catch (Exception e){
+			e.printStackTrace();
+			Log.e("GET Uid and Utype error.","false");
+		}
 	}
 	
 	//封装数据传输
-	private void postText(){
-		JSONObject obj = new JSONObject();
+	private void postText(String args){
+		String typeInfo = infoType == 0? 
+				student_list:infoType == 1? 
+						teacher_list: competition_list;
+		String get_info_url = url + typeInfo 
+				+ "?page_size=10&page_num=" + page_num 
+				+ ""
+		
+		Log.e("url", url+"page_size=10&page_num="+page_num);
+		HttpgetEntity httppost = new HttpgetEntity();
 		try {
-			
-			obj.put("page_num", page_num);
-			obj.put("page_size", 10);
-		} catch (JSONException e) {
+			result_login = httppost.doget();
+			Log.e("result", result_login);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			Log.e("post", "error");
 			e.printStackTrace();
 		}
-////		Log.e("url", url+);
-//		HttpgetEntity httppost = new HttpgetEntity();
-//		try {
-//			result_login = httppost.doget(obj, login_url);
-//			Log.e("result", result_login);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			Log.e("post", "error");
-//			e.printStackTrace();
-//		}
-//		return null;
+		return null;
 	}
 }
