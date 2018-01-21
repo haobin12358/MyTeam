@@ -2,6 +2,7 @@ package com.etech.myteam.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +16,9 @@ import com.etech.myteam.adapter.UsesAdapter;
 import com.etech.myteam.common.HttpgetEntity;
 import com.etech.myteam.common.HttppostEntity;
 import com.etech.myteam.common.LinearLayoutContain;
+import com.etech.myteam.common.NewListView;
 import com.etech.myteam.common.StringToJSON;
+import com.etech.myteam.common.isEdit;
 import com.etech.myteam.entity.MyTeamEntity;
 import com.etech.myteam.entity.TechsEntity;
 import com.etech.myteam.entity.UsesEntity;
@@ -23,6 +26,8 @@ import com.etech.myteam.global.AppConst;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +45,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PersonFragment extends Fragment{
 	
@@ -191,12 +197,12 @@ public class PersonFragment extends Fragment{
 			tv10.setText(R.string.tuan_dui);
 			tv11.setText(R.string.ren_wu);
 			btn1.setVisibility(View.GONE);
-			notEdit(et1);
-			notEdit(et2);
-			notEdit(et3);
-			notEdit(et4);
-			notEdit(et5);
-			notEdit(et6);
+			isEdit.notEdit(et1);
+			isEdit.notEdit(et2);
+			isEdit.notEdit(et3);
+			isEdit.notEdit(et4);
+			isEdit.notEdit(et5);
+			isEdit.notEdit(et6);
 			if(Utype == 100){
 				tv2.setText(R.string.xue_hao);
 				et2.setHint(R.string.xue_hao);
@@ -205,7 +211,7 @@ public class PersonFragment extends Fragment{
 				tv7.setText(R.string.xing_bie);
 				et7.setHint(R.string.xing_bie);
 				tv8.setText(R.string.ji_neng);
-				notEdit(et7);
+				isEdit.notEdit(et7);
 			}else if(Utype == 101){
 				tv2.setText(R.string.jiao_gong_hao);
 				et2.setHint(R.string.jiao_gong_hao);
@@ -238,40 +244,26 @@ public class PersonFragment extends Fragment{
 		}else if(new_update == 1){
 			tvbutton.setText(R.string.bian_ji);
 		}
-		setListViewHeightBasedOnChildren(lst1);
+		NewListView.setListViewHeightBasedOnChildren(lst1);
 		adapter_tech = new TechsAdapter(entitys_tech, getActivity());
 		lst1.setAdapter(adapter_tech);
-		lst1.setOnScrollListener(scroll);
-		setListViewHeightBasedOnChildren(lst2);
+		lst1.setOnScrollListener(NewListView.scroll);
+		lst1.setOnItemClickListener(itemupdate);
+		
+		//NewListView.setListViewHeightBasedOnChildren(lst2);
 		adapter_use = new UsesAdapter(entitys_use, getActivity(), Utype);
 		lst2.setAdapter(adapter_use);
-		lst2.setOnScrollListener(scroll);
-		if(Utype == 100){
-			lst2.setOnItemClickListener(sc_itemupdate);
-		}else if(Utype == 101){
-			lst2.setOnItemClickListener(tc_itemupdate);
-		}else{
-			
-		}
-		setListViewHeightBasedOnChildren(lst3);
+		//lst2.setOnScrollListener(NewListView.scroll);
+		lst2.setOnItemClickListener(itemupdate);
+		
+		NewListView.setListViewHeightBasedOnChildren(lst3);
 		adapter_myteam = new MyTeamAdapter(entitys_myteam, getActivity());
 		lst3.setAdapter(adapter_myteam);
-		lst3.setOnScrollListener(scroll);
-		setListViewHeightBasedOnChildren(lst4);
+		lst3.setOnScrollListener(NewListView.scroll);
+		
+		NewListView.setListViewHeightBasedOnChildren(lst4);
 		
 		setPersonalText(personal_text);
-	}
-	
-	//禁止编辑功能
-	private void notEdit(EditText et){
-		et.setFocusable(false);
-		et.setFocusableInTouchMode(false);
-	}
-	
-	//允许编辑功能
-	private void yesEdit(EditText et){
-		et.setFocusable(true);
-		et.setFocusableInTouchMode(true);
 	}
 	
 	//编辑功能button的监听器
@@ -281,22 +273,22 @@ public class PersonFragment extends Fragment{
 			// TODO Auto-generated method stub
 			if(tvbutton.getText().toString() == getText(R.string.bian_ji) 
 					|| tvbutton.getText().toString() == getText(R.string.xin_zeng)){
-				yesEdit(et1);
-				yesEdit(et2);
-				yesEdit(et3);
-				yesEdit(et4);
-				yesEdit(et5);
-				yesEdit(et6);
-				yesEdit(et7);
+				isEdit.yesEdit(et1);
+				isEdit.yesEdit(et2);
+				isEdit.yesEdit(et3);
+				isEdit.yesEdit(et4);
+				isEdit.yesEdit(et5);
+				isEdit.yesEdit(et6);
+				isEdit.yesEdit(et7);
 				tvbutton.setText(R.string.que_ding);
 			}else if(tvbutton.getText().toString() == getText(R.string.que_ding)){
-				notEdit(et1);
-				notEdit(et2);
-				notEdit(et3);
-				notEdit(et4);
-				notEdit(et5);
-				notEdit(et6);
-				notEdit(et7);
+				isEdit.notEdit(et1);
+				isEdit.notEdit(et2);
+				isEdit.notEdit(et3);
+				isEdit.notEdit(et4);
+				isEdit.notEdit(et5);
+				isEdit.notEdit(et6);
+				isEdit.notEdit(et7);
 				tvbutton.setText(R.string.bian_ji);
 				if(getText()){
 					new Thread(){
@@ -632,127 +624,166 @@ public class PersonFragment extends Fragment{
 		}
 	}
 	
-	public static void setListViewHeightBasedOnChildren(ListView listView) { 
-        ListAdapter listAdapter = listView.getAdapter();  
-        if (listAdapter == null) { 
-            return; 
-        }   
-        int totalHeight = 0; 
-        for (int i = 0; i < listAdapter.getCount(); i++) { 
-            View listItem = listAdapter.getView(i, null, listView); 
-            listItem.measure(0, 0); 
-            totalHeight += listItem.getMeasuredHeight(); 
-        }   
-        ViewGroup.LayoutParams params = listView.getLayoutParams(); 
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1)); 
-        listView.setLayoutParams(params); 
+    private String getLevel(int level){
+    	String level_name = null;
+    	switch(level){
+    	case 1:
+    		level_name = "入门";
+    		break;
+    	case 2:
+    		level_name = "一般";
+    		break;
+    	case 3:
+    		level_name = "掌握";
+    		break;
+    	case 4:
+    		level_name = "熟练";
+    		break;
+    	case 5:
+    		level_name = "精通";
+    		break;
+    	default:
+    		level_name = "未知";
+    	}
+    	return level_name;
+    }
+    //更新&删除个人技能&个人比赛经历的监听事件
+    private OnItemClickListener itemupdate = new OnItemClickListener(){
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			// TODO Auto-generated method stub
+			if(parent.getId() == R.id.lst_1){
+				JSONArray jsonArray = StringToJSON.toJSONArray(s_tech);
+				try {
+					JSONObject jsonObject = jsonArray.getJSONObject(position);
+					showDialog(jsonObject, "修改或删除这个技能", "st");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else if(parent.getId() == R.id.lst_2){
+				if(Utype == 100){
+					JSONArray jsonArray = StringToJSON.toJSONArray(sc_use);
+					try {
+						JSONObject jsonObject = jsonArray.getJSONObject(position);
+						showDialog(jsonObject, "修改或删除这个比赛经历", "sc");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else if(Utype == 101){
+					JSONArray jsonArray = StringToJSON.toJSONArray(tc_use);
+					try {
+						JSONObject jsonObject = jsonArray.getJSONObject(position);
+						showDialog(jsonObject, "修改或删除这个比赛经历", "tc");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+    };
+  	
+  	public void showDialog(final JSONObject getJSON, String title, final String list_index){
+  		//getJSON表示获取的服务端值，title表示标题内容，list_index表示业务类型
+		android.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		final LayoutInflater inflater = LayoutInflater.from(getActivity());
+		final View view = inflater.inflate(R.layout.layout_alert, null);
+	    builder.setTitle(title);
+	    final EditText editText1 = (EditText)view.findViewById(R.id.alert_1);
+	    final EditText editText2 = (EditText)view.findViewById(R.id.alert_2);
+	    final EditText editText3 = (EditText)view.findViewById(R.id.alert_3);
+	    builder.setView(view);
+	    if(list_index == "st" || list_index == "sc" || list_index == "tc"){
+		    if(list_index == "tc"){
+		    	editText1.setHint("请输入竞赛名称");
+		    	editText2.setHint("请输入获奖等级/名次");
+		    	editText3.setHint("请输入获奖队伍数目");
+		    	editText1.setText(getJSON.optString("TCname"));
+		    	editText2.setText(getJSON.optString("TCno"));
+		    	editText3.setText(getJSON.optString("TCnum"));
+		    }else if(list_index == "st"){
+		    	editText1.setHint("请输入技能名称");
+		    	editText2.setHint("请输入技能熟练度");
+		    	editText3.setVisibility(View.GONE);
+		    	editText1.setText(getJSON.optString("STname"));
+		    	editText2.setText(getJSON.optString("STlevel"));
+		    }else if(list_index == "sc"){
+		    	editText3.setVisibility(View.GONE);
+		    	editText1.setHint("请输入竞赛名称");
+		    	editText2.setHint("请输入获奖等级/名次");
+		    	editText1.setText(getJSON.optString("SCname"));
+		    	editText2.setText(getJSON.optString("SCno"));
+		    }
+	    }
+	    builder.setPositiveButton("修改",
+	            new DialogInterface.OnClickListener() {
+	                @Override
+	                public void onClick(DialogInterface dialog, int which) {
+	                    // TODO Auto-generated method stub
+	                	JSONObject obj = new JSONObject();
+	                	final JSONArray jsonArray = new JSONArray();
+	                	if(list_index == "tc"){
+	                		try {
+	                			if(editText1.getText().toString().length() == 0 || 
+	                					editText2.getText().toString().length() == 0){
+	                				Toast.makeText(getActivity(),
+	        	                            "请填写竞赛名称和名次",
+	        	                            Toast.LENGTH_SHORT).show();
+	                			}
+								obj.put("TCname", editText1.getText().toString());
+								obj.put("TCno", editText2.getText().toString());
+								if(editText3.getText().toString().length() == 0){
+									obj.put("TCnum", 1);
+								}else{
+									obj.put("TCnum", Integer.parseInt(editText3.getText().toString()));
+								}
+								obj.put("TCid", getJSON.opt("TCid"));
+								jsonArray.put(obj);
+								Log.e("jsonArray", jsonArray.toString());
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+                			new Thread(){
+                				public void run(){
+                					try {
+										String response = postEntity.doPostA(jsonArray, update_personal_use_url);
+										Log.e("response",response);
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+                					
+    								try {
+										Thread.sleep(2000);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+                				}
+                			}.start();
+								
+							
+	                	}
+	                  
+	                    Toast.makeText(getActivity(),
+	                            "修改成功",
+	                            Toast.LENGTH_SHORT).show();
+	                }
+	            });
+	    builder.setNegativeButton("删除",
+	            new DialogInterface.OnClickListener() {
+	 
+	                @Override
+	                public void onClick(DialogInterface dialog, int which) {
+	                    // TODO Auto-generated method stub
+	                    Toast.makeText(getActivity(), "删除成功",
+	                            Toast.LENGTH_SHORT).show();
+	                }
+	            });
+	 
+	    builder.show();
 	}
-	
-	OnScrollListener scroll = new OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(AbsListView view, int scrollState) {
-           switch (scrollState) {   // 当不滚动时
-           case OnScrollListener.SCROLL_STATE_IDLE:
-              // TODO coding here dosometing
-              break;
-           }
-        }      
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem,
-              int visibleItemCount, int totalItemCount) {
-            // TODO coding here dosometing
-        }
-      };
-      
-      private String getLevel(int level){
-    	  String level_name = null;
-    	  switch(level){
-    	  case 1:
-    		  level_name = "入门";
-    		  break;
-    	  case 2:
-    		  level_name = "一般";
-    		  break;
-    	  case 3:
-    		  level_name = "掌握";
-    		  break;
-    	  case 4:
-    		  level_name = "熟练";
-    		  break;
-    	  case 5:
-    		  level_name = "精通";
-    		  break;
-    	  default:
-    		  level_name = "未知";
-    	  }
-    	  return level_name;
-      }
-      
-      private String SCid;
-      OnItemClickListener sc_itemupdate = new OnItemClickListener(){
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			// TODO Auto-generated method stub
-			JSONArray jsonArray = StringToJSON.toJSONArray(sc_use);
-			try {
-				JSONObject jsonObject = jsonArray.getJSONObject(arg2);
-				SCid = jsonObject.optString("SCid");
-				new AlertDialog.Builder(getActivity())
-					.setTitle(R.string.ti_xing)
-					.setMessage("修改或删除这个比赛经历")
-					.setPositiveButton("修改", null)
-					.setNegativeButton("删除", null)
-					.show();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-      };
-      private String TCid;
-      OnItemClickListener tc_itemupdate = new OnItemClickListener(){
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			// TODO Auto-generated method stub
-			Log.e("json", tc_use);
-			JSONArray jsonArray = StringToJSON.toJSONArray(tc_use);
-			try {
-				JSONObject jsonObject = jsonArray.getJSONObject(arg2);
-				SCid = jsonObject.optString("TCid");
-				new AlertDialog.Builder(getActivity())
-					.setTitle(R.string.ti_xing)
-					.setMessage("修改或删除这个比赛经历")
-					.setPositiveButton("修改", null)
-					.setNegativeButton("删除", null)
-					.show();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-      };
-      private String STid;
-      OnItemClickListener st_itemupdate = new OnItemClickListener(){
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			// TODO Auto-generated method stub
-			JSONArray jsonArray = StringToJSON.toJSONArray(s_tech);
-			try {
-				JSONObject jsonObject = jsonArray.getJSONObject(arg2);
-				SCid = jsonObject.optString("STid");
-				new AlertDialog.Builder(getActivity())
-					.setTitle(R.string.ti_xing)
-					.setMessage("修改或删除这个比赛经历")
-					.setPositiveButton("修改", null)
-					.setNegativeButton("删除", null)
-					.show();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-      };
 }
