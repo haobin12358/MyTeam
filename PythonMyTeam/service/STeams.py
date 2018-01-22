@@ -8,6 +8,7 @@ from models import model
 import DBSession
 from common.TransformToList import trans_params
 from Config.SQLs import SQL_FOR_SELECT_COUNT_IN_TEAM, SQL_FOR_SELECT_TCOUNT_IN_TEAM
+import sqlalchemy
 
 # 操作teams表的相关方法
 class STeams():
@@ -20,22 +21,23 @@ class STeams():
             self.status = False
 
     # 获取团队列表
-    def get_all_teams(self):
+    def get_all_teams(self, start_num, page_size):
         team_list = self.session.query(model.Teams.TEid, model.Teams.TEname,
-                                       model.Teams.Cid, model.Teams.TEuse, model.Teams.TEnum).all()
+                                       model.Teams.Cid, model.Teams.TEuse, model.Teams.TEnum)\
+            .offset(start_num).limit(page_size).all()
         return team_list
 
     # 分页获取团队列表
     def get_team_list_by_start_end(self, start_num, infor_num):
         team_list = self.session.query(model.Teams.TEid, model.Teams.TEname,
-                                       model.Teams.Cid, model.Teams.TEuse, model.Teams.TEnum).offset(start_num-1)\
-            .limit(infor_num).all()
+                                       model.Teams.Cid, model.Teams.TEuse, model.Teams.TEnum).filter_by(TEuse=701)\
+            .offset(start_num-1).limit(infor_num).all()
         return team_list
 
     # 获取团队基础信息
     def get_team_abo_by_teid(self, teid):
         team_abo = self.session.query(model.Teams.TEid, model.Teams.TEname, model.Teams.Cid,
-                                      model.Teams.TEuse, model.Teams.TEnum).filter_by(TEid=teid).all()
+                                      model.Teams.TEuse, model.Teams.TEnum).filter_by(TEid=teid).scalar()
         return team_abo
 
     # 获取团队学生信息
@@ -45,8 +47,8 @@ class STeams():
         return student_list
 
     # 获取团队教师信息
-    def get_teacher_list_by_teid(self, teid):
-        teacher_list = self.session.query(model.TTeacher.Tid).filter_by(TEid=teid).filter_by(TTsubject=1).all()
+    def get_tid_by_teid(self, teid):
+        teacher_list = self.session.query(model.TTeacher.Tid).filter_by(TEid=teid).filter_by(TTsubject=1).scalar()
         return teacher_list
 
     # 获取团队任务列表
@@ -240,3 +242,22 @@ class STeams():
     # 根据团队id和学生id获取成员类型
     def get_tstype_by_teid_sid(self, teid, sid):
         return self.session.query(model.TStudent.TStype).filter_by(TEid=teid).filter_by(Sid=sid).scalar()
+
+    # 根据cid获取竞赛名称、竞赛届次、竞赛等级
+    def get_cname_cno_clevel_by_cid(self, cid):
+        return self.session.query(model.Competitions.Cname, model.Competitions.Cno, model.Competitions.Clevel)\
+            .filter_by(Cid=cid).one()
+
+    # 根据teid获取当前被待审核人数和被拒绝人数
+    def get_count_wait_refuse_by_teid(self, teid):
+        wait_num = self.session.query(sqlalchemy.func.count(model.TStudent.TSid))\
+            .filter_by(TEid=teid).filter_by(TSsubject=1100).scalar()
+        refuse_num = self.session.query(sqlalchemy.func.count(model.TStudent.TSid))\
+            .filter_by(TEid=teid).filter_by(TSsubject=1102).scalar()
+        return wait_num, refuse_num
+
+if __name__ == '__main__':
+    steams = STeams()
+    s = steams.get_cname_cno_clevel_by_cid('a6915f77-800d-4c96-8acb-7d0c8cc81fa0')
+    print s.Cname
+    print type(s)

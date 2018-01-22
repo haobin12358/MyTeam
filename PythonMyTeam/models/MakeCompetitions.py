@@ -18,10 +18,10 @@ if __name__ == "__main__":
     '''
         运行该文件就可以创建竞赛信息的基础测试信息
     '''
-    # for row in Competitions_list:
-    #     scompetitions.add_competitions(uuid.uuid4(), row["Cname"], row["Cno"],
-    #                                    row["Clevel"], row["Cstart"], row["Cend"],
-    #                                    row["Cmin"], row["Cmax"], row["Cown"], row["Cabo"])
+    for row in Competitions_list:
+        scompetitions.add_competitions(uuid.uuid4(), row["Cname"], row["Cno"],
+                                    row["Clevel"], row["Cstart"], row["Cend"],
+                                    row["Cmin"], row["Cmax"], row["Cown"], row["Cabo"])
     """
     创建教师脏数据    
     """
