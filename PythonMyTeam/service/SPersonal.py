@@ -56,7 +56,7 @@ class SPersonal():
             print e.message
             return False
 
-    def add_teacher_abo_by_uid(self, tid, uid, tname, tno, ttel, tuniversity, tschool, ttime):
+    def add_teacher_abo_by_uid(self, uid, tid, tname, tno, ttel, tuniversity, tschool, ttime):
         """
         :param tid:
         :param uid:
