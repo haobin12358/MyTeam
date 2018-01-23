@@ -40,8 +40,7 @@ class CTeams():
         if not self.steams.status:  # 校验数据库是否连接异常
             return system_error
         args = request.args.to_dict()
-        result_of_team_list = []
-        result_of_team_item = {}
+
         # 判断是否含有参数
         try:
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均报错
@@ -62,7 +61,10 @@ class CTeams():
                 isFull = get_str(args, "Sname")
 
             team_list_data = self.steams.get_all_teams(page_size*(page_num-1)+1,page_size)
+            result_of_team_list = []
             for row in team_list_data:
+                result_of_team_item = {}
+                result_of_team_item["TEid"] = row.TEid
                 result_of_team_item["TEname"] = row.TEname
                 tenum = row.TEnum
                 tenum_now = self.steams.get_count_by_teid(row.TEid)
@@ -70,13 +72,14 @@ class CTeams():
                     result_of_team_item["isFull"] = 0
                 else:
                     result_of_team_item["isFull"] = 1
-                competitions_item = self.steams.get_cname_cno_clevel_by_cid(row.TEid)
+                competitions_item = self.steams.get_cname_cno_clevel_by_cid(row.Cid)
                 result_of_team_item["Cname"] = competitions_item.Cname
                 result_of_team_item["Cno"] = competitions_item.Cno
                 result_of_team_item["Clevel"] = competitions_item.Clevel
                 leader_id = self.steams.get_sid_by_teid(row.TEid)
                 result_of_team_item["TEleader"] = self.sstudent.get_sname_by_sid(leader_id)
                 teacher_id = self.steams.get_tid_by_teid(row.TEid)
+                print ">>>>>>>"+str(teacher_id)
                 result_of_team_item["TEteachername"] = self.steacher.get_tname_by_tid(teacher_id)
 
                 result_of_team_list.append(result_of_team_item)

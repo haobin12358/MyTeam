@@ -74,7 +74,7 @@ class MakeData():
         school = "管理学院"
         tel = "177064411"
         while i < 11:
-            self.personal.add_teacher_abo_by_uid(teacher_ids[i], user_ids[i+11],
+            self.personal.add_teacher_abo_by_uid(user_ids[i+11], teacher_ids[i],
                                                  name + str(i), no + str(i), university, school, tel + str(i), i + 1)
             i = i + 1
 

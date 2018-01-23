@@ -49,6 +49,7 @@ class STeams():
     # 获取团队教师信息
     def get_tid_by_teid(self, teid):
         teacher_list = self.session.query(model.TTeacher.Tid).filter_by(TEid=teid).filter_by(TTsubject=1).scalar()
+        print ">>>>>>>>>>id:"+str(teacher_list)
         return teacher_list
 
     # 获取团队任务列表
@@ -246,7 +247,7 @@ class STeams():
     # 根据cid获取竞赛名称、竞赛届次、竞赛等级
     def get_cname_cno_clevel_by_cid(self, cid):
         return self.session.query(model.Competitions.Cname, model.Competitions.Cno, model.Competitions.Clevel)\
-            .filter_by(Cid=cid).one()
+            .filter_by(Cid=cid).first()
 
     # 根据teid获取当前被待审核人数和被拒绝人数
     def get_count_wait_refuse_by_teid(self, teid):
