@@ -84,7 +84,7 @@ class SCompetitions():
                                              model.Competitions.Cstart, model.Competitions.Cend,
                                              model.Competitions.Cmin, model.Competitions.Cmax,
                                              model.Competitions.Cown, model.Competitions.Cabo) \
-            .filter_by(Cid=cid).scalar()
+            .filter_by(Cid=cid).first()
         return competition_abo
 
     # 根据id获取竞赛名称和竞赛届次

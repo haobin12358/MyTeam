@@ -79,7 +79,6 @@ class CTeams():
                 leader_id = self.steams.get_sid_by_teid(row.TEid)
                 result_of_team_item["TEleader"] = self.sstudent.get_sname_by_sid(leader_id)
                 teacher_id = self.steams.get_tid_by_teid(row.TEid)
-                print ">>>>>>>"+str(teacher_id)
                 result_of_team_item["TEteachername"] = self.steacher.get_tname_by_tid(teacher_id)
 
                 result_of_team_list.append(result_of_team_item)
@@ -114,9 +113,10 @@ class CTeams():
 
         result_of_team_abo = {}
         result_of_team_student_list = []
-        result_of_team_student_item = {}
+
 
         team_abo = self.steams.get_team_abo_by_teid(teid)
+        result_of_team_abo["TEid"] = team_abo.TEid
         result_of_team_abo["TEname"] = team_abo.TEname
         result_of_team_abo["TEnum"] = team_abo.TEnum
         cid = team_abo.Cid
@@ -134,6 +134,7 @@ class CTeams():
         result_of_team_abo["Refuse"] = refuse_num
         team_student = self.steams.get_student_list_by_teid(teid)
         for row in team_student:
+            result_of_team_student_item = {}
             result_of_team_student_item["Sid"] = row.Sid
             result_of_team_student_item["TStype"] = row.TStype
             result_of_team_student_item["Sname"] = self.sstudent.get_sname_by_sid(row.Sid)

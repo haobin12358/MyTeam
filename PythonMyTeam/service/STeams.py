@@ -37,19 +37,18 @@ class STeams():
     # 获取团队基础信息
     def get_team_abo_by_teid(self, teid):
         team_abo = self.session.query(model.Teams.TEid, model.Teams.TEname, model.Teams.Cid,
-                                      model.Teams.TEuse, model.Teams.TEnum).filter_by(TEid=teid).scalar()
+                                      model.Teams.TEuse, model.Teams.TEnum).filter_by(TEid=teid).first()
         return team_abo
 
     # 获取团队学生信息
     def get_student_list_by_teid(self, teid):
         student_list = self.session.query(model.TStudent.Sid, model.TStudent.TStype)\
-            .filter_by(TEid=teid).filter_by(TSsubject=1).all()
+            .filter_by(TEid=teid).filter_by(TSsubject=1101).all()
         return student_list
 
     # 获取团队教师信息
     def get_tid_by_teid(self, teid):
         teacher_list = self.session.query(model.TTeacher.Tid).filter_by(TEid=teid).filter_by(TTsubject=1).scalar()
-        print ">>>>>>>>>>id:"+str(teacher_list)
         return teacher_list
 
     # 获取团队任务列表
