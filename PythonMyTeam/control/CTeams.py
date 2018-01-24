@@ -35,35 +35,59 @@ class CTeams():
         self.steacher = STeachers()
         self.scompetitions = SCompetitions()
 
-    # 展现团队列表，场景应用于团队信息和个人团队信息
+    # 展现团队列表，场景应用于团队信息和个人团队信息，没有校检
     def teams_list(self):
-
         if not self.steams.status:  # 校验数据库是否连接异常
             return system_error
         args = request.args.to_dict()
+
         # 判断是否含有参数
-        params = []
         try:
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均报错
             page_num, page_size = self.judgeData.check_page_params(args)
-            from models.model import Students
-            if "start" in args:
-                params.append(Students.Sgrade >= args.get("start"))
-            if "end" in args:
-                params.append(Students.Sgrade <= args.get("end"))
-            if "TEname" in args:
+            if "Tname" in args:
                 tename = get_str(args, "TEname")
                 # params.append(Students.Sname.like("%{0}%".format(name)))
             if "Cname" in args:
                 cname = get_str(args, "Cname")
                 # params.append(Students.Sschool.like("%{0}%".format(school)))
+            if "Cno" in args:
+                cno = get_str(args, "Cno")
+            if "Clevel" in args:
+                clevel = get_str(args, "Clevel")
+            if "Sname" in args:
+                sname = get_str(args, "Sname")
+            if "isFull" in args:
+                isFull = get_str(args, "Sname")
 
-            page_num, count = JudgeData.check_page_value(page_num, page_size, "Students", params)
-            start_num = (page_num - 1) * page_size
-            # search_student_list_success["student_list"] = self.get_students_list(start_num, page_size, params)
-            # search_student_list_success["count"] = count
-            # search_student_list_success["page_num"] = page_num
-            # return search_student_list_success
+            team_list_data = self.steams.get_all_teams(page_size*(page_num-1)+1,page_size)
+            result_of_team_list = []
+            for row in team_list_data:
+                result_of_team_item = {}
+                result_of_team_item["TEid"] = row.TEid
+                result_of_team_item["TEname"] = row.TEname
+                tenum = row.TEnum
+                tenum_now = self.steams.get_count_by_teid(row.TEid)
+                if tenum != 0 and tenum > tenum_now:
+                    result_of_team_item["isFull"] = 0
+                else:
+                    result_of_team_item["isFull"] = 1
+                competitions_item = self.steams.get_cname_cno_clevel_by_cid(row.Cid)
+                result_of_team_item["Cname"] = competitions_item.Cname
+                result_of_team_item["Cno"] = competitions_item.Cno
+                result_of_team_item["Clevel"] = competitions_item.Clevel
+                leader_id = self.steams.get_sid_by_teid(row.TEid)
+                result_of_team_item["TEleader"] = self.sstudent.get_sname_by_sid(leader_id)
+                teacher_id = self.steams.get_tid_by_teid(row.TEid)
+                result_of_team_item["TEteachername"] = self.steacher.get_tname_by_tid(teacher_id)
+
+                result_of_team_list.append(result_of_team_item)
+            result_response = {}
+            result_response["status"] = 200
+            result_response["messages"] = ""
+            result_response["team_list"] = result_of_team_list
+            return result_response
+
         except(ParamsNotExitError)as e:
             print e.message
             return param_miss
@@ -74,9 +98,54 @@ class CTeams():
             print e.message
             return system_error
 
-    # 团队信息详情，根据团队唯一ID进行检索
+    # 团队信息详情，根据团队唯一ID进行检索，目前写的非常粗糙，没有进行权限的校检，也没有进行数据的校检，单纯算是完成了正向逻辑
     def team_abo(self):
-        return system_error
+        if not self.steams.status:  # 校验数据库是否连接异常
+            return system_error
+        args = request.args.to_dict()
+
+        if "TEid" not in args or "Uid" not in args:
+            return param_miss
+        teid = get_str(args, "TEid")
+        uid = get_str(args, "Uid")
+        utype = self.spersonal.get_utype_by_uid(uid)
+        in_team = True
+
+        result_of_team_abo = {}
+        result_of_team_student_list = []
+
+
+        team_abo = self.steams.get_team_abo_by_teid(teid)
+        result_of_team_abo["TEid"] = team_abo.TEid
+        result_of_team_abo["TEname"] = team_abo.TEname
+        result_of_team_abo["TEnum"] = team_abo.TEnum
+        cid = team_abo.Cid
+        competition_abo = self.scompetitions.get_competitions_abo_by_cid(cid)
+        result_of_team_abo["Cname"] = competition_abo.Cname
+        result_of_team_abo["Cno"] = competition_abo.Cno
+        result_of_team_abo["Clevel"] = competition_abo.Clevel
+        result_of_team_abo["Cabo"] = competition_abo.Cabo
+        leader_id = self.steams.get_sid_by_teid(teid)
+        result_of_team_abo["TEleader"] = self.sstudent.get_sname_by_sid(leader_id)
+        teacher_id = self.steams.get_tid_by_teid(teid)
+        result_of_team_abo["Teachername"] = self.steacher.get_tname_by_tid(teacher_id)
+        wait_num, refuse_num = self.steams.get_count_wait_refuse_by_teid(teid)
+        result_of_team_abo["Wait"] = wait_num
+        result_of_team_abo["Refuse"] = refuse_num
+        team_student = self.steams.get_student_list_by_teid(teid)
+        for row in team_student:
+            result_of_team_student_item = {}
+            result_of_team_student_item["Sid"] = row.Sid
+            result_of_team_student_item["TStype"] = row.TStype
+            result_of_team_student_item["Sname"] = self.sstudent.get_sname_by_sid(row.Sid)
+            result_of_team_student_list.append(result_of_team_student_item)
+        result_of_team_abo["student_list"] = result_of_team_student_list
+        result_response = {}
+        result_response["status"] = 200
+        result_response["messages"] = ""
+        result_response["team_abo"] = result_of_team_abo
+
+        return result_response
 
     # 新建团队（创建团队信息表和团队学生表的主要人员），入口在竞赛信息和团队板块的创建团队
     def new_team(self):
@@ -130,14 +199,14 @@ class CTeams():
                 if self.judgeData.inData("Sid", row):
                     add_team_student_list = self.steams.add_student_in_team(uuid.uuid4(), teid, row["Sid"], 1002, 1100)
                     uid = self.sstudent.get_uid_by_sid(row["Sid"])
-                    add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid)  # 这里需要判断一下分步异常的问题
+                    #add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid)  # 这里需要判断一下分步异常的问题
 
         if self.judgeData.inData("Teachers", data):
             for row in data["Teachers"]:
                 if self.judgeData.inData("Tid", row):
                     add_team_teacher_list = self.steams.add_teacher_in_team(uuid.uuid4(), teid, row["Tid"], 1100)
                     uid = self.steacher.get_uid_by_tid(row["Tid"])
-                    add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid) # 这里需要判断一下分步异常的问题
+                    #add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid) # 这里需要判断一下分步异常的问题
 
         return new_team_success
 
