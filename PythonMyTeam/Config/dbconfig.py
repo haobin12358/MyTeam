@@ -15,3 +15,6 @@ password="root"
 charset = "utf8"
 # 数据库类型 目前默认为mysql
 sqlenginename = 'mysql+mysqldb'
+
+# log数据库名
+log_database="logs"
