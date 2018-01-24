@@ -17,7 +17,9 @@ import android.widget.TextView;
 public class CompetitionAdapter extends BaseAdapter{
 	public List<StudentListEntity> entitys;
 	private Context context;
-	public CompetitionAdapter(List<StudentListEntity> entitys,Context context){
+	private int Utype;
+	public CompetitionAdapter(List<StudentListEntity> entitys,Context context, int Utype){
+		this.Utype = Utype;
 		this.context = context;
 		this.entitys = entitys;
 	}
@@ -54,6 +56,13 @@ public class CompetitionAdapter extends BaseAdapter{
 		}
 		
 		StudentListEntity entity = entitys.get(position);
+		//教师 和管理员不能看到btn
+		if (Utype == 100){
+			holder.btn_doit.setText(entity.getBtn_name());
+		}else{
+			
+			holder.btn_doit.setVisibility(View.GONE);
+		}
 		holder.Sname.setText(entity.getName());
 		holder.Sgrade.setText(entity.getStart_time()+"-"+entity.getEnd_time());
 		holder.Sscool.setText(entity.getLevel());

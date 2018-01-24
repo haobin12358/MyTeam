@@ -17,7 +17,9 @@ import android.widget.TextView;
 public class StudentAdapter extends BaseAdapter {
 	public List<StudentListEntity> entitys;
 	private Context context;
-	public StudentAdapter(List<StudentListEntity> entitys,Context context){
+	private int Utype;
+	public StudentAdapter(List<StudentListEntity> entitys,Context context,int Utype){
+		this.Utype = Utype;
 		this.context = context;
 		this.entitys = entitys;
 	}
@@ -52,12 +54,17 @@ public class StudentAdapter extends BaseAdapter {
 		}else{
 			holder = (ViewHolder)convertView.getTag();
 		}
-		
 		StudentListEntity entity = entitys.get(position);
+		if (Utype == 100){
+			holder.btn_doit.setText(entity.getBtn_name());
+		}else{
+			
+			holder.btn_doit.setVisibility(View.GONE);
+		}
 		holder.Sname.setText(entity.getName());
 		holder.Sgrade.setText(String.valueOf(entity.getGrade()));
 		holder.Sscool.setText(entity.getSchool());
-		holder.btn_doit.setText(entity.getBtn_name());
+		
 		convertView.setTag(holder);
 		return convertView;
 	}

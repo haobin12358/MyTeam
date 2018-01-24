@@ -14,15 +14,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.webkit.WebView.FindListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.etech.myteam.R;
+import com.etech.myteam.activity.InforActivity;
 import com.etech.myteam.adapter.StudentAdapter;
 import com.etech.myteam.common.HttpgetEntity;
 import com.etech.myteam.common.HttppostEntity;
@@ -33,7 +37,7 @@ import com.etech.myteam.global.AppConst;
 public class InforFragment extends Fragment{
 	private int index = 0;
 	private String Uid;
-	private int Utype;
+	private int Utype = 101;
 	private int infoType = 0;// 0:学生list、1:教师list、2:竞赛list
 //	private Map type_map = 
 	private String url = "http://"+AppConst.sServerURL ;
@@ -61,25 +65,76 @@ public class InforFragment extends Fragment{
 		
 		init(view);
 		Log.e("Info", "init over");
-		adapter = new StudentAdapter(entitys, getActivity());
+		adapter = new StudentAdapter(entitys, getActivity(),Utype);
 		Log.e("adapter over", "over");
 		list.setAdapter(adapter);
+		tv_1.setOnClickListener(search);
+		tv_2.setOnClickListener(search);
+		tv_3.setOnClickListener(search);
 		return view;
 	}
 	
 	private void init(View view){
-		
-		
 		tv_1 = (TextView)view.findViewById(R.id.tv_1);
 		tv_2 = (TextView)view.findViewById(R.id.tv_2);
 		tv_3 = (TextView)view.findViewById(R.id.tv_3);
 		btn_doit = (Button)view.findViewById(R.id.btn_doit);
 		spinner = (Spinner) view.findViewById(R.id.spinner1);
 		list = (ListView) view.findViewById(R.id.student_list);
+		btn_doit.setText(R.string.cha_xun);
 		initdata();
-		ArrayAdapter<Integer> arr_adapter = new ArrayAdapter<Integer>(getActivity(),R.layout.spinner_item,data_list);
-		spinner.setAdapter(arr_adapter);
+		
+		
 	}
+	
+	
+	//邀请、请求加入的btn的监听事件
+    private OnItemClickListener doit = new OnItemClickListener(){
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			//跳转
+			Intent it = new Intent(getActivity(), InforActivity.class);
+			it.putExtra("Uid", Uid);
+			it.putExtra("Utype", Utype);
+			it.putExtra("infoType", infoType);
+			it.putExtra("index", index);
+			startActivity(it);
+			getActivity().finish();
+			//拼接邀请url
+			
+		}
+    };
+    
+    //学生 教师 竞赛 监听器 
+    private OnClickListener search = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.tv_2:
+				infoType = 1;
+				break;
+			case R.id.tv_3:
+				infoType = 2;
+			case R.id.tv_1:
+				
+			default:
+				infoType = 0;
+				break;
+			}
+			
+			result_info = null;
+			get_info();
+			while (true){
+				if (result_info != null){
+					break;
+				}
+			}
+			initdata();
+		}
+
+	};
 	
 	public void initdata(){
 		try{
@@ -89,10 +144,13 @@ public class InforFragment extends Fragment{
 				return ;
 			}
 			int count = (Integer) jsonobj.get("count");
+			if (data_list.size() !=0){
+				data_list.clear();
+			}
 			for(int i=1;i <= (count/10) + 1;i++) {
 				data_list.add(i);
 			}
-			if (entitys != null){
+			if (entitys.size() !=0){
 				entitys.clear();
 			}
 			
@@ -135,7 +193,10 @@ public class InforFragment extends Fragment{
 		} catch (Exception e){
 			Log.e("error", "get info error");
 		}
-		
+		ArrayAdapter<Integer> arr_adapter = new ArrayAdapter<Integer>(
+				getActivity(),R.layout.spinner_item,data_list);
+
+		spinner.setAdapter(arr_adapter);
 	}
 	
 	public void get_info(){
