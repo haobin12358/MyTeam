@@ -33,9 +33,15 @@ class SStudents():
     """
     # 获取学生信息详情
     def get_student_abo_by_sid(self, sid):
-        student_abo = self.session.query(model.Students.Sid, model.Students.Uid, model.Students.Sname,
+        student_abo = None
+        try:
+            student_abo = self.session.query(model.Students.Sid, model.Students.Uid, model.Students.Sname,
                                          model.Students.Suniversity, model.Students.Sschool, model.Students.Sno,
                                          model.Students.Stel, model.Students.Ssex).filter_by(Sid=sid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return student_abo
 
     # 获取学生技能

@@ -17,6 +17,7 @@ import com.etech.myteam.common.HttpgetEntity;
 import com.etech.myteam.common.HttppostEntity;
 import com.etech.myteam.common.LinearLayoutContain;
 import com.etech.myteam.common.NewListView;
+import com.etech.myteam.common.NumToString;
 import com.etech.myteam.common.StringToJSON;
 import com.etech.myteam.common.isEdit;
 import com.etech.myteam.entity.MyTeamEntity;
@@ -68,7 +69,7 @@ public class PersonFragment extends Fragment{
 	private List<MyTeamEntity> entitys_myteam = new ArrayList<MyTeamEntity>();
 	//定义默认值
 	private int Utype = 101;
-	private String Uid = "9f71d450-ebc9-4680-a415-5b86f0e4df15";
+	private String Uid = "2ceb5b30-def9-4534-920c-75cda265cb86";
 	private int new_update = 0;//判断应该新增还是更新
 	//定义接口url
 	private String get_personal_url = "http://" 
@@ -434,7 +435,7 @@ public class PersonFragment extends Fragment{
 									for(int i = 0;i < json_techs.length();i++){
 										JSONObject json_tech = json_techs.getJSONObject(i);
 										entity_tech.setSTname(json_tech.optString("STname"));
-										entity_tech.setSTlevel(getLevel(Integer.getInteger(json_tech.optString("STlevel"))));
+										entity_tech.setSTlevel(NumToString.getLevel(json_tech.optInt("STlevel")));
 										entitys_tech.add(entity_tech);
 									}
 								}catch(JSONException e){
@@ -624,29 +625,6 @@ public class PersonFragment extends Fragment{
 		}
 	}
 	
-    private String getLevel(int level){
-    	String level_name = null;
-    	switch(level){
-    	case 1:
-    		level_name = "入门";
-    		break;
-    	case 2:
-    		level_name = "一般";
-    		break;
-    	case 3:
-    		level_name = "掌握";
-    		break;
-    	case 4:
-    		level_name = "熟练";
-    		break;
-    	case 5:
-    		level_name = "精通";
-    		break;
-    	default:
-    		level_name = "未知";
-    	}
-    	return level_name;
-    }
     //更新&删除个人技能&个人比赛经历的监听事件
     private OnItemClickListener itemupdate = new OnItemClickListener(){
 		@Override

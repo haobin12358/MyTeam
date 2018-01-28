@@ -124,4 +124,9 @@
 	<!-- 性别 -->
 	<string name="nan">男</string>
 	<string name="nv">女</string>
+	
+	<!-- 详情 -->
+	<string name="xue_sheng_xiang_qing">学生详情</string>
+	<string name="jiao_shi_xiang_qing">教师详情</string>
+	<string name="jing_sai_xiang_qing">竞赛详情</string>
 </resources>
