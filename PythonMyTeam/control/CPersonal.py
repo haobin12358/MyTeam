@@ -12,6 +12,7 @@ from common.JudgeData import JudgeData
 from service.SPersonal import SPersonal
 from service.SStudents import SStudents
 from service.STeachers import STeachers
+from service.SUsers import SUsers
 from common.get_model_return_list import get_model_return_list
 from Config.Requests import param_miss, system_error, add_personal_success,\
     none_permissions, none_identity, wrong_sex, add_student_tech_success, \
@@ -29,6 +30,7 @@ class CPersonal():
         self.spersonal = SPersonal()
         self.sstudent = SStudents()
         self.steacher = STeachers()
+        self.suser = SUsers()
 
     # 获取个人信息
     def myinfor(self):
@@ -43,7 +45,7 @@ class CPersonal():
 
         uid = args["Uid"]
         # 获取用户身份
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
         print utype
         # 判断系统是否异常
         if not self.spersonal.status:
@@ -101,7 +103,7 @@ class CPersonal():
 
         uid = args["Uid"]
         # 获取用户身份
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
         print utype
         # 判断系统正常
         if not self.spersonal.status:
@@ -177,7 +179,7 @@ class CPersonal():
 
         uid = args["Uid"]
         # 获取用户身份
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
         print utype
         # 判断系统正常
         if not self.spersonal.status:
@@ -235,7 +237,7 @@ class CPersonal():
 
         uid = args["Uid"]
         # 获取用户身份
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
         print utype
         # 判断系统正常
         if not self.spersonal.status:
@@ -305,7 +307,7 @@ class CPersonal():
             return param_miss
         uid = args["Uid"]
         # 获取用户身份
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
         print utype
         # 判断系统正常
         if not self.spersonal.status:
@@ -363,7 +365,7 @@ class CPersonal():
 
         uid = args["Uid"]
         # 获取用户身份
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
         print utype
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
@@ -416,7 +418,7 @@ class CPersonal():
 
         uid = args["Uid"]
         # 获取用户身份
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
@@ -482,7 +484,7 @@ class CPersonal():
 
         uid = args["Uid"]
         # 获取用户身份
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
         print utype
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
@@ -524,7 +526,7 @@ class CPersonal():
 
         uid = args["Uid"]
         # 获取用户身份
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:

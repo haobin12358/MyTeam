@@ -23,10 +23,12 @@ import com.etech.myteam.entity.UsesEntity;
 import com.etech.myteam.global.AppConst;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +43,7 @@ public class InforActivity extends Activity{
 	//定义组件参数
 	private LinearLayout ll1, ll2, ll3, ll4, ll5;
 	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tvtitle, tvbutton;
+	private TextView tv_cno, tv_clevel, tv_cname, tv_ctime, tv_cstart, tv_c, tv_cend, tv_cnum, tv_ccnum, tv_cown, tv_cowner, tv_cabo, tv_caboall;
 	private EditText et1, et2, et3, et4, et5, et6, et7;
 	private ListView lst1, lst2, lst3, lst4;
 	private ViewGroup vg;
@@ -59,8 +62,8 @@ public class InforActivity extends Activity{
 	private int Utype = 100;
 	private String Uid = "9f71d450-ebc9-4680-a415-5b86f0e4df15";
 	private int index = 0;//fragment的标记码
-	private String id = "7a844fb4-c0e4-4eeb-b616-6e3c14357681";//根据infoType判断
-	private int infoType = 0;//0学生，1教师，2竞赛
+	private String id = "0d7f21f6-2372-4ca1-9e89-e495ddda6427";//根据infoType判断
+	private int infoType = 2;//0学生，1教师，2竞赛
 	//定义接口url
 	private String get_student_abo = "http://" 
 			+ AppConst.sServerURL 
@@ -95,16 +98,16 @@ public class InforActivity extends Activity{
 			}
 			init();
 		}else if(infoType == 2){
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			
+			while(true){
+				if(ts_text != null){
+					break;
+				}
 			}
-			//竞赛的样式
+			setContentView(R.layout.activity_competitions_abo);//竞赛的样式
+			init_com();
 		}else{
 			Toast.makeText(InforActivity.this, "错误的类型", Toast.LENGTH_SHORT).show();
-			init();
 		}
 		
 		
@@ -148,6 +151,7 @@ public class InforActivity extends Activity{
 		vg = (ViewGroup)findViewById(R.id.tv_top);
 		
 		iv1 = (ImageView)findViewById(R.id.iv_1);
+		iv1.setOnClickListener(backto);
 		
 		btn1 = (Button)findViewById(R.id.btn_1);
 		
@@ -218,6 +222,43 @@ public class InforActivity extends Activity{
 		//lst3.setOnScrollListener(NewListView.scroll);
 		//NewListView.setListViewHeightBasedOnChildren(lst4);
 		//Log.e("json_obj",ts_text);
+		setSTText(ts_text);
+	}
+	
+	private void init_com(){
+		vg = (ViewGroup)findViewById(R.id.tv_top);
+		
+		tvbutton = (TextView)findViewById(R.id.tv_top).findViewById(R.id.tv_editbutton);
+		tvtitle = (TextView)findViewById(R.id.tv_top).findViewById(R.id.tv_title);		
+		tvtitle.setText(R.string.jing_sai_xiang_qing);
+		
+		tv_cno = (TextView)findViewById(R.id.tv_cno);
+		tv_clevel = (TextView)findViewById(R.id.tv_clevel);
+		tv_cname = (TextView)findViewById(R.id.tv_cname);
+		tv_ctime = (TextView)findViewById(R.id.tv_ctime);
+		tv_ctime.setText("参赛时间：");
+		tv_cstart = (TextView)findViewById(R.id.tv_cstart);
+		tv_c = (TextView)findViewById(R.id.tv_c);
+		tv_c.setText("-");
+		tv_cend = (TextView)findViewById(R.id.tv_cend);
+		tv_cnum = (TextView)findViewById(R.id.tv_cnum);
+		tv_cnum.setText("参赛人数：");
+		tv_ccnum = (TextView)findViewById(R.id.tv_ccnum);
+		tv_cown = (TextView)findViewById(R.id.tv_cown);
+		tv_cown.setText("组织者：");
+		tv_cowner = (TextView)findViewById(R.id.tv_cowner);
+		tv_cabo = (TextView)findViewById(R.id.tv_cabo);
+		tv_cabo.setText("竞赛详情");
+		tv_caboall = (TextView)findViewById(R.id.tv_caboall);
+		
+		iv1 = (ImageView)findViewById(R.id.iv_1);
+		iv1.setOnClickListener(backto);
+		
+		if(Utype == 100){
+			tvbutton.setText(R.string.chuang_jian_dui_wu);
+		}else{
+			tvbutton.setVisibility(View.GONE);
+		}
 		setSTText(ts_text);
 	}
 	
@@ -303,7 +344,7 @@ public class InforActivity extends Activity{
 								et7.setText("");
 							}
 							sc_use = json_obj.optString("SCUse");
-							s_tech = json_obj.optString("SCTech");
+							s_tech = json_obj.optString("STech");
 							entitys_use.clear();
 							UsesEntity entity_use = new UsesEntity();
 							if(sc_use == "[]"){
@@ -384,14 +425,63 @@ public class InforActivity extends Activity{
 								}
 							}
 						}else if(infoType == 2){
-							
+							String abo = json_obj.optString("competition_abo");
+							//Log.e("student_abo", json_obj.optString("student_abo"));
+							JSONArray jsonarray_abo = StringToJSON.toJSONArray(abo);
+							JSONObject json_obj = null;
+							try {
+								json_obj = jsonarray_abo.getJSONObject(0);
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							tv_cno.setText("第" + json_obj.optInt("Cno") + "届");
+							tv_clevel.setText(NumToString.getCLevel(json_obj.optInt("Clevel")));
+							tv_cname.setText(json_obj.optString("Cname"));
+							tv_cstart.setText(json_obj.optString("Cstart"));
+							tv_cend.setText(json_obj.optString("Cend"));
+							if(json_obj.has("Cmax")){
+								if(json_obj.has("Cmin")){
+									tv_ccnum.setText(json_obj.optInt("Cmin") + "-" + json_obj.optInt("Cmax") + "人");
+								}else{
+									tv_ccnum.setText("最多" + json_obj.optInt("Cmax") + "人");
+								}
+							}else{
+								if(json_obj.has("Cmin")){
+									tv_ccnum.setText("最少" + json_obj.optInt("Cmin") + "人");
+								}else{
+									tv_ccnum.setText("不限人数");
+								}
+							}
+							tv_cowner.setText(json_obj.optString("Cown"));
+							tv_caboall.setText(json_obj.optString("Cabo"));
 						}else{
 							Toast.makeText(InforActivity.this, "无信息", Toast.LENGTH_SHORT).show();
 						}
 					}
 				}.start();
+			}else if(json_obj.optInt("status") == 404){
+				Toast.makeText(InforActivity.this, R.string.xi_tong_yi_chang, Toast.LENGTH_SHORT).show();
+			}else if(json_obj.optInt("status") == 405){
+				
+			}else{
+				Toast.makeText(InforActivity.this, R.string.wei_zhi_cuo_wu, Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
 
+	private OnClickListener backto = new OnClickListener(){
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(InforActivity.this, MainActivity.class);
+			intent.putExtra("index", 0);
+			intent.putExtra("Uid", Uid);
+			intent.putExtra("Utype", Utype);
+			startActivity(intent);
+			finish();
+		}
+		
+	};
 }

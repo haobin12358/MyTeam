@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.getcwd())) # 增加系统路径
 # 引用项目类
 import DBSession
 from models import model
-
+from service.SLogs import SLogs
 
 # 操作students表的相关方法
 class SStudents():
@@ -14,6 +14,7 @@ class SStudents():
         try:
             self.session = DBSession.db_session()  # 初始化
             self.status = True  # session异常的判断标记
+            self.slogs = SLogs()
         except Exception as e:
             print e.message
             self.status = False
@@ -39,6 +40,10 @@ class SStudents():
                                          model.Students.Suniversity, model.Students.Sschool, model.Students.Sno,
                                          model.Students.Stel, model.Students.Ssex).filter_by(Sid=sid).all()
         except Exception as e:
+
+            #self.slogs.add_logs_easy(product_name="7443",class_name="SStudents",def_name="get_student_abo_by_sid",
+               #                      param="student_abo",param_value=str(student_abo),ct_system="linux",level=3,
+               #                      messages=e.message,ct_user="haobin")
             print e.message
         finally:
             self.session.close()
@@ -46,27 +51,74 @@ class SStudents():
 
     # 获取学生技能
     def get_student_tech_by_sid(self, sid):
-        student_tech = self.session.query(
-            model.STechs.STid, model.STechs.Sid, model.STechs.STname, model.STechs.STlevel).filter_by(Sid=sid).all()
-
+        student_tech = None
+        try:
+            student_tech = self.session.query(
+                model.STechs.STid, model.STechs.Sid, model.STechs.STname, model.STechs.STlevel).filter_by(Sid=sid).all()
+        except Exception as e:
+            #self.slogs.add_logs_easy(product_name="7443", class_name="SStudents", def_name="get_student_tech_by_sid",
+             #                        param="student_yech", param_value=str(student_tech), ct_system="linux", level=3,
+              #                       messages=e.message,ct_user="haobin")
+            print e.message
+        finally:
+            self.session.close()
         return student_tech
 
     # 获取学生竞赛简历
     def get_student_use_by_sid(self, sid):
-        student_use = self.session.query(model.SCuse.SCid, model.SCuse.Sid, model.SCuse.SCname, model.SCuse.SCno) \
-            .filter_by(Sid=sid).all()
+        student_use = None
+        try:
+            student_use = self.session.query(model.SCuse.SCid, model.SCuse.Sid, model.SCuse.SCname, model.SCuse.SCno) \
+                .filter_by(Sid=sid).all()
+        except Exception as e:
+            #self.slogs.add_logs_easy(product_name="7443", class_name="SStudents", def_name="get_student_use_by_sid",
+             #                        param="student_use", param_value=str(student_use), ct_system="linux", level=3,
+              #                       messages=e.message,ct_user="haobin")
+            print e.message
+        finally:
+            self.session.close()
         return student_use
 
     # 根据学生id获取用户id
     def get_uid_by_sid(self, sid):
-        return self.session.query(model.Students.Uid).filter_by(Sid = sid).scalar()
+        uid = None
+        try:
+            uid = self.session.query(model.Students.Uid).filter_by(Sid = sid).scalar()
+        except Exception as e:
+            #self.slogs.add_logs_easy(product_name="7443", class_name="SStudents", def_name="get_uid_by_sid",
+             #                        param="uid", param_value=str(uid), ct_system="linux", level=3,
+              #                       messages=e.message,ct_user="haobin")
+            print e.message
+        finally:
+            self.session.close()
+        return uid
 
     # 根据学生id获取学生姓名
     def get_sname_by_sid(self, sid):
-        return self.session.query(model.Students.Sname).filter_by(Sid = sid).scalar()
+        sname = None
+        try:
+            sname = self.session.query(model.Students.Sname).filter_by(Sid = sid).scalar()
+        except Exception as e:
+            #self.slogs.add_logs_easy(product_name="7443", class_name="SStudents", def_name="get_sname_by_sid",
+             #                        param="sname", param_value=str(sname), ct_system="linux", level=3,
+              #                       messages=e.message,ct_user="haobin")
+            print e.message
+        finally:
+            self.session.close()
+        return sname
 
     # 根据学生姓名或学院或年级查询学生
     def get_students_list(self, start_num, page_size, params):
-        sql = self.session.query(model.Students.Sid, model.Students.Sname,
-                                 model.Students.Sschool, model.Students.Sgrade).filter(*params)
-        return sql.offset(start_num).limit(page_size).all()
+        sql = None
+        try:
+            sql = self.session.query(model.Students.Sid, model.Students.Sname,
+                                 model.Students.Sschool, model.Students.Sgrade).filter(*params)\
+                .offset(start_num).limit(page_size).all()
+        except Exception as e:
+            #self.slogs.add_logs_easy(product_name="7443", class_name="SStudents", def_name="get_students_list",
+             #                        param="sql", param_value=str(sql), ct_system="linux", level=3,
+              #                       messages=e.message,ct_user="haobin")
+            print e.message
+        finally:
+            self.session.close()
+        return sql

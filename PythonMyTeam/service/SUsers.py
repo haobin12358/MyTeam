@@ -38,28 +38,56 @@ class SUsers():
             # 数据库操作添加一个User数据
             self.session.add(new_user)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             # 数据库操作异常的话执行rollback 来回退操作
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
-    # @trans_params
     # 获取所有的username
     @trans_params
     def get_all_user_name(self):
-        return self.session.query(model.Uers.Uname).all()
+        user_name = None
+        try:
+            user_name = self.session.query(model.Uers.Uname).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return user_name
 
     # 根据用户名获取对应密码
     def get_upwd_by_uname(self, uname):
-        return self.session.query(model.Uers.Upwd).filter_by(Uname = uname).scalar()
+        upwd = None
+        try:
+            upwd = self.session.query(model.Uers.Upwd).filter_by(Uname = uname).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return upwd
 
     # 根据用户名获取对应id
     def get_uid_by_uname(self, uname):
-        return self.session.query(model.Uers.Uid).filter_by(Uname = uname).scalar()
+        uid = None
+        try:
+            uid = self.session.query(model.Uers.Uid).filter_by(Uname = uname).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return uid
 
     # 根据用户id获取用户类型
     def get_utype_by_uid(self, uid):
-        return self.session.query(model.Uers.Utype).filter_by(Uid = uid).scalar()
+        utype = 0
+        try:
+            utype = self.session.query(model.Uers.Utype).filter_by(Uid=uid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return utype

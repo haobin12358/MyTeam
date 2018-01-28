@@ -129,4 +129,6 @@
 	<string name="xue_sheng_xiang_qing">学生详情</string>
 	<string name="jiao_shi_xiang_qing">教师详情</string>
 	<string name="jing_sai_xiang_qing">竞赛详情</string>
+	<string name="chuang_jian_dui_wu">创建队伍</string>
+	<string name="tuan_dui_xiang_qing">团队详情</string>
 </resources>

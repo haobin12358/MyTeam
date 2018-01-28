@@ -11,7 +11,7 @@ import uuid
 from Config import dbconfig as cfg
 
 # 获取和mysql的连接引擎格式 "数据库://用户名:密码@ip(:端口号)/databse名(?charset=字符集)" ()里是可选内容
-DB_PARAMS = "{0}://{1}:{2}@{3}/{4}?charset={5},pool_size=100".format(
+DB_PARAMS = "{0}://{1}:{2}@{3}/{4}?charset={5}".format(
     cfg.sqlenginename, cfg.username, cfg.password, cfg.host, cfg.database, cfg.charset)
 mysql_engine = create_engine(DB_PARAMS, echo=True)
 
