@@ -198,15 +198,15 @@ class CTeams():
             for row in data["Students"]:
                 if self.judgeData.inData("Sid", row):
                     add_team_student_list = self.steams.add_student_in_team(uuid.uuid4(), teid, row["Sid"], 1002, 1100)
-                    uid = self.sstudent.get_uid_by_sid(row["Sid"])
-                    #add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid)  # 这里需要判断一下分步异常的问题
+                    uid2 = self.sstudent.get_uid_by_sid(row["Sid"])  # 根据students中所有的sid来获取
+                    add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid, teid, uid2) # 这里需要判断一下分步异常的问题
 
         if self.judgeData.inData("Teachers", data):
             for row in data["Teachers"]:
                 if self.judgeData.inData("Tid", row):
                     add_team_teacher_list = self.steams.add_teacher_in_team(uuid.uuid4(), teid, row["Tid"], 1100)
-                    uid = self.steacher.get_uid_by_tid(row["Tid"])
-                    #add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid) # 这里需要判断一下分步异常的问题
+                    uid2 = self.steacher.get_uid_by_tid(row["Tid"])
+                    add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid,teid, uid2) # 这里需要判断一下分步异常的问题
 
         return new_team_success
 
