@@ -74,5 +74,25 @@ public class NumToString {
 		}
 		return competitions_level;
 	}
+	
+	//团队成员身份转化为文字
+	public static String getTStype(int TStype){
+		String TStype_name = null;
+		switch(TStype){
+		case 1000:
+			TStype_name = "创建者";
+			break;
+		case 1001:
+			TStype_name = "管理员";
+			break;
+		case 1002:
+			TStype_name = "团队成员";
+			break;
+		default:
+			TStype_name = "未知";
+			break;
+		}
+		return TStype_name;
+	}
 
 }

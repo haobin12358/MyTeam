@@ -1,14 +1,22 @@
 package com.etech.myteam.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.etech.myteam.R;
+import com.etech.myteam.adapter.TStudentAdapter;
 import com.etech.myteam.common.HttpgetEntity;
 import com.etech.myteam.common.HttppostEntity;
 import com.etech.myteam.common.NumToString;
 import com.etech.myteam.common.StringToJSON;
 import com.etech.myteam.common.isEdit;
+import com.etech.myteam.entity.TStudentEntity;
 import com.etech.myteam.global.AppConst;
+import com.etech.myteam.view.MyListView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,7 +36,7 @@ public class TeamActivity extends Activity{
 	private TextView tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tvbutton, tvtitle;
 	private EditText tv1, tv2, tv3, tv4, et1, et2, et3;
 	private ViewGroup vg;
-	private ListView lst_1;
+	private MyListView lst_1;
 	private ImageView iv1;
 	
 	private String TEid = "212bcc2b-da73-4f31-a63a-85973135f6ad";
@@ -45,6 +53,9 @@ public class TeamActivity extends Activity{
 			+ TEid 
 			+ "&Uid=" 
 			+ Uid; 
+	
+	private TStudentAdapter ts_adapter;
+	private List<TStudentEntity> ts_entitys = new ArrayList<TStudentEntity>();
 	
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -104,7 +115,9 @@ public class TeamActivity extends Activity{
 		isEdit.notEdit(tv4);
 		
 		
-		lst_1 = (ListView)findViewById(R.id.lst);
+		lst_1 = (MyListView)findViewById(R.id.lst);
+		ts_adapter = new TStudentAdapter(ts_entitys, TeamActivity.this);
+		lst_1.setAdapter(ts_adapter);
 		
 		if(Utype == 100){
 			tvbutton.setText("编辑");
@@ -168,6 +181,28 @@ public class TeamActivity extends Activity{
 						tv10.setText(team_json.optInt("Wait")+"人");
 						tv12.setText(team_json.optInt("Refuse")+"人");
 						String student_list = team_json.optString("student_list");
+						if(student_list == "[]"){
+							TStudentEntity ts_entity = new TStudentEntity();
+							ts_entity.setSname("无");
+							ts_entity.setTStype("");
+						}else{
+							try{
+								JSONArray jsonArray = StringToJSON.toJSONArray(student_list);
+								ts_entitys.clear();
+								for(int i = 0; i < jsonArray.length(); i++){
+									JSONObject st_list = jsonArray.getJSONObject(i);
+									TStudentEntity ts_entity = new TStudentEntity();
+									ts_entity.setSname(st_list.optString("Sname"));
+									Log.e("Sname",st_list.optString("Sname"));
+									ts_entity.setTStype(NumToString.getTStype(st_list.optInt("TStype")));
+									ts_entitys.add(ts_entity);
+								}
+							}catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						
 					}
 				}.start();
 			}else if(json_obj.optInt("status") == 404){

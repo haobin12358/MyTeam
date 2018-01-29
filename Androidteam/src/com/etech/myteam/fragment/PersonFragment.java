@@ -2,6 +2,7 @@ package com.etech.myteam.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +21,7 @@ import com.etech.myteam.entity.MyTeamEntity;
 import com.etech.myteam.entity.TechsEntity;
 import com.etech.myteam.entity.UsesEntity;
 import com.etech.myteam.global.AppConst;
+import com.etech.myteam.view.MyListView;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -46,7 +48,7 @@ public class PersonFragment extends Fragment{
 	private LinearLayout ll1, ll2, ll3, ll4, ll5;
 	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tvtitle, tvbutton;
 	private EditText et1, et2, et3, et4, et5, et6, et7;
-	private ListView lst1, lst2, lst3, lst4;
+	private MyListView lst1, lst2, lst3, lst4;
 	private ViewGroup vg;
 	private ImageView iv1;
 	private Button btn1;
@@ -163,10 +165,10 @@ public class PersonFragment extends Fragment{
 		et6 = (EditText)view.findViewById(R.id.et_6);
 		et7 = (EditText)view.findViewById(R.id.et_7);
 		
-		lst1 = (ListView)view.findViewById(R.id.lst_1);
-		lst2 = (ListView)view.findViewById(R.id.lst_2);
-		lst3 = (ListView)view.findViewById(R.id.lst_3);
-		lst4 = (ListView)view.findViewById(R.id.lst_4);
+		lst1 = (MyListView)view.findViewById(R.id.lst_1);
+		lst2 = (MyListView)view.findViewById(R.id.lst_2);
+		lst3 = (MyListView)view.findViewById(R.id.lst_3);
+		lst4 = (MyListView)view.findViewById(R.id.lst_4);
 		
 		vg = (ViewGroup)view.findViewById(R.id.tv_top);
 		
@@ -394,10 +396,8 @@ public class PersonFragment extends Fragment{
 							}
 							sc_use = json_personal.optString("SCuse");
 							s_tech = json_personal.optString("STech");
-							
-							entitys_use.clear();
-							UsesEntity entity_use = new UsesEntity();
 							if(sc_use == "[]"){
+								UsesEntity entity_use = new UsesEntity();
 								entity_use.setCname("无");
 								entity_use.setCno("");
 								entity_use.setTCnum("");
@@ -407,6 +407,8 @@ public class PersonFragment extends Fragment{
 									JSONArray json_uses = StringToJSON.toJSONArray(sc_use);
 									for(int i = 0;i < json_uses.length();i++){
 										JSONObject json_use = json_uses.getJSONObject(i);
+										entitys_use.clear();
+										UsesEntity entity_use = new UsesEntity();
 										entity_use.setCname(json_use.optString("SCname"));
 										entity_use.setCno(json_use.optString("SCno"));
 										entitys_use.add(entity_use);
@@ -415,9 +417,8 @@ public class PersonFragment extends Fragment{
 									e.printStackTrace();
 								}
 							}
-							entitys_tech.clear();
-							TechsEntity entity_tech = new TechsEntity();
 							if(s_tech == "[]"){
+								TechsEntity entity_tech = new TechsEntity();
 								entity_tech.setSTname("无");
 								entity_tech.setSTlevel("");
 							}
@@ -426,6 +427,8 @@ public class PersonFragment extends Fragment{
 									JSONArray json_techs = StringToJSON.toJSONArray(s_tech);
 									for(int i = 0;i < json_techs.length();i++){
 										JSONObject json_tech = json_techs.getJSONObject(i);
+										entitys_tech.clear();
+										TechsEntity entity_tech = new TechsEntity();
 										entity_tech.setSTname(json_tech.optString("STname"));
 										entity_tech.setSTlevel(NumToString.getLevel(json_tech.optInt("STlevel")));
 										entitys_tech.add(entity_tech);
@@ -451,9 +454,9 @@ public class PersonFragment extends Fragment{
 							et5.setText(json_personal.optString("Tuniversity"));
 							et6.setText(json_personal.optString("Tschool"));
 							tc_use = json_personal.optString("TCuse");
-							entitys_use.clear();
-							UsesEntity entity_use = new UsesEntity();
+							
 							if(tc_use == "[]"){
+								UsesEntity entity_use = new UsesEntity();
 								entity_use.setCname("无");
 								entity_use.setCno("");
 								entity_use.setTCnum("");
@@ -463,6 +466,8 @@ public class PersonFragment extends Fragment{
 									JSONArray json_uses = StringToJSON.toJSONArray(tc_use);
 									for(int i = 0;i < json_uses.length();i++){
 										JSONObject json_use = json_uses.getJSONObject(i);
+										entitys_use.clear();
+										UsesEntity entity_use = new UsesEntity();
 										entity_use.setCname(json_use.optString("TCname"));
 										entity_use.setCno(json_use.optString("TCno"));
 										entity_use.setTCnum(json_use.optString("TCnum") + getText(R.string.zhi_dui_wu).toString());
