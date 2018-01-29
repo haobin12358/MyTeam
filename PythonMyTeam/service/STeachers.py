@@ -33,31 +33,70 @@ class STeachers():
 
     # 根据tid获取教师信息详情
     def get_teacher_abo_by_tid(self, tid):
-        teacher_abo = self.session.query(model.Teachers.Tid, model.Teachers.Uid, model.Teachers.Tname,
+        teacher_abo = None
+        try:
+            teacher_abo = self.session.query(model.Teachers.Tid, model.Teachers.Uid, model.Teachers.Tname,
                                          model.Teachers.Ttel, model.Teachers.Tno, model.Teachers.Tuniversity,
                                          model.Teachers.Tschool, model.Teachers.Ttime).filter_by(Tid=tid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return teacher_abo
 
     # 获取教师带队经历
     def get_teacher_use_by_tid(self, tid):
-        teacher_use = self.session.query(model.TCuse.TCid, model.TCuse.Tid, model.TCuse.TCname, model.TCuse.TCno, model.TCuse.TCnum) \
-            .filter_by(Tid=tid).all()
+        teacher_use = None
+        try:
+            teacher_use = self.session.query(model.TCuse.TCid, model.TCuse.Tid, model.TCuse.TCname, model.TCuse.TCno, model.TCuse.TCnum) \
+                .filter_by(Tid=tid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return teacher_use
 
     # 根据教师id获取用户id
     def get_uid_by_tid(self, tid):
-        return self.session.query(model.Teachers.Uid).filter_by(Tid = tid).scalar()
+        uid = None
+        try:
+            uid = self.session.query(model.Teachers.Uid).filter_by(Tid = tid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return uid
 
     # 根据教师id获取教师姓名
     def get_tname_by_tid(self, tid):
-        return self.session.query(model.Teachers.Tname).filter_by(Tid = tid).scalar()
+        tname = None
+        try:
+            tname = self.session.query(model.Teachers.Tname).filter_by(Tid = tid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tname
 
     # 根据教师姓名或学院或任教时间查询教师
     def get_teachers_list(self, start_num, page_size, params):
-        sql = self.session.query(model.Teachers.Tid, model.Teachers.Tname,
-                                 model.Teachers.Tschool, model.Teachers.Ttime).filter(*params)
-        return sql.offset(start_num).limit(page_size).all()
+        sql = None
+        try:
+            sql = self.session.query(model.Teachers.Tid, model.Teachers.Tname,
+                                 model.Teachers.Tschool, model.Teachers.Ttime).filter(*params)\
+                .offset(start_num).limit(page_size).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return sql
 
     def get_all_count(self):
-        s = self.session.query(func.count(eval("model.Teachers.Tid"))).scalar()
+        s = 0
+        try:
+            s = self.session.query(func.count(eval("model.Teachers.Tid"))).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return s

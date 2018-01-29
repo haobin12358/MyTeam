@@ -19,6 +19,7 @@ from service.SInfor import SInfor
 from service.SStudents import SStudents
 from service.STeachers import STeachers
 from service.SCompetitions import SCompetitions
+from service.SUsers import SUsers
 from Config.Requests import system_error, param_miss, new_team_success, none_permissions, update_team_success, \
     invent_success, team_is_full, join_team_success, delete_team_success, delete_student_from_team_success
 from Config.Logs import WRITE_STUDENT_TEAM_ERROR, NEW_INVITATION, NEW_REQUEST, JOIN_TEAM_SUCCESS,\
@@ -34,6 +35,7 @@ class CTeams():
         self.sstudent = SStudents()
         self.steacher = STeachers()
         self.scompetitions = SCompetitions()
+        self.suser = SUsers()
 
     # 展现团队列表，场景应用于团队信息和个人团队信息，没有校检
     def teams_list(self):
@@ -108,7 +110,7 @@ class CTeams():
             return param_miss
         teid = get_str(args, "TEid")
         uid = get_str(args, "Uid")
-        utype = self.spersonal.get_utype_by_uid(uid)
+        utype = self.suser.get_utype_by_uid(uid)
         in_team = True
 
         result_of_team_abo = {}
@@ -121,10 +123,10 @@ class CTeams():
         result_of_team_abo["TEnum"] = team_abo.TEnum
         cid = team_abo.Cid
         competition_abo = self.scompetitions.get_competitions_abo_by_cid(cid)
-        result_of_team_abo["Cname"] = competition_abo.Cname
-        result_of_team_abo["Cno"] = competition_abo.Cno
-        result_of_team_abo["Clevel"] = competition_abo.Clevel
-        result_of_team_abo["Cabo"] = competition_abo.Cabo
+        result_of_team_abo["Cname"] = competition_abo[0].Cname
+        result_of_team_abo["Cno"] = competition_abo[0].Cno
+        result_of_team_abo["Clevel"] = competition_abo[0].Clevel
+        result_of_team_abo["Cabo"] = competition_abo[0].Cabo
         leader_id = self.steams.get_sid_by_teid(teid)
         result_of_team_abo["TEleader"] = self.sstudent.get_sname_by_sid(leader_id)
         teacher_id = self.steams.get_tid_by_teid(teid)
@@ -421,7 +423,7 @@ class CTeams():
 
         # 根据团队id获取当前团队成员的数量，与团队最大数量进行对比，超过则加入失败
         # 这里需要对teid进行防sql注入处理
-        teacher_num = self.steams.get_tcount_by_teid(teid)
+        teacher_num = self.steams.get_count_by_teid(teid)
 
         if teacher_num >= 1:
             return team_is_full

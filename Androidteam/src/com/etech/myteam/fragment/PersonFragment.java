@@ -2,21 +2,18 @@ package com.etech.myteam.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.etech.myteam.R;
-import com.etech.myteam.activity.LoginActivity;
 import com.etech.myteam.adapter.MyTeamAdapter;
 import com.etech.myteam.adapter.TechsAdapter;
 import com.etech.myteam.adapter.UsesAdapter;
 import com.etech.myteam.common.HttpgetEntity;
 import com.etech.myteam.common.HttppostEntity;
-import com.etech.myteam.common.LinearLayoutContain;
 import com.etech.myteam.common.NewListView;
+import com.etech.myteam.common.NumToString;
 import com.etech.myteam.common.StringToJSON;
 import com.etech.myteam.common.isEdit;
 import com.etech.myteam.entity.MyTeamEntity;
@@ -27,22 +24,18 @@ import com.etech.myteam.global.AppConst;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,7 +61,7 @@ public class PersonFragment extends Fragment{
 	private List<MyTeamEntity> entitys_myteam = new ArrayList<MyTeamEntity>();
 	//定义默认值
 	private int Utype = 101;
-	private String Uid = "9f71d450-ebc9-4680-a415-5b86f0e4df15";
+	private String Uid = "2ceb5b30-def9-4534-920c-75cda265cb86";
 	private int new_update = 0;//判断应该新增还是更新
 	//定义接口url
 	private String get_personal_url = "http://" 
@@ -434,7 +427,7 @@ public class PersonFragment extends Fragment{
 									for(int i = 0;i < json_techs.length();i++){
 										JSONObject json_tech = json_techs.getJSONObject(i);
 										entity_tech.setSTname(json_tech.optString("STname"));
-										entity_tech.setSTlevel(getLevel(Integer.getInteger(json_tech.optString("STlevel"))));
+										entity_tech.setSTlevel(NumToString.getLevel(json_tech.optInt("STlevel")));
 										entitys_tech.add(entity_tech);
 									}
 								}catch(JSONException e){
@@ -624,29 +617,6 @@ public class PersonFragment extends Fragment{
 		}
 	}
 	
-    private String getLevel(int level){
-    	String level_name = null;
-    	switch(level){
-    	case 1:
-    		level_name = "入门";
-    		break;
-    	case 2:
-    		level_name = "一般";
-    		break;
-    	case 3:
-    		level_name = "掌握";
-    		break;
-    	case 4:
-    		level_name = "熟练";
-    		break;
-    	case 5:
-    		level_name = "精通";
-    		break;
-    	default:
-    		level_name = "未知";
-    	}
-    	return level_name;
-    }
     //更新&删除个人技能&个人比赛经历的监听事件
     private OnItemClickListener itemupdate = new OnItemClickListener(){
 		@Override

@@ -107,4 +107,4 @@ netstat -ntlp
 
 
 # 3-4 后台启动
-nohup uswgi /opt/PythonMyTeam/config.ini &
+uwsgi /opt/PythonMyTeam/uwsgiconfig.ini -d /opt/logs/error/error.log -p 8 --threads 10

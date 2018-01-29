@@ -79,32 +79,57 @@ class SCompetitions():
 
     # 竞赛信息详情
     def get_competitions_abo_by_cid(self, cid):
-        competition_abo = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
+        competition_abo = None
+        try:
+            competition_abo = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
                                              model.Competitions.Cno, model.Competitions.Clevel,
                                              model.Competitions.Cstart, model.Competitions.Cend,
                                              model.Competitions.Cmin, model.Competitions.Cmax,
                                              model.Competitions.Cown, model.Competitions.Cabo) \
-            .filter_by(Cid=cid).first()
+                .filter_by(Cid=cid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return competition_abo
 
     # 根据id获取竞赛名称和竞赛届次
     def get_competitions_name_and_no_by_cid(self, cid):
-        competitions_name_and_no = self.session.query(model.Competitions.Cname, model.Competitions.Cno)\
-            .filter_by(Cid=cid).scalar()
+        competitions_name_and_no = None
+        try:
+            competitions_name_and_no = self.session.query(model.Competitions.Cname, model.Competitions.Cno)\
+                .filter_by(Cid=cid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return competitions_name_and_no
 
     # 根据竞赛名称、届次、等级获取竞赛id
     def get_cid_by_cname_cno_clevel(self, cname, cno, clevel):
-        cid = self.session.query(model.Competitions.Cid).filter_by(Cname=cname).filter_by(Cno=cno)\
-            .filter_by(Clevel=clevel).scalar()
+        cid = None
+        try:
+            cid = self.session.query(model.Competitions.Cid).filter_by(Cname=cname).filter_by(Cno=cno)\
+                .filter_by(Clevel=clevel).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return cid
 
     # 根据竞赛名称或竞赛等级或时间查询竞赛
     def get_competitions_list(self, start_num, page_size, params):
-        sql = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
+        sql = None
+        try:
+            sql = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
                                  model.Competitions.Clevel, model.Competitions.Cstart,
-                                 model.Competitions.Cend, model.Competitions.Cno).filter(*params)
-        return sql.offset(start_num).limit(page_size).all()
+                                 model.Competitions.Cend, model.Competitions.Cno).filter(*params)\
+                .offset(start_num).limit(page_size).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return sql
 
 if __name__ == '__main__':
     scompetitions = SCompetitions()
