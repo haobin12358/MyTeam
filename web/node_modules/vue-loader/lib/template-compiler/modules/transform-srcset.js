@@ -1,5 +1,7 @@
 // vue compiler module for transforming `img:srcset` to a number of `require`s
 
+const urlToRequire = require('../url-to-require')
+
 module.exports = () => ({
   postTransformNode: node => {
     transform(node)
@@ -28,27 +30,18 @@ function transform (node) {
           return { require: urlToRequire(url), descriptor: descriptor }
         })
 
-        let code = ''
-        imageCandidates.forEach((o, i, a) => {
-          code += o.require + ' + " ' + o.descriptor + (i < a.length - 1 ? ', " + ' : '"')
-        })
+        // "require(url1)"
+        // "require(url1) 1x"
+        // "require(url1), require(url2)"
+        // "require(url1), require(url2) 2x"
+        // "require(url1) 1x, require(url2)"
+        // "require(url1) 1x, require(url2) 2x"
+        const code = imageCandidates.map(
+          ({ require, descriptor }) => `${require} + "${descriptor ? ' ' + descriptor : ''}, " + `
+        ).join('').slice(0, -6).concat('"').replace(/ \+ ""$/, '')
 
         attr.value = code
       }
     })
-  }
-}
-
-function urlToRequire (url) {
-  // same logic as in transform-require.js
-  const firstChar = url.charAt(0)
-  if (firstChar === '.' || firstChar === '~') {
-    if (firstChar === '~') {
-      const secondChar = url.charAt(1)
-      url = url.slice(secondChar === '/' ? 2 : 1)
-    }
-    return `require("${url}")`
-  } else {
-    return `"${url}"`
   }
 }
