@@ -178,7 +178,7 @@ class CTeams():
         tenum = data["TEnum"]
         teid = uuid.uuid4()
 
-        sid = self.spersonal.get_sid_by_uid(uid)
+        sid = self.sstudent.get_sid_by_uid(uid)
 
         # 创建团队信息
         add_team = self.steams.add_team(teid, tename, cid, 701, tenum)
@@ -226,7 +226,7 @@ class CTeams():
             return param_miss
 
         uid = args["Uid"]
-        sid = self.spersonal.get_sid_by_uid(uid) # 获取sid
+        sid = self.sstudent.get_sid_by_uid(uid) # 获取sid
 
         data = request.data # 获取body体
         # 判断body体非空
@@ -374,7 +374,7 @@ class CTeams():
 
         # 判断该学生是否加入该竞赛的其他团队，待补充
 
-        sid = self.spersonal.get_sid_by_uid(uid)
+        sid = self.sstudent.get_sid_by_uid(uid)
         sname = self.sstudent.get_sname_by_sid(sid)
         tename = self.steams.get_tename_by_teid(teid)
         tsid = self.steams.get_tsid_by_teid_sid(teid, sid)
@@ -486,7 +486,7 @@ class CTeams():
             return param_miss
 
         teid = data["TEid"]
-        sid = self.spersonal.get_sid_by_uid(uid)
+        sid = self.sstudent.get_sid_by_uid(uid)
         tstype = self.steams.get_tstype_by_teid_sid(teid, sid)
 
         if tstype != 1000:
@@ -528,7 +528,7 @@ class CTeams():
             return param_miss
 
         teid = data["TEid"]
-        sid = self.spersonal.get_sid_by_uid(uid)
+        sid = self.sstudent.get_sid_by_uid(uid)
         tstype = self.steams.get_tstype_by_teid_sid(teid, sid)
 
         if tstype != 1000 :

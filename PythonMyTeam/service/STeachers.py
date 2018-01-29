@@ -91,6 +91,7 @@ class STeachers():
             self.session.close()
         return sql
 
+    # 获取教师总数
     def get_all_count(self):
         s = 0
         try:
@@ -100,3 +101,14 @@ class STeachers():
         finally:
             self.session.close()
         return s
+
+    # 根据教师竞赛经历名称和教师id获取教师竞赛经历id
+    def get_tcid_by_tcname_and_tid(self, tid, tcname):
+        tcid = None
+        try:
+            tcid = self.session.query(model.TCuse.TCid).filter_by(Tid = tid).filter_by(TCname = tcname).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tcid

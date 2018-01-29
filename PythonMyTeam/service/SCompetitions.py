@@ -61,22 +61,6 @@ class SCompetitions():
             print e.message
             return False
 
-    # 获取全部竞赛信息列表
-    """
-    def get_competitions_list(self):
-        competitions_list = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
-                                               model.Competitions.Cno, model.Competitions.Clevel,
-                                               model.Competitions.Cstart, model.Competitions.Cend).all()
-        return competitions_list
-    # 列表分页
-    def get_competitions_list_by_start_end(self, start_num, infor_num):
-        competitions_list = self.session.query(model.Competitions.Cid, model.Competitions.Cname,
-                                               model.Competitions.Cno, model.Competitions.Clevel,
-                                               model.Competitions.Cstart, model.Competitions.Cend) \
-            .offset(start_num).limit(infor_num).all()
-        return competitions_list
-    """
-
     # 竞赛信息详情
     def get_competitions_abo_by_cid(self, cid):
         competition_abo = None
