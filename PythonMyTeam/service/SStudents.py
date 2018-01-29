@@ -7,6 +7,7 @@ sys.path.append(os.path.dirname(os.getcwd())) # 增加系统路径
 import DBSession
 from models import model
 from service.SLogs import SLogs
+from common.TransformToList import trans_params
 
 # 操作students表的相关方法
 class SStudents():
@@ -93,6 +94,17 @@ class SStudents():
             self.session.close()
         return uid
 
+    # 根据用户id获取学生id
+    def get_sid_by_uid(self, uid):
+        sid = None
+        try:
+            sid = self.session.query(model.Students.Sid).filter_by(Uid = uid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return sid
+
     # 根据学生id获取学生姓名
     def get_sname_by_sid(self, sid):
         sname = None
@@ -122,3 +134,49 @@ class SStudents():
         finally:
             self.session.close()
         return sql
+
+    # 根据学生竞赛经历名称和学生id获取学生竞赛经历id
+    def get_scid_by_scname_and_sid(self, sid, scname):
+        scid = None
+        try:
+            scid = self.session.query(model.SCuse.SCid).filter_by(Sid = sid).filter_by(SCname = scname).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return scid
+
+    # 根据学生技能名称和学生id获取学生技能id
+    def get_stid_by_stname_and_sid(self, sid, stname):
+        stid = None
+        try:
+            stid = self.session.query(model.STechs.STid).filter_by(Sid = sid).filter_by(STname = stname).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return stid
+
+    # 根据学生id获取竞赛历史名称
+    @trans_params
+    def get_scname_by_sid(self, sid):
+        scname = None
+        try:
+            scname = self.session.query(model.SCuse.SCname).filter_by(Sid = sid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return scname
+
+    # 根据学生id获取个人技能名称
+    @trans_params
+    def get_stname_by_sid(self, sid):
+        stname = None
+        try:
+            stname = self.session.query(model.STechs.STname).filter_by(Sid = sid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return stname

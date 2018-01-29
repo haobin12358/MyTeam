@@ -124,16 +124,6 @@ class SPersonal():
             self.session.close()
         return tid
 
-    def get_sid_by_uid(self, uid):
-        sid = None
-        try:
-            sid = self.session.query(model.Students.Sid).filter_by(Uid = uid).scalar()
-        except Exception as e:
-            print e.message
-        finally:
-            self.session.close()
-        return sid
-
     def add_student_use_by_sid(self, scid, sid, scname, scno):
         """
         :param scid:
@@ -318,55 +308,3 @@ class SPersonal():
             self.session.close()
             print e.message
             return False
-
-    @trans_params
-    def get_stname_by_sid(self, sid):
-        stname = None
-        try:
-            stname = self.session.query(model.STechs.STname).filter_by(Sid = sid).all()
-        except Exception as e:
-            print e.message
-        finally:
-            self.session.close()
-        return stname
-
-    @trans_params
-    def get_scname_by_sid(self, sid):
-        scname = None
-        try:
-            scname = self.session.query(model.SCuse.SCname).filter_by(Sid = sid).all()
-        except Exception as e:
-            print e.message
-        finally:
-            self.session.close()
-        return scname
-
-    def get_stid_by_stname_and_sid(self, sid, stname):
-        stid = None
-        try:
-            stid = self.session.query(model.STechs.STid).filter_by(Sid = sid).filter_by(STname = stname).scalar()
-        except Exception as e:
-            print e.message
-        finally:
-            self.session.close()
-        return stid
-
-    def get_scid_by_scname_and_sid(self, sid, scname):
-        scid = None
-        try:
-            scid = self.session.query(model.SCuse.SCid).filter_by(Sid = sid).filter_by(SCname = scname).scalar()
-        except Exception as e:
-            print e.message
-        finally:
-            self.session.close()
-        return scid
-
-    def get_tcid_by_tcname_and_tid(self, tid, tcname):
-        tcid = None
-        try:
-            tcid = self.session.query(model.TCuse.TCid).filter_by(Tid = tid).filter_by(TCname = tcname).scalar()
-        except Exception as e:
-            print e.message
-        finally:
-            self.session.close()
-        return tcid

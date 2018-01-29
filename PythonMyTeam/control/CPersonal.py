@@ -13,6 +13,7 @@ from service.SPersonal import SPersonal
 from service.SStudents import SStudents
 from service.STeachers import STeachers
 from service.SUsers import SUsers
+from service.SCompetitions import SCompetitions
 from common.get_model_return_list import get_model_return_list
 from Config.Requests import param_miss, system_error, add_personal_success,\
     none_permissions, none_identity, wrong_sex, add_student_tech_success, \
@@ -31,6 +32,7 @@ class CPersonal():
         self.sstudent = SStudents()
         self.steacher = STeachers()
         self.suser = SUsers()
+        self.scompetitions = SCompetitions()
 
     # 获取个人信息
     def myinfor(self):
@@ -53,7 +55,7 @@ class CPersonal():
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
-            sid = self.spersonal.get_sid_by_uid(uid)
+            sid = self.sstudent.get_sid_by_uid(uid)
 
             # 获取数据库中数据
             # 获取学生的基础信息
@@ -186,7 +188,7 @@ class CPersonal():
             return system_error
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
-            sid = self.spersonal.get_sid_by_uid(uid)
+            sid = self.sstudent.get_sid_by_uid(uid)
             if sid == "":
                 return none_personal
             # 缺失校检技能名称的过程
@@ -198,7 +200,7 @@ class CPersonal():
                 if row["STlevel"] > 5 or row["STlevel"] < 1:
                     return error_tech_level
                 # 判断技能名称是否重复
-                stname_list = self.spersonal.get_stname_by_sid(sid)
+                stname_list = self.sstudent.get_stname_by_sid(sid)
                 if row["STname"] in stname_list:
                     return repeated_stname
 
@@ -244,7 +246,7 @@ class CPersonal():
             return system_error
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
-            sid = self.spersonal.get_sid_by_uid(uid)
+            sid = self.sstudent.get_sid_by_uid(uid)
             if sid == "":
                 return none_personal
             for row in form:
@@ -254,7 +256,7 @@ class CPersonal():
 
                 # 似乎应该校检一下两个参数，但是不知道应该怎么校检
                 # 校检个人比赛经历中的竞赛名称重复
-                scname_list = self.spersonal.get_scname_by_sid(sid)
+                scname_list = self.sstudent.get_scname_by_sid(sid)
                 if row["SCname"] in scname_list:
                     return repeated_scname
 
@@ -370,7 +372,7 @@ class CPersonal():
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
-            sid = self.spersonal.get_sid_by_uid(uid)
+            sid = self.sstudent.get_sid_by_uid(uid)
             if sid == "":
                 return none_personal
             # 缺失校检技能名称的过程
@@ -387,7 +389,7 @@ class CPersonal():
                 if row["STname"] in stname_list:
                     return repeated_stname
                 '''
-                stid = self.spersonal.get_stid_by_stname_and_sid(sid, row["STname"])
+                stid = self.sstudent.get_stid_by_stname_and_sid(sid, row["STname"])
                 # 更新数据库
                 update_personal_tech = self.spersonal.update_student_tech_by_stid(stid, row)
 
@@ -422,7 +424,7 @@ class CPersonal():
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
-            sid = self.spersonal.get_sid_by_uid(uid)
+            sid = self.sstudent.get_sid_by_uid(uid)
             if sid == "":
                 return none_personal
             for row in form:
@@ -431,7 +433,7 @@ class CPersonal():
                     return param_miss
 
                 # 似乎应该校检一下两个参数，但是不知道应该怎么校检
-                scid = self.spersonal.get_scid_by_scname_and_sid(sid, row["SCname"])
+                scid = self.sstudent.get_scid_by_scname_and_sid(sid, row["SCname"])
 
                 # 更新数据库
                 update_personal_use = self.spersonal.update_student_use_by_scid(scid, row)
@@ -454,7 +456,7 @@ class CPersonal():
 
                 # 似乎应该进行一些校检，但是不知道该怎么校检
                 # 获取tcid
-                tcid = self.spersonal.get_tcid_by_tcname_and_tid(tid, row["TCname"])
+                tcid = self.steacher.get_tcid_by_tcname_and_tid(tid, row["TCname"])
                 # 更新数据库
                 update_personal_use = self.spersonal.update_teacher_use_by_tcid(tcid, row)
                 if not update_personal_use:
@@ -489,14 +491,14 @@ class CPersonal():
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
-            sid = self.spersonal.get_sid_by_uid(uid)
+            sid = self.sstudent.get_sid_by_uid(uid)
             # 缺失校检技能名称的过程
             for row in form:
                 # 判断必填参数是否存在
                 if not self.judgeData.inData("STname", row):
                     return param_miss
 
-                stid = self.spersonal.get_stid_by_stname_and_sid(sid, row["STname"])
+                stid = self.sstudent.get_stid_by_stname_and_sid(sid, row["STname"])
                 # 更新数据库
                 delete_personal_tech = self.spersonal.delete_student_tech_by_stid(stid)
 
@@ -530,13 +532,13 @@ class CPersonal():
 
         # 判断用户身份，其中100为学生，101为教师，102为管理员
         if utype == 100:
-            sid = self.spersonal.get_sid_by_uid(uid)
+            sid = self.sstudent.get_sid_by_uid(uid)
             for row in form:
                 # 判断必填参数缺失
                 if not self.judgeData.inData("SCname", row):
                     return param_miss
 
-                scid = self.spersonal.get_scid_by_scname_and_sid(sid, row["SCname"])
+                scid = self.sstudent.get_scid_by_scname_and_sid(sid, row["SCname"])
 
                 # 更新数据库
                 delete_personal_use = self.spersonal.delete_student_use_by_scid(scid)
@@ -553,7 +555,7 @@ class CPersonal():
                     return param_miss
 
                 # 获取tcid
-                tcid = self.spersonal.get_tcid_by_tcname_and_tid(tid, row["TCname"])
+                tcid = self.steacher.get_tcid_by_tcname_and_tid(tid, row["TCname"])
                 # 更新数据库
                 delete_personal_use = self.spersonal.delete_teacher_use_by_tcid(tcid)
                 if not delete_personal_use:
