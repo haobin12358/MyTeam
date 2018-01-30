@@ -36,6 +36,11 @@ class CTeams():
         self.steacher = STeachers()
         self.scompetitions = SCompetitions()
         self.suser = SUsers()
+        if self.sinfor.status or self.sstudent.status or self.steacher.status or \
+                self.scompetitions.status or self.suser.status:
+            self.status = True
+        else:
+            self.status = False
 
     # 展现团队列表，场景应用于团队信息和个人团队信息，没有校检
     def teams_list(self):
@@ -151,11 +156,12 @@ class CTeams():
 
     # 新建团队（创建团队信息表和团队学生表的主要人员），入口在竞赛信息和团队板块的创建团队
     def new_team(self):
+        add_status = True
+        if not self.status:
+            return system_error
         args = request.args.to_dict() # 获取参数
         print args
-        # 判断参数非空
-        if not args:
-            return param_miss
+
         # 判断参数中含有Uid
         if not self.judgeData.inData("Uid", args):
             return param_miss
@@ -163,64 +169,73 @@ class CTeams():
         uid = args["Uid"]
 
         data = request.data # 获取body体
-        # 判断body体非空
-        if data == {} or str(data) == "":
-            return param_miss
         data = json.loads(data)
-
         # 判断body体中含有必要参数
-        if not self.judgeData.inData("TEname", data) or not self.judgeData.inData("Cid", data) \
-            or not self.judgeData.inData("TEnum", data):
+        if not self.judgeData.inData("TEname", data) or not self.judgeData.inData("Cname", data) \
+            or not self.judgeData.inData("TEnum", data) or not self.judgeData.inData("Cno", data) \
+                or not self.judgeData.inData("Clevel", data):
             return param_miss
 
+        cname = data["Cname"]
+        cno = data["Cno"]
+        clevel = data["Clevel"]
+
+        cid = self.scompetitions.get_cid_by_cname_cno_clevel(cname,cno,clevel)
         tename = data["TEname"]
-        cid = data["Cid"]
         tenum = data["TEnum"]
         teid = uuid.uuid4()
 
-        sid = self.sstudent.get_sid_by_uid(uid)
-
         # 创建团队信息
         add_team = self.steams.add_team(teid, tename, cid, 701, tenum)
+        if not add_team and add_status:
+            add_status = False
 
-        if not add_team:
-            return system_error
-
+        sid = self.sstudent.get_sid_by_uid(uid)
         # 写入团队创始人信息
         add_team_student = self.steams.add_student_in_team(uuid.uuid4(), teid, sid, 1000, 1101)
-
-        if not add_team_student:
-            delete_team = self.steams.delete_team_by_teid(teid)
-            if delete_team:
-                print WRITE_STUDENT_TEAM_ERROR
-            return system_error
+        if not add_team_student and add_status:
+            add_status = False
 
         # 如果data中含有students的信息，那么写入团队成员信息，这个函数重构
         if self.judgeData.inData("Students", data):
             for row in data["Students"]:
-                if self.judgeData.inData("Sid", row):
-                    add_team_student_list = self.steams.add_student_in_team(uuid.uuid4(), teid, row["Sid"], 1002, 1100)
-                    uid2 = self.sstudent.get_uid_by_sid(row["Sid"])  # 根据students中所有的sid来获取
+                if not self.judgeData.inData("Sno", row) or not self.judgeData.inData("Suniversity", row):
+                    return param_miss
+                else:
+                    sid = self.sstudent.get_sid_by_sno_suniversity(row["Sno"], row["Suniversity"])
+                    add_team_student_list = self.steams.add_student_in_team(uuid.uuid4(), teid, sid, 1002, 1100)
+                    if not add_team_student_list and add_status:
+                        add_status = False
+                    uid2 = self.sstudent.get_uid_by_sid(sid)  # 根据students中所有的sid来获取
                     add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid, teid, uid2) # 这里需要判断一下分步异常的问题
+                    if not add_infor and add_status:
+                        add_status = False
 
         if self.judgeData.inData("Teachers", data):
             for row in data["Teachers"]:
-                if self.judgeData.inData("Tid", row):
-                    add_team_teacher_list = self.steams.add_teacher_in_team(uuid.uuid4(), teid, row["Tid"], 1100)
-                    uid2 = self.steacher.get_uid_by_tid(row["Tid"])
-                    add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid,teid, uid2) # 这里需要判断一下分步异常的问题
-
+                if not self.judgeData.inData("Tno", row) or not self.judgeData.inData("Tuniversity", row):
+                    return param_miss
+                else:
+                    tid = self.steacher.get_tid_by_tno_tuniversity(row["Tno"], row["Tuniversity"])
+                    add_team_teacher_list = self.steams.add_teacher_in_team(uuid.uuid4(), teid, tid, 1100)
+                    if not add_team_teacher_list and add_status:
+                        add_status = False
+                    uid2 = self.steacher.get_uid_by_tid(tid)
+                    add_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid, teid, uid2) # 这里需要判断一下分步异常的问题
+                    if not add_infor and add_status:
+                        add_status = False
+        if not add_status:
+            return system_error # 应返回写入数据库异常
         return new_team_success
 
     # 更新团队信息，入口在团队信息详情，可更新数据不包含竞赛信息的大部分内容，如更新竞赛信息，只能更新竞赛的等级
     def update_team(self):
+        if not self.status:
+            return system_error
         update_team_item = {}  # 新建空的json变量
 
         args = request.args.to_dict() # 获取参数
         print args
-        # 判断参数非空
-        if not args:
-            return param_miss
         # 判断参数中含有Uid
         if not self.judgeData.inData("Uid", args):
             return param_miss
@@ -229,9 +244,6 @@ class CTeams():
         sid = self.sstudent.get_sid_by_uid(uid) # 获取sid
 
         data = request.data # 获取body体
-        # 判断body体非空
-        if data == {} or str(data) == "":
-            return param_miss
         data = json.loads(data)
 
         # 判断body体中含有必要参数
@@ -245,7 +257,7 @@ class CTeams():
         tstype = self.steams.get_tstype_by_teid_sid(teid, sid)  # 获取成员身份判断权限
 
         # 不是团队创建者或管理员，提醒没有权限
-        if tstype != 1000 or tstype != 1001:
+        if tstype != 1000 and tstype != 1001:
             return none_permissions
 
         # 如果具有权限，继续执行
@@ -261,91 +273,92 @@ class CTeams():
             return system_error
         return update_team_success
 
-    # 邀请学生与申请加入团队，1.入口在学生信息和团队详情中2.入口在团队信息列表中(邀请为0，申请为1，用instatus标记)
+    # 邀请学生加入团队，入口在学生信息和团队详情中
     def add_student(self):
+        add_status = True
+        if not self.status:
+            return system_error
         args = request.args.to_dict() # 获取参数
         print args
-        # 判断参数非空
-        if not args:
-            return param_miss
-        # 判断参数中含有Uid
-        if not self.judgeData.inData("TEid", args) or not self.judgeData.inData("Instatus", args):
+
+        # 判断参数中含有Uid和TEid
+        if not self.judgeData.inData("TEid", args) or not self.judgeData.inData("Uid", args):
             return param_miss
 
         teid = args["TEid"]
-        instatus = args["Instatus"]
+        uid = args["Uid"]
 
         data = request.data # 获取body体
-        # 判断body体非空
-        if data == {} or str(data) == "":
-            return param_miss
         data = json.loads(data)
 
         # 判断body体中含有必要参数
-        if not self.judgeData.inData("Sid", data):
+        if not self.judgeData.inData("Sno", data) or not self.judgeData.inData("Suniversity", data):
             return param_miss
 
-        sid = data["Sid"]
+        sno = data["Sno"]
+        suniversity = data["Suniversity"]
+        sid = self.sstudent.get_sid_by_sno_suniversity(sno, suniversity)
         cid = self.steams.get_cid_by_teid(teid)
+        uid2 = self.sstudent.get_uid_by_sid(sid)
 
         # 创建学生团队关联，创建通知信息
         response_of_student_and_team = self.steams.add_student_in_team(uuid.uuid4(), teid, sid, 1002, 1100)
-        if instatus == 0:
-            uid = self.sstudent.get_uid_by_sid(sid)
-            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid, teid, None)
-        else:
-            creator_sid = self.steams.get_sid_by_teid(teid)
-            uid = self.sstudent.get_student_use_by_sid(creator_sid)
-            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_REQUEST, 1200, 905, None, None, sid)  # 逻辑有点乱
+        if not response_of_student_and_team and add_status:
+            add_status = False
 
-        if not response_of_student_and_team or not response_of_infor:
+        response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid, teid, uid2)
+        if not response_of_infor and add_status:
+            add_status = False
+
+        if not add_status:
             return system_error
-
         return invent_success
+
+    # 申请加入团队
+    def invate_add_team(self):
+        return
 
     # 邀请教师，入口在教师信息和团队详情中
     def add_teacher(self):
+        add_status = True
         args = request.args.to_dict() # 获取参数
         print args
-        # 判断参数非空
-        if not args:
-            return param_miss
         # 判断参数中含有Uid
-        if not self.judgeData.inData("TEid", args):
+        if not self.judgeData.inData("TEid", args) or not self.judgeData.inData("Uid", args):
             return param_miss
 
         teid = args["TEid"]
+        uid = args["Uid"]
 
         data = request.data # 获取body体
-        # 判断body体非空
-        if data == {} or str(data) == "":
-            return param_miss
         data = json.loads(data)
-
         # 判断body体中含有必要参数
-        if not self.judgeData.inData("Tid", data):
+        if not self.judgeData.inData("Tno", data) or not self.judgeData.inData("Tuniversity", data):
             return param_miss
 
-        tid = data["Tid"]
-        uid = self.steacher.get_uid_by_tid(tid)
+        tno = data["Tno"]
+        tuniversity = data["Tuniversity"]
+        tid = self.steacher.get_tid_by_tno_tuniversity(tno, tuniversity)
+        uid2 = self.steacher.get_uid_by_tid(tid)
         cid = self.steams.get_cid_by_teid(teid)
 
-        # 创建学生团队关联，创建通知信息
+        # 创建教师团队关联，创建通知信息
         response_of_student_and_team = self.steams.add_teacher_in_team(uuid.uuid4(), teid, tid, 1100)
-        response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid, teid, None)
+        if not response_of_student_and_team and add_status:
+            add_status = False
+        response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_INVITATION, 1200, 901, cid, teid, uid2)
+        if not response_of_infor and add_status:
+            add_status = False
 
-        if not response_of_student_and_team or not response_of_infor:
+        if not add_status:
             return system_error
         return invent_success
 
     # 学生同意加入、通过学生申请，入口在我的信息中, 目前只完成了学生同意加入部分
     def sub_student(self):
-        update_tstudent_item = {} # 新建空的json变量
+        update_tstudent_item = {} # 新建空的json变量，放置TSid和TSsubject
         args = request.args.to_dict() # 获取参数
         print args
-        # 判断参数非空
-        if not args:
-            return param_miss
         # 判断参数中含有Uid
         if not self.judgeData.inData("Uid", args):
             return param_miss

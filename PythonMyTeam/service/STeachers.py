@@ -112,3 +112,14 @@ class STeachers():
         finally:
             self.session.close()
         return tcid
+
+    # 根据教工号、学校获取教师id
+    def get_tid_by_tno_tuniversity(self, tno, tuniversity):
+        tid = None
+        try:
+            tid = self.session.query(model.Teachers.Tid).filter_by(Tno=tno).filter_by(Tuniversity=tuniversity).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tid

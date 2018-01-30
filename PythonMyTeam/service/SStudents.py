@@ -135,6 +135,17 @@ class SStudents():
             self.session.close()
         return sql
 
+    def get_students_list_by_invate(self, params):
+        sql = None
+        try:
+            sql = self.session.query(model.Students.Suniversity, model.Students.Sno, model.Students.Sname)\
+                .filter(*params).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return sql
+
     # 根据学生竞赛经历名称和学生id获取学生竞赛经历id
     def get_scid_by_scname_and_sid(self, sid, scname):
         scid = None
@@ -180,3 +191,14 @@ class SStudents():
         finally:
             self.session.close()
         return stname
+
+    # 根据姓名和学号获取学生id
+    def get_sid_by_sno_suniversity(self, sno, suniversity):
+        sid = None
+        try:
+            sid = self.session.query(model.Students.Sid).filter_by(Sno=sno).filter_by(Suniversity=suniversity).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return sid
