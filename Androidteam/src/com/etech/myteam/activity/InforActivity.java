@@ -21,6 +21,7 @@ import com.etech.myteam.entity.MyTeamEntity;
 import com.etech.myteam.entity.TechsEntity;
 import com.etech.myteam.entity.UsesEntity;
 import com.etech.myteam.global.AppConst;
+import com.etech.myteam.view.MyListView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -45,7 +46,7 @@ public class InforActivity extends Activity{
 	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tvtitle, tvbutton;
 	private TextView tv_cno, tv_clevel, tv_cname, tv_ctime, tv_cstart, tv_c, tv_cend, tv_cnum, tv_ccnum, tv_cown, tv_cowner, tv_cabo, tv_caboall;
 	private EditText et1, et2, et3, et4, et5, et6, et7;
-	private ListView lst1, lst2, lst3, lst4;
+	private MyListView lst1, lst2, lst3, lst4;
 	private ViewGroup vg;
 	private ImageView iv1;
 	private Button btn1;
@@ -143,10 +144,10 @@ public class InforActivity extends Activity{
 		et6 = (EditText)findViewById(R.id.et_6);
 		et7 = (EditText)findViewById(R.id.et_7);
 		
-		lst1 = (ListView)findViewById(R.id.lst_1);
-		lst2 = (ListView)findViewById(R.id.lst_2);
-		lst3 = (ListView)findViewById(R.id.lst_3);
-		lst4 = (ListView)findViewById(R.id.lst_4);
+		lst1 = (MyListView)findViewById(R.id.lst_1);
+		lst2 = (MyListView)findViewById(R.id.lst_2);
+		lst3 = (MyListView)findViewById(R.id.lst_3);
+		lst4 = (MyListView)findViewById(R.id.lst_4);
 		
 		vg = (ViewGroup)findViewById(R.id.tv_top);
 		
