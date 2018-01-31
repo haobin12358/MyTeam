@@ -21,9 +21,10 @@ from service.STeachers import STeachers
 from service.SCompetitions import SCompetitions
 from service.SUsers import SUsers
 from Config.Requests import system_error, param_miss, new_team_success, none_permissions, update_team_success, \
-    invent_success, team_is_full, join_team_success, delete_team_success, delete_student_from_team_success
+    invent_success, team_is_full, join_team_success, delete_team_success, delete_student_from_team_success, \
+    refuse_join_team_success, have_invate_this_users
 from Config.Logs import WRITE_STUDENT_TEAM_ERROR, NEW_INVITATION, NEW_REQUEST, JOIN_TEAM_SUCCESS,\
-    TEACHER_JOIN_TEAM_SUCCESS
+    TEACHER_JOIN_TEAM_SUCCESS, REFUSE_JOIN_TEAM, TEACHER_REFUSE_JOIN_TEAM
 
 # 用于处理团队相关数据
 class CTeams():
@@ -298,6 +299,9 @@ class CTeams():
         sno = data["Sno"]
         suniversity = data["Suniversity"]
         sid = self.sstudent.get_sid_by_sno_suniversity(sno, suniversity)
+        sid_list = self.steams.get_sid_list_by_teid(teid)
+        if sid in sid_list:
+            return have_invate_this_users
         cid = self.steams.get_cid_by_teid(teid)
         uid2 = self.sstudent.get_uid_by_sid(sid)
 
@@ -316,7 +320,44 @@ class CTeams():
 
     # 申请加入团队
     def invate_add_team(self):
-        return
+        add_status = True
+        if not self.status:
+            return system_error
+        args = request.args.to_dict() # 获取参数
+        print args
+
+        # 判断参数中含有Uid和TEid
+        if not self.judgeData.inData("Uid", args):
+            return param_miss
+        uid = args["Uid"]
+
+        data = request.data # 获取body体
+        data = json.loads(data)
+        if not self.judgeData.inData("TEid", data):
+            return param_miss
+        teid = data["TEid"]
+
+        sid = self.sstudent.get_sid_by_uid(uid)
+        sid_list = self.steams.get_sid_list_by_teid(teid)
+        if sid in sid_list:
+            return have_invate_this_users
+        cid = self.steams.get_cid_by_teid(teid)
+
+        leader_sid = self.steams.get_sid_by_teid(teid)
+        uid2 = self.sstudent.get_uid_by_sid(leader_sid)
+
+        response_of_student_and_team = self.steams.add_student_in_team(uuid.uuid4(), teid, sid, 1002, 1100)
+        if not response_of_student_and_team and add_status:
+            add_status = False
+
+        response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, NEW_REQUEST, 1200, 905, cid, teid, uid2)
+        if not response_of_infor and add_status:
+            add_status = False
+
+        if not add_status:
+            return system_error
+        return invent_success
+
 
     # 邀请教师，入口在教师信息和团队详情中
     def add_teacher(self):
@@ -339,6 +380,9 @@ class CTeams():
         tno = data["Tno"]
         tuniversity = data["Tuniversity"]
         tid = self.steacher.get_tid_by_tno_tuniversity(tno, tuniversity)
+        tid_list = self.steams.get_tid_list_by_teid(teid)
+        if tid in tid_list:
+            return have_invate_this_users
         uid2 = self.steacher.get_uid_by_tid(tid)
         cid = self.steams.get_cid_by_teid(teid)
 
@@ -357,111 +401,155 @@ class CTeams():
     # 学生同意加入、通过学生申请，入口在我的信息中, 目前只完成了学生同意加入部分
     def sub_student(self):
         update_tstudent_item = {} # 新建空的json变量，放置TSid和TSsubject
+        add_status = True
         args = request.args.to_dict() # 获取参数
         print args
         # 判断参数中含有Uid
-        if not self.judgeData.inData("Uid", args):
+        if not self.judgeData.inData("Uid", args) or not self.judgeData.inData("sub_index", args):
             return param_miss
 
-        uid = args["Uid"]
+        uid = args["Uid"] # 这里的Uid一定是接收者
+        sub_index = int(args["sub_index"]) # 这里标记的是同意&拒绝，1101通过，1102拒绝
 
         data = request.data # 获取body体
-        # 判断body体非空
-        if data == {} or str(data) == "":
-            return param_miss
         data = json.loads(data)
 
         # 判断body体中含有必要参数
-        if not self.judgeData.inData("TEid", data):
+        if not self.judgeData.inData("Pid", data):
             return param_miss
 
-        teid = data["TEid"]
-
-        # 根据团队id获取当前团队成员的数量，与团队最大数量进行对比，超过则加入失败
-        # 这里需要对teid进行防sql注入处理
-        students_num = self.steams.get_count_by_teid(teid)
-        tenum = self.steams.get_tenum_by_teid(teid)
-
-        if students_num >= tenum:
-            return team_is_full
-
-        # 判断该学生是否加入该竞赛的其他团队，待补充
-
+        pid = data["Pid"] # 这里获取到消息的id，消息id中根据ptype901邀请905申请来判断，无论申请还是邀请，修改的都是当前Uid在Team中的关联关系
+        teid = self.sinfor.get_teid_by_pid(pid)
         sid = self.sstudent.get_sid_by_uid(uid)
-        sname = self.sstudent.get_sname_by_sid(sid)
-        tename = self.steams.get_tename_by_teid(teid)
         tsid = self.steams.get_tsid_by_teid_sid(teid, sid)
-        team_leader_sid = self.steams.get_sid_by_teid(teid)
-        team_leader_uid = self.sstudent.get_uid_by_sid(team_leader_sid)
-        update_tstudent_item["TSid"] = tsid
-        update_tstudent_item["Sid"] = sid
-        update_tstudent_item["TEid"] = teid
-        update_tstudent_item["TStype"] = 1002
-        update_tstudent_item["TSsubject"] = 1101
+        if sub_index == 1102:
+            update_tstudent_item["TSid"] = tsid
+            update_tstudent_item["Sid"] = sid
+            update_tstudent_item["TEid"] = teid
+            update_tstudent_item["TStype"] = 1002
+            update_tstudent_item["TSsubject"] = 1102
 
-        message = JOIN_TEAM_SUCCESS.format(sname, tename)  # 信息报文
-        response_of_update_tstudent = self.steams.update_tstudent_by_tsid(tsid, update_tstudent_item)
-        response_of_infor = self.sinfor.add_infor(uuid.uuid4(), team_leader_uid, message, 1200, 903, None, None, None)
+            response_of_update_tstudent = self.steams.update_tstudent_by_tsid(tsid, update_tstudent_item)
+            if not response_of_update_tstudent and add_status:
+                add_status = False
 
-        if not response_of_infor or not response_of_update_tstudent:
-            return system_error
+            sname = self.sstudent.get_sname_by_sid(sid)
+            tename = self.steams.get_tename_by_teid(teid)
+            message = REFUSE_JOIN_TEAM.format(sname, tename)  # 信息报文
+            uid2 = self.sinfor.get_uid2_by_pid(pid)
+            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, message, 1200, 903, None, teid, uid2)
+            if not response_of_update_tstudent and add_status:
+                add_status = False
 
-        return join_team_success
+            if not add_status:
+                return system_error
+            return refuse_join_team_success
+        elif sub_index == 1101:
+            # 根据团队id获取当前团队成员的数量，与团队最大数量进行对比，超过则显示满员
+            # 这里需要对teid进行防sql注入处理
+            students_num = self.steams.get_count_by_teid(teid)
+            tenum = self.steams.get_tenum_by_teid(teid)
+
+            if students_num >= tenum:
+                return team_is_full
+
+            # 判断该学生是否加入该竞赛的其他团队，待补充
+            # 目前允许一个学生加入一个竞赛的多个团队
+            update_tstudent_item["TSid"] = tsid
+            update_tstudent_item["Sid"] = sid
+            update_tstudent_item["TEid"] = teid
+            update_tstudent_item["TStype"] = 1002
+            update_tstudent_item["TSsubject"] = 1101
+
+            response_of_update_tstudent = self.steams.update_tstudent_by_tsid(tsid, update_tstudent_item)
+            if not response_of_update_tstudent and add_status:
+                add_status = False
+            sname = self.sstudent.get_sname_by_sid(sid)
+            tename = self.steams.get_tename_by_teid(teid)
+            message = JOIN_TEAM_SUCCESS.format(sname, tename)  # 信息报文
+            uid2 = self.sinfor.get_uid2_by_pid(pid)
+            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, message, 1200, 903, None, teid, uid2)
+            if not response_of_update_tstudent and add_status:
+                add_status = False
+
+            if not add_status:
+                return system_error
+            return join_team_success
+        else:
+            return param_miss
 
     # 教师同意加入，入口在我的信息中
     def sub_teacher(self):
+        add_status = True
         update_tteacher_item = {} # 新建空的json变量
         args = request.args.to_dict() # 获取参数
         print args
-        # 判断参数非空
-        if not args:
-            return param_miss
-        # 判断参数中含有Uid
-        if not self.judgeData.inData("Uid", args):
+        if not self.judgeData.inData("Uid", args) or not self.judgeData.inData("sub_index", args):
             return param_miss
 
         uid = args["Uid"]
+        sub_index = args["sub_index"]
 
         data = request.data # 获取body体
-        # 判断body体非空
-        if data == {} or str(data) == "":
-            return param_miss
         data = json.loads(data)
 
         # 判断body体中含有必要参数
-        if not self.judgeData.inData("TEid", data):
+        if not self.judgeData.inData("Pid", data):
             return param_miss
-
-        teid = data["TEid"]
-
-        # 根据团队id获取当前团队成员的数量，与团队最大数量进行对比，超过则加入失败
-        # 这里需要对teid进行防sql注入处理
-        teacher_num = self.steams.get_count_by_teid(teid)
-
-        if teacher_num >= 1:
-            return team_is_full
-
-        # 判断该学生是否加入该竞赛的其他团队，待补充
-
+        pid = data["Pid"]
+        teid = self.sinfor.get_teid_by_pid(pid)
         tid = self.spersonal.get_tid_by_uid(uid)
-        tname = self.steacher.get_tname_by_tid(tid)
-        tename = self.steams.get_tename_by_teid(teid)
         ttid = self.steams.get_ttid_by_teid_tid(teid, tid)
-        team_leader_sid = self.steams.get_sid_by_teid(teid)
-        team_leader_uid = self.sstudent.get_uid_by_sid(team_leader_sid)
-        update_tteacher_item["TTid"] = ttid
-        update_tteacher_item["Tid"] = tid
-        update_tteacher_item["TEid"] = teid
-        update_tteacher_item["TTsubject"] = 1101
 
-        message = TEACHER_JOIN_TEAM_SUCCESS.format(tname, tename)  # 信息报文
-        response_of_update_tteacher = self.steams.update_tteacher_by_ttid(ttid, update_tteacher_item)
-        response_of_infor = self.sinfor.add_infor(uuid.uuid4(), team_leader_uid, message, 1200, 903, None, None, None)
+        if sub_index == 1102:
+            update_tteacher_item["TTid"] = ttid
+            update_tteacher_item["Tid"] = tid
+            update_tteacher_item["TEid"] = teid
+            update_tteacher_item["TTsubject"] = 1102
 
-        if not response_of_infor or not response_of_update_tteacher:
-            return system_error
+            response_of_update_tteacher = self.steams.update_tteacher_by_ttid(ttid, update_tteacher_item)
+            if not response_of_update_tteacher and add_status:
+                add_status = False
 
-        return join_team_success
+            tname = self.steacher.get_tname_by_tid(tid)
+            tename = self.steams.get_tename_by_teid(teid)
+            message = TEACHER_REFUSE_JOIN_TEAM.format(tname, tename)  # 信息报文
+            uid2 = self.sinfor.get_uid2_by_pid(pid)
+            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, message, 1200, 903, None, teid, uid2)
+            if not response_of_infor and add_status:
+                add_status = False
+
+            if not add_status:
+                return system_error
+            return refuse_join_team_success
+        elif sub_index == 1101:
+            # 根据团队id获取当前团队教师的数量，默认最大为1，超过则加入失败
+            # 这里需要对teid进行防sql注入处理
+            teacher_num = self.steams.get_tcount_by_teid(teid)
+            if teacher_num >= 1:
+                return team_is_full
+
+            update_tteacher_item["TTid"] = ttid
+            update_tteacher_item["Tid"] = tid
+            update_tteacher_item["TEid"] = teid
+            update_tteacher_item["TTsubject"] = 1101
+
+            response_of_update_tteacher = self.steams.update_tteacher_by_ttid(ttid, update_tteacher_item)
+            if not response_of_update_tteacher and add_status:
+                add_status = False
+            tname = self.steacher.get_tname_by_tid(tid)
+            tename = self.steams.get_tename_by_teid(teid)
+            message = TEACHER_JOIN_TEAM_SUCCESS.format(tname, tename)  # 信息报文
+            uid2 = self.sinfor.get_uid2_by_pid(pid)
+            response_of_infor = self.sinfor.add_infor(uuid.uuid4(), uid, message, 1200, 903, None, teid, uid2)
+            if not response_of_infor and add_status:
+                add_status = False
+
+            if not add_status:
+                return system_error
+            return join_team_success
+        else:
+            return param_miss
 
     # 新增团队任务，入口在团队详情中
     def add_task(self):

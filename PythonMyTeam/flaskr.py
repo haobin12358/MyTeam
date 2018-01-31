@@ -10,6 +10,7 @@ from apis.AStudents import AStudents
 from apis.ATeachers import ATeachers
 from apis.ACompetitions import ACompetitons
 from apis.ATeams import ATeams
+from apis.AInfo import AInfo
 
 # 实例化flask启动器
 app = Flask(__name__)
@@ -23,6 +24,7 @@ api.add_resource(AStudents, "/students/<string:students>")
 api.add_resource(ATeachers, "/teachers/<string:teachers>")
 api.add_resource(ACompetitons, "/competitions/<string:competitions>")
 api.add_resource(ATeams, "/team/<string:team>")
+api.add_resource(AInfo, "/info/<string:info>")
 
 # 启动方法
 if __name__ == '__main__':

@@ -9,6 +9,7 @@ import DBSession
 from common.TransformToList import trans_params
 from Config.SQLs import SQL_FOR_SELECT_COUNT_IN_TEAM, SQL_FOR_SELECT_TCOUNT_IN_TEAM
 import sqlalchemy
+from sqlalchemy import func
 
 # 操作teams表的相关方法
 class STeams():
@@ -234,10 +235,22 @@ class STeams():
 
     # 根据团队id获取团队当前的学生数目
     def get_count_by_teid(self, teid):
-        sql = SQL_FOR_SELECT_COUNT_IN_TEAM.format(teid)
-        count = None
+        count = 0
         try:
-            count = self.session.execute(sql)
+            count = self.session.query(func.count(eval("model.TStudent.TSid")))\
+                .filter_by(TSsubject=1101).filter_by(TEid=teid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return count
+
+    # 根据团队id获取团队当前的教师数目
+    def get_tcount_by_teid(self, teid):
+        count = 0
+        try:
+            count = self.session.query(func.count(eval("model.TTeacher.TTid")))\
+                .filter_by(TTsubject=1101).filter_by(TEid=teid).scalar()
         except Exception as e:
             print e.message
         finally:
@@ -246,14 +259,14 @@ class STeams():
 
     # 根据团队id获取团队成员数目
     def get_tenum_by_teid(self, teid):
-        teid = None
+        tenum = None
         try:
-            teid = self.session.query(model.Teams.TEnum).filter_by(TEid=teid).scalar()
+            tenum = self.session.query(model.Teams.TEnum).filter_by(TEid=teid).scalar()
         except Exception as e:
             print e.message
         finally:
             self.session.close()
-        return teid
+        return tenum
 
     # 根据团队id和学生id获取tsid
     def get_tsid_by_teid_sid(self, teid, sid):
@@ -360,6 +373,31 @@ class STeams():
         finally:
             self.session.close()
         return wait_num, refuse_num
+
+    # 获取tstudent中具有的sid
+    @trans_params
+    def get_sid_list_by_teid(self, teid):
+        sid_list = None
+        try:
+            sid_list = self.session.query(model.TStudent.Sid).filter_by(TEid=teid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return sid_list
+
+    # 获取tteacher中具有的tid
+    @trans_params
+    def get_tid_list_by_teid(self, teid):
+        tid_list = None
+        try:
+            tid_list = self.session.query(model.TTeacher.Tid).filter_by(TEid=teid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tid_list
+
 
 if __name__ == '__main__':
     steams = STeams()
