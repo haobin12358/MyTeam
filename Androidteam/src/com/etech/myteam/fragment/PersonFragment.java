@@ -62,8 +62,8 @@ public class PersonFragment extends Fragment{
 	private List<UsesEntity> entitys_use = new ArrayList<UsesEntity>();
 	private List<MyTeamEntity> entitys_myteam = new ArrayList<MyTeamEntity>();
 	//定义默认值
-	private int Utype = 101;
-	private String Uid = "2ceb5b30-def9-4534-920c-75cda265cb86";
+	private int Utype = 100;
+	private String Uid = "679a5d16-a473-4308-9fee-788fc3cb828e";
 	private int new_update = 0;//判断应该新增还是更新
 	//定义接口url
 	private String get_personal_url = "http://" 
@@ -380,11 +380,19 @@ public class PersonFragment extends Fragment{
 					public void run(){
 						if(Utype == 100){
 							String abo = json_obj.optString("student_abo");
-							JSONObject json_personal = StringToJSON.toJSONObject(abo);
+							JSONArray json_array = StringToJSON.toJSONArray(abo);
+							JSONObject json_personal = null;
+							try {
+								json_personal = json_array.getJSONObject(0);
+							} catch (JSONException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							//JSONObject json_personal = StringToJSON.toJSONObject(abo);
 							et1.setText(json_personal.optString("Sname"));
 							et2.setText(json_personal.optString("Sno"));
 							et3.setText(json_personal.optString("Stel"));
-							et4.setText(json_personal.optInt("Sgrade"));
+							//et4.setText(json_personal.optInt("Sgrade"));
 							et5.setText(json_personal.optString("Suniversity"));
 							et6.setText(json_personal.optString("Sschool"));
 							if(json_personal.optInt("Ssex") == 201){
@@ -394,7 +402,7 @@ public class PersonFragment extends Fragment{
 							}else{
 								et7.setText(" ");
 							}
-							sc_use = json_personal.optString("SCuse");
+							sc_use = json_personal.optString("SCUse");
 							s_tech = json_personal.optString("STech");
 							if(sc_use == "[]"){
 								UsesEntity entity_use = new UsesEntity();
@@ -405,9 +413,9 @@ public class PersonFragment extends Fragment{
 							else{
 								try{
 									JSONArray json_uses = StringToJSON.toJSONArray(sc_use);
+									entitys_use.clear();
 									for(int i = 0;i < json_uses.length();i++){
 										JSONObject json_use = json_uses.getJSONObject(i);
-										entitys_use.clear();
 										UsesEntity entity_use = new UsesEntity();
 										entity_use.setCname(json_use.optString("SCname"));
 										entity_use.setCno(json_use.optString("SCno"));
@@ -425,9 +433,9 @@ public class PersonFragment extends Fragment{
 							else{
 								try{
 									JSONArray json_techs = StringToJSON.toJSONArray(s_tech);
+									entitys_tech.clear();
 									for(int i = 0;i < json_techs.length();i++){
 										JSONObject json_tech = json_techs.getJSONObject(i);
-										entitys_tech.clear();
 										TechsEntity entity_tech = new TechsEntity();
 										entity_tech.setSTname(json_tech.optString("STname"));
 										entity_tech.setSTlevel(NumToString.getLevel(json_tech.optInt("STlevel")));
@@ -721,27 +729,50 @@ public class PersonFragment extends Fragment{
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
-                			new Thread(){
-                				public void run(){
-                					try {
+	                		
+
+                			try {
+								String response = postEntity.doPostA(jsonArray, update_personal_use_url);
+								Log.e("response",response);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+	                	}else if(list_index == "sc"){
+	                		try {
+	                			if(editText1.getText().toString().length() == 0 || 
+	                					editText2.getText().toString().length() == 0){
+	                				Toast.makeText(getActivity(),
+	        	                            "请填写竞赛名称和名次",
+	        	                            Toast.LENGTH_SHORT).show();
+	                			}
+								obj.put("SCname", editText1.getText().toString());
+								obj.put("SCno", editText2.getText().toString());
+								obj.put("SCid", getJSON.opt("SCid"));
+								jsonArray.put(obj);
+								Log.e("jsonArray", jsonArray.toString());
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+	                		new Thread(){
+	                			public void run(){
+	                				try {
 										String response = postEntity.doPostA(jsonArray, update_personal_use_url);
 										Log.e("response",response);
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
+										Log.e("post", "error");
 										e.printStackTrace();
 									}
-                					
-    								try {
-										Thread.sleep(2000);
-									} catch (InterruptedException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-                				}
-                			}.start();
-								
-							
+	                			}
+	                		}.start();
 	                	}
+	                	try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 	                  
 	                    Toast.makeText(getActivity(),
 	                            "修改成功",

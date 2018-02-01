@@ -193,7 +193,6 @@ public class TeamActivity extends Activity{
 									JSONObject st_list = jsonArray.getJSONObject(i);
 									TStudentEntity ts_entity = new TStudentEntity();
 									ts_entity.setSname(st_list.optString("Sname"));
-									Log.e("Sname",st_list.optString("Sname"));
 									ts_entity.setTStype(NumToString.getTStype(st_list.optInt("TStype")));
 									ts_entitys.add(ts_entity);
 								}

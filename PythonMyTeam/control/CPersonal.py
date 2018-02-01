@@ -433,7 +433,7 @@ class CPersonal():
                     return param_miss
 
                 # 似乎应该校检一下两个参数，但是不知道应该怎么校检
-                scid = self.sstudent.get_scid_by_scname_and_sid(sid, row["SCname"])
+                scid = row["SCid"]
 
                 # 更新数据库
                 update_personal_use = self.spersonal.update_student_use_by_scid(scid, row)

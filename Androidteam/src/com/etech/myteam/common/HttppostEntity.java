@@ -66,6 +66,7 @@ public class HttppostEntity {
         if (obj != null) {
             // 设置字符集
             StringEntity entity = new StringEntity(obj.toString(), "utf-8");
+            Log.e("entity", obj.toString());
             // 设置参数实体
             httpPost.setEntity(entity);
         }

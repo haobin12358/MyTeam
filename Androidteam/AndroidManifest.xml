@@ -14,7 +14,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
         <activity
-            android:name="com.etech.myteam.activity.TeamActivity"
+            android:name="com.etech.myteam.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
             android:name="com.etech.myteam.activity.RegisterActivity">
         </activity>
         <activity 
-            android:name="com.etech.myteam.activity.MainActivity">
+            android:name="com.etech.myteam.activity.TeamActivity">
         </activity>
         <activity 
             android:name="com.etech.myteam.activity.InforActivity">
