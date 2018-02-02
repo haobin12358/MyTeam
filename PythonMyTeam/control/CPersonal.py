@@ -495,9 +495,6 @@ class CPersonal():
             # 缺失校检技能名称的过程
             for row in form:
                 # 判断必填参数是否存在
-                if not self.judgeData.inData("STname", row):
-                    return param_miss
-
                 stid = row["STid"]
                 # 更新数据库
                 delete_personal_tech = self.spersonal.delete_student_tech_by_stid(stid)
@@ -534,10 +531,6 @@ class CPersonal():
         if utype == 100:
             sid = self.sstudent.get_sid_by_uid(uid)
             for row in form:
-                # 判断必填参数缺失
-                if not self.judgeData.inData("SCname", row):
-                    return param_miss
-
                 scid = row["SCid"]
 
                 # 更新数据库

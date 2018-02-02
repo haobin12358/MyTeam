@@ -47,6 +47,41 @@ class STeams():
             self.session.close()
         return team_list
 
+    # 获取我参与的团队
+    @trans_params
+    def get_my_team(self, sid):
+        team_list = None
+        try:
+            team_list = self.session.query(model.TStudent.TEid).filter_by(Sid=sid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return team_list
+
+    # 获取我创建的团队
+    @trans_params
+    def get_my_own_team(self, sid):
+        team_list = None
+        try:
+            team_list = self.session.query(model.TStudent.TEid).filter_by(Sid=sid).filter_by(TStype=1000).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return team_list
+
+    # 根据团队id获取团队名称
+    def get_tename_by_teid(self, teid):
+        tename = None
+        try:
+            tename = self.session.query(model.Teams.TEname).filter_by(TEid=teid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tename
+
     # 获取团队基础信息
     def get_team_abo_by_teid(self, teid):
         team_abo = None
