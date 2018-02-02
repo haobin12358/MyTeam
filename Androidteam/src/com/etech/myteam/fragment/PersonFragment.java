@@ -11,6 +11,7 @@ import com.etech.myteam.R;
 import com.etech.myteam.adapter.MyTeamAdapter;
 import com.etech.myteam.adapter.TechsAdapter;
 import com.etech.myteam.adapter.UsesAdapter;
+import com.etech.myteam.common.HttpdeleteEntity;
 import com.etech.myteam.common.HttpgetEntity;
 import com.etech.myteam.common.HttppostEntity;
 import com.etech.myteam.common.NewListView;
@@ -113,6 +114,7 @@ public class PersonFragment extends Fragment{
 	
 	private HttpgetEntity getEntity;
 	private HttppostEntity postEntity;
+	private HttpdeleteEntity deleteEntity;
 
 	//主界面
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -729,15 +731,18 @@ public class PersonFragment extends Fragment{
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
-	                		
-
-                			try {
-								String response = postEntity.doPostA(jsonArray, update_personal_use_url);
-								Log.e("response",response);
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+	                		new Thread(){
+	                			public void run(){
+	                				try {
+										String response = postEntity.doPostA(jsonArray, update_personal_use_url);
+										Log.e("response",response);
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										Log.e("post", "error");
+										e.printStackTrace();
+									}
+	                			}
+	                		}.start();
 	                	}else if(list_index == "sc"){
 	                		try {
 	                			if(editText1.getText().toString().length() == 0 || 
@@ -766,6 +771,33 @@ public class PersonFragment extends Fragment{
 									}
 	                			}
 	                		}.start();
+	                	}else if(list_index == "st"){
+	                		try{
+	                			if(editText1.getText().toString().length() == 0 || 
+	                					editText2.getText().toString().length() == 0){
+	                				Toast.makeText(getActivity(), 
+	                						"请填写技能名称和等级", 
+	                						Toast.LENGTH_SHORT).show();
+	                			}
+	                			obj.put("STname", editText1.getText().toString());
+	                			obj.put("STlevel", editText2.getText().toString());
+	                			obj.put("STid", getJSON.opt("STid"));
+	                			jsonArray.put(obj);
+	                		}catch (JSONException e){
+	                			e.printStackTrace();
+	                		}
+	                		new Thread(){
+	                			public void run(){
+	                				try {
+										String response = postEntity.doPostA(jsonArray, update_personal_tech_url);
+										Log.e("response",response);
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										Log.e("post", "error");
+										e.printStackTrace();
+									}
+	                			}
+	                		}.start();
 	                	}
 	                	try {
 							Thread.sleep(2000);
@@ -785,8 +817,49 @@ public class PersonFragment extends Fragment{
 	                @Override
 	                public void onClick(DialogInterface dialog, int which) {
 	                    // TODO Auto-generated method stub
-	                    Toast.makeText(getActivity(), "删除成功",
+	                    
+	                    JSONObject obj = new JSONObject();
+	                	final JSONArray jsonArray = new JSONArray();
+	                	try{
+	                		if(list_index == "st"){
+		                		obj.put("STid", getJSON.opt("STid"));
+		                		jsonArray.put(obj);
+		                	}else if(list_index == "sc"){
+		                		obj.put("STid", getJSON.opt("SCid"));
+		                		jsonArray.put(obj);
+		                	}else if(list_index == "tc"){
+		                		obj.put("STid", getJSON.opt("TCid"));
+		                		jsonArray.put(obj);
+		                	}
+	                	} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                	new Thread(){
+	                		public void run(){
+	                			try{
+	                				if(list_index == "st"){
+	                					String response = deleteEntity.doDelete2(jsonArray, delete_personal_tech_url);
+		                			}else if(list_index == "sc" || list_index == "tc"){
+		                				String response = deleteEntity.doDelete2(jsonArray, delete_personal_use_url);
+		                			}
+	                			}catch (Exception e) {
+									// TODO Auto-generated catch block
+									Log.e("delete", "error");
+									e.printStackTrace();
+								}
+	                			
+	                		}
+	                	}.start();
+	                	try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                	Toast.makeText(getActivity(), "删除成功",
 	                            Toast.LENGTH_SHORT).show();
+	                	
 	                }
 	            });
 	 
