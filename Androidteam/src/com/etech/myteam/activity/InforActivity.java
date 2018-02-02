@@ -61,7 +61,7 @@ public class InforActivity extends Activity{
 	private List<MyTeamEntity> entitys_myteam = new ArrayList<MyTeamEntity>();
 	//定义默认值
 	private int Utype = 100;
-	private String Uid = "9f71d450-ebc9-4680-a415-5b86f0e4df15";
+	private String Uid = "2b7e8e9d-ce2a-4476-bd1b-ddcb77ceee0b";
 	private int index = 0;//fragment的标记码
 	private String id = "0d7f21f6-2372-4ca1-9e89-e495ddda6427";//根据infoType判断
 	private int infoType = 2;//0学生，1教师，2竞赛

@@ -64,7 +64,7 @@ public class PersonFragment extends Fragment{
 	private List<MyTeamEntity> entitys_myteam = new ArrayList<MyTeamEntity>();
 	//定义默认值
 	private int Utype = 100;
-	private String Uid = "679a5d16-a473-4308-9fee-788fc3cb828e";
+	private String Uid = "2b7e8e9d-ce2a-4476-bd1b-ddcb77ceee0b";
 	private int new_update = 0;//判断应该新增还是更新
 	//定义接口url
 	private String get_personal_url = "http://" 
@@ -112,6 +112,11 @@ public class PersonFragment extends Fragment{
 			+ "/personal/scuse_delete?Uid=" 
 			+ Uid;
 	
+	private String get_myteam_url = "http://" 
+			+ AppConst.sServerURL 
+			+ "/team/myteam?is_index=0000&Uid=" 
+			+ Uid;
+	
 	private HttpgetEntity getEntity;
 	private HttppostEntity postEntity;
 	private HttpdeleteEntity deleteEntity;
@@ -125,6 +130,7 @@ public class PersonFragment extends Fragment{
 		new Thread(){
 			public void run(){
 				getPersonalText();
+				getMyteam();
 			}
 		}.start();
 		try {
@@ -242,17 +248,17 @@ public class PersonFragment extends Fragment{
 		}
 		tvbutton.setOnClickListener(edit);
 		tvtech.setOnClickListener(new_tech);
-		tvuse.setOnClickListener(new_tech);
+		tvuse.setOnClickListener(new_use);
 		
 		if(new_update == 0){
 			tvbutton.setText(R.string.xin_zeng);
 		}else if(new_update == 1){
 			tvbutton.setText(R.string.bian_ji);
 		}
-		NewListView.setListViewHeightBasedOnChildren(lst1);
+		//NewListView.setListViewHeightBasedOnChildren(lst1);
 		adapter_tech = new TechsAdapter(entitys_tech, getActivity());
 		lst1.setAdapter(adapter_tech);
-		lst1.setOnScrollListener(NewListView.scroll);
+		//lst1.setOnScrollListener(NewListView.scroll);
 		lst1.setOnItemClickListener(itemupdate);
 		
 		//NewListView.setListViewHeightBasedOnChildren(lst2);
@@ -261,14 +267,15 @@ public class PersonFragment extends Fragment{
 		//lst2.setOnScrollListener(NewListView.scroll);
 		lst2.setOnItemClickListener(itemupdate);
 		
-		NewListView.setListViewHeightBasedOnChildren(lst3);
+		//NewListView.setListViewHeightBasedOnChildren(lst3);
 		adapter_myteam = new MyTeamAdapter(entitys_myteam, getActivity());
 		lst3.setAdapter(adapter_myteam);
-		lst3.setOnScrollListener(NewListView.scroll);
+		//lst3.setOnScrollListener(NewListView.scroll);
 		
 		NewListView.setListViewHeightBasedOnChildren(lst4);
 		
 		setPersonalText(personal_text);
+		setPersonalTeam(myteam);
 	}
 	
 	//编辑功能button的监听器
@@ -370,6 +377,14 @@ public class PersonFragment extends Fragment{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.e("getpersonal", "error");
+			e.printStackTrace();
+		}
+	}
+	private void getMyteam(){
+		getEntity = new HttpgetEntity();
+		try{
+			myteam = getEntity.doGet(get_myteam_url);
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
@@ -515,6 +530,32 @@ public class PersonFragment extends Fragment{
 					.show();
 			}
 		}
+	}
+	
+	private String myteam = null;
+	private void setPersonalTeam(String myteam){
+		final JSONArray jsonArray = StringToJSON.toJSONArray(myteam);
+		if(myteam == "[]"){
+			MyTeamEntity entity_myteam = new MyTeamEntity();
+			entity_myteam.setTEname("无");
+			entity_myteam.setCname("");
+		}
+		entitys_myteam.clear();
+		for(int i = 1; i < jsonArray.length(); i++){
+			try {
+				JSONObject jsonobj = jsonArray.getJSONObject(i);
+				MyTeamEntity entity_myteam = new MyTeamEntity();
+				entity_myteam.setTEname(jsonobj.optString("TEname"));
+				entity_myteam.setCname("第" + jsonobj.optInt("Cno") + "届" 
+						+ NumToString.getCLevel(jsonobj.optInt("Clevel")) 
+						+ jsonobj.optString("Sname"));
+				entitys_myteam.add(entity_myteam);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 	private String name, no, tel, university, school;
@@ -833,10 +874,10 @@ public class PersonFragment extends Fragment{
 		                		obj.put("STid", getJSON.opt("STid"));
 		                		jsonArray.put(obj);
 		                	}else if(list_index == "sc"){
-		                		obj.put("STid", getJSON.opt("SCid"));
+		                		obj.put("SCid", getJSON.opt("SCid"));
 		                		jsonArray.put(obj);
 		                	}else if(list_index == "tc"){
-		                		obj.put("STid", getJSON.opt("TCid"));
+		                		obj.put("TCid", getJSON.opt("TCid"));
 		                		jsonArray.put(obj);
 		                	}
 	                	} catch (JSONException e) {
@@ -847,9 +888,9 @@ public class PersonFragment extends Fragment{
 	                		public void run(){
 	                			try{
 	                				if(list_index == "st"){
-	                					String response = deleteEntity.doDelete2(jsonArray, delete_personal_tech_url);
+	                					String response = postEntity.doPostA(jsonArray, delete_personal_tech_url);
 		                			}else if(list_index == "sc" || list_index == "tc"){
-		                				String response = deleteEntity.doDelete2(jsonArray, delete_personal_use_url);
+		                				String response = postEntity.doPostA(jsonArray, delete_personal_use_url);
 		                			}
 	                			}catch (Exception e) {
 									// TODO Auto-generated catch block
@@ -879,13 +920,163 @@ public class PersonFragment extends Fragment{
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			
+			showDialog_new("新增", 1);
 		}
   		
   	};
   	
-  	private void showDialog_new(final JSONObject getJSON, String title, final String list_index){
+  	private OnClickListener new_use = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			showDialog_new("新增", 2);
+		}
   		
+  	};
+  	
+  	private void showDialog_new(String title, final int index){
+  		android.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		final LayoutInflater inflater = LayoutInflater.from(getActivity());
+		final View view = inflater.inflate(R.layout.layout_alert, null);
+	    builder.setTitle(title);
+	    final EditText editText1 = (EditText)view.findViewById(R.id.alert_1);
+	    final EditText editText2 = (EditText)view.findViewById(R.id.alert_2);
+	    final EditText editText3 = (EditText)view.findViewById(R.id.alert_3);
+	    builder.setView(view);
+	    if(index == 1 || index == 2){
+		    if(index == 2 && Utype == 101){
+		    	editText1.setHint("请输入竞赛名称");
+		    	editText2.setHint("请输入获奖等级/名次");
+		    	editText3.setHint("请输入获奖队伍数目");
+		    }else if(index == 1 && Utype == 100){
+		    	editText1.setHint("请输入技能名称");
+		    	editText2.setHint("请输入技能熟练度");
+		    	editText3.setVisibility(View.GONE);
+		    }else if(index == 2 && Utype == 100){
+		    	editText3.setVisibility(View.GONE);
+		    	editText1.setHint("请输入竞赛名称");
+		    	editText2.setHint("请输入获奖等级/名次");
+		    }
+	    }
+	    builder.setPositiveButton("新建",
+	            new DialogInterface.OnClickListener() {
+	                @Override
+	                public void onClick(DialogInterface dialog, int which) {
+	                    // TODO Auto-generated method stub
+	                	JSONObject obj = new JSONObject();
+	                	final JSONArray jsonArray = new JSONArray();
+	                	if(index == 2 && Utype == 101){
+	                		try {
+	                			if(editText1.getText().toString().length() == 0 || 
+	                					editText2.getText().toString().length() == 0){
+	                				Toast.makeText(getActivity(),
+	        	                            "请填写竞赛名称和名次",
+	        	                            Toast.LENGTH_SHORT).show();
+	                			}
+								obj.put("TCname", editText1.getText().toString());
+								obj.put("TCno", editText2.getText().toString());
+								if(editText3.getText().toString().length() == 0){
+									obj.put("TCnum", 1);
+								}else{
+									obj.put("TCnum", Integer.parseInt(editText3.getText().toString()));
+								}
+								jsonArray.put(obj);
+								Log.e("jsonArray", jsonArray.toString());
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+	                		new Thread(){
+	                			public void run(){
+	                				try {
+										String response = postEntity.doPostA(jsonArray, post_personal_use_url);
+										Log.e("response",response);
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										Log.e("post", "error");
+										e.printStackTrace();
+									}
+	                			}
+	                		}.start();
+	                	}else if(index == 2 && Utype == 100){
+	                		try {
+	                			if(editText1.getText().toString().length() == 0 || 
+	                					editText2.getText().toString().length() == 0){
+	                				Toast.makeText(getActivity(),
+	        	                            "请填写竞赛名称和名次",
+	        	                            Toast.LENGTH_SHORT).show();
+	                			}
+								obj.put("SCname", editText1.getText().toString());
+								obj.put("SCno", editText2.getText().toString());
+								jsonArray.put(obj);
+								Log.e("jsonArray", jsonArray.toString());
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+	                		new Thread(){
+	                			public void run(){
+	                				try {
+										String response = postEntity.doPostA(jsonArray, post_personal_use_url);
+										Log.e("response",response);
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										Log.e("post", "error");
+										e.printStackTrace();
+									}
+	                			}
+	                		}.start();
+	                	}else if(index == 1 && Utype == 100){
+	                		try{
+	                			if(editText1.getText().toString().length() == 0 || 
+	                					editText2.getText().toString().length() == 0){
+	                				Toast.makeText(getActivity(), 
+	                						"请填写技能名称和等级", 
+	                						Toast.LENGTH_SHORT).show();
+	                			}
+	                			obj.put("STname", editText1.getText().toString());
+	                			obj.put("STlevel", Integer.parseInt(editText2.getText().toString()));
+	                			jsonArray.put(obj);
+	                		}catch (JSONException e){
+	                			e.printStackTrace();
+	                		}
+	                		new Thread(){
+	                			public void run(){
+	                				try {
+										String response = postEntity.doPostA(jsonArray, post_personal_tech_url);
+										Log.e("response",response);
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										Log.e("post", "error");
+										e.printStackTrace();
+									}
+	                			}
+	                		}.start();
+	                	}
+	                	try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                  
+	                    Toast.makeText(getActivity(),
+	                            "修改成功",
+	                            Toast.LENGTH_SHORT).show();
+	                }
+	            });
+	    builder.setNegativeButton("取消",
+	            new DialogInterface.OnClickListener() {
+	 
+	                @Override
+	                public void onClick(DialogInterface dialog, int which) {
+
+	                	Toast.makeText(getActivity(), "取消",
+	                            Toast.LENGTH_SHORT).show();
+	                	
+	                }
+	            });
+	 
+	    builder.show();
   	}
   	
   	

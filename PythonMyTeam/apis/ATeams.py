@@ -26,7 +26,8 @@ class ATeams(Resource):
 
         apis = {
             "allteam": "cteams.teams_list()",
-            "teamabo": "cteams.team_abo()"
+            "teamabo": "cteams.team_abo()",
+            "myteam": "cteams.myteams()"
         }
         #判断是否存在该API
         if judgeData.inData(team, apis):

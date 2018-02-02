@@ -42,7 +42,9 @@ class APersonal(Resource):
             "scuse_new": "cpersonal.create_myuse()",
             "update": "cpersonal.update_myinfor()",
             "stech_update": "cpersonal.update_mytech()",
-            "scuse_update": "cpersonal.update_myuse()"
+            "scuse_update": "cpersonal.update_myuse()",
+            "stech_delete": "cpersonal.delete_mytech()",
+            "scuse_delete": "cpersonal.delete_myuse()"
         }
         # 判断是否包含该API
         if judgeData.inData(personal, apis):

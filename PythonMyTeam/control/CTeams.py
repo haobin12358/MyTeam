@@ -155,6 +155,53 @@ class CTeams():
 
         return result_response
 
+    def myteams(self):
+        if not self.steams.status:  # 校验数据库是否连接异常
+            return system_error
+        args = request.args.to_dict()
+        print args
+
+        if not self.judgeData.inData("Uid", args) or not self.judgeData.inData("is_index", args):
+            return param_miss
+
+        uid = args["Uid"]
+        is_index = args["is_index"]
+
+        sid = self.sstudent.get_sid_by_uid(uid)
+        team_list = []
+        print is_index
+        if int(is_index) == 0000:
+            print 1
+            team_list_abo = self.steams.get_my_team(sid)
+            for row in team_list_abo:
+                print row
+                team_list_item = {}
+                team_list_item["TEid"] = row
+                team_list_item["TEname"] = self.steams.get_tename_by_teid(row)
+                cid = self.steams.get_cid_by_teid(row)
+                cname_clevel_cno = self.scompetitions.get_competitions_name_level_no_by_cid(cid)
+                team_list_item["Cname"] = cname_clevel_cno.Cname
+                team_list_item["Cno"] = cname_clevel_cno.Cno
+                team_list_item["Clevel"] = cname_clevel_cno.Clevel
+                team_list.append(team_list_item)
+            return team_list
+        elif is_index == 1:
+            team_list_abo = self.steams.get_my_own_team(sid)
+            for row in team_list_abo:
+                team_list_item = {}
+                team_list_item["TEid"] = row
+                team_list_item["TEname"] = self.steams.get_tename_by_teid(row)
+                cid = self.steams.get_cid_by_teid(row)
+                cname_clevel_cno = self.scompetitions.get_competitions_name_level_no_by_cid(cid)
+                team_list_item["Cname"] = cname_clevel_cno.Cname
+                team_list_item["Cno"] = cname_clevel_cno.Cno
+                team_list_item["Clevel"] = cname_clevel_cno.Clevel
+                team_list.append(team_list_item)
+            return team_list
+        else:
+            print 1
+            return param_miss
+
     # 新建团队（创建团队信息表和团队学生表的主要人员），入口在竞赛信息和团队板块的创建团队
     def new_team(self):
         add_status = True

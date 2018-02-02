@@ -36,7 +36,7 @@ public class HttpdeleteEntity {
                 3000);*/
         // 获取HttpResponse实例
         HttpResponse httpResp = httpClient.execute(httpDelete);
-        Log.e("status",httpResp.getStatusLine().getStatusCode()+" ");
+        Log.e("status", httpResp.getStatusLine().getStatusCode()+" ");
         // 判断是够请求成功
         if (httpResp.getStatusLine().getStatusCode() == 200) {
             // 获取返回的数据
