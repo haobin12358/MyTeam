@@ -12,6 +12,16 @@ public class MyTeamEntity {
 	private int Clevel;//竞赛等级 
 	private String TEname;//团队名称
 	
+	//团队list需要用到的字段
+	private String Tetname; //教师姓名
+	
+	public void setIsfull(String isfull) {
+		Isfull = isfull;
+	}
+	private String Teleader; //团队leader
+	private String Isfull; //是否满员
+	
+	
 	public String getTEid() {
 		return TEid;
 	}
@@ -41,5 +51,20 @@ public class MyTeamEntity {
 	}
 	public void setTEname(String tEname) {
 		TEname = tEname;
+	}
+	public String getTetname() {
+		return Tetname;
+	}
+	public void setTetname(String tetname) {
+		Tetname = tetname;
+	}
+	public String getTeleader() {
+		return Teleader;
+	}
+	public void setTeleader(String teleader) {
+		Teleader = teleader;
+	}
+	public String getIsfull() {
+		return Isfull;
 	}
 }

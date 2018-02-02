@@ -77,7 +77,7 @@ public class MyTeamAdapter extends BaseAdapter{
 		return convertView;
 	}
 	
-	private class ViewHolder{
+	public class ViewHolder{
 		private TextView Cname, TEname;
 	}
 
