@@ -19,8 +19,7 @@ class SLogs():
             print e.message
             self.status = False
 
-    def add_logs(self, lid, ct_time, ct_user, product_name, class_name, def_name, param, param_value, level, messages,
-                 ct_system, ct_ip, package_name, log_tag, log_size, log_count):
+    def add_logs(self, **kwargs):
         """
         :param lid: 列表id
         :param ct_time: 创建时间
@@ -42,22 +41,23 @@ class SLogs():
         """
         try:
             new_log = log_model.Logs()
-            new_log.lid = lid
-            new_log.ct_time = ct_time
-            new_log.ct_user = ct_user
-            new_log.product_name = product_name
-            new_log.class_name = class_name
-            new_log.def_name = def_name
-            new_log.param = param
-            new_log.param_value = param_value
-            new_log.level = level
-            new_log.messages = messages
-            new_log.ct_system = ct_system
-            new_log.ct_ip = ct_ip
-            new_log.package_name = package_name
-            new_log.log_tag = log_tag
-            new_log.log_size = log_size
-            new_log.log_count = log_count
+            new_log.lid = kwargs.get('lid')
+            new_log.ct_time = kwargs.get('ct_time')
+            new_log.ct_user = kwargs.get('ct_user')
+            new_log.product_name = kwargs.get('product_name')
+            new_log.class_name = kwargs.get('class_name')
+            new_log.def_name = kwargs.get('def_name')
+            new_log.param = kwargs.get('param')
+            new_log.param_value = kwargs.get('param_value')
+            new_log.level = kwargs.get('level')
+            new_log.messages = kwargs.get('messages')
+            new_log.ct_system = kwargs.get('ct_system')
+            new_log.ct_ip = kwargs.get('ct_ip')
+            new_log.package_name = kwargs.get('package_name')
+            new_log.log_tag = kwargs.get('log_tag')
+            new_log.log_size = kwargs.get('log_size')
+            new_log.log_count = kwargs.get('log_count')
+
             self.session.add(new_log)
             self.session.commit()
             return True
@@ -68,29 +68,27 @@ class SLogs():
 
     def add_logs_easy(self, **kwargs):
         keys = kwargs.keys()
-        list_param = ["lid", "ct_time", "ct_user", "product_name", "class_name", "def_name", "param",
-                      "param_value", "level", "messages", "ct_system", "ct_ip", "package_name", "log_tag",
-                      "log_size", "log_count"]
-        list_values = [None, None, "public_user", 7443, "unknown class", "unknown def", None,
-                       None, None, None, None, None, None, None, None, None]
-        for row in keys:
-            if row in list_param:
-                list_values[list_param.index(row)] = kwargs[row]
-        list_values[0] = uuid.uuid4()
-        list_values[1] = datetime.now()
-        if list_values[9] != None:
-            list_values[14] = len(list_values[9])
-        else:
-            list_values[14] = 0
-        if list_values[14] < 4 * 1024 *1024:
-            list_values[15] = 0
-        else:
-            list_values[15] = 1
 
-        try_add = self.add_logs(list_values[0], list_values[1],list_values[2], list_values[3], list_values[4],
-                                list_values[5], list_values[6], list_values[7], list_values[8], list_values[9],
-                                list_values[10], list_values[11], list_values[12], list_values[13], list_values[14],
-                                list_values[15])
+        log_data = {'def_name': None, 'package_name': None, 'ct_ip': None, 'level': None,
+                    'class_name': None, 'messages': None, 'param': None, 'ct_system': None, 'log_tag': None,
+                    'param_value': None, 'product_name': None, 'ct_user': None}
+
+        for key in keys:
+            if key in log_data:
+                # if isinstance(kwargs.get(key), int):
+                    log_data[key] = kwargs.get(key)
+
+        log_data["lid"] = uuid.uuid4()
+        log_data["ct_time"] = datetime.now()
+        log_data["log_size"] = 0
+        if log_data.get("messages") != None:
+            log_data["log_size"] = len(log_data.get("messages"))
+        if log_data["log_size"] < 4 * 1024 * 1024:
+            log_data["log_count"] = 0
+        else:
+            log_data["log_count"] = 1
+
+        try_add = self.add_logs(**log_data)
         return try_add
 
 if __name__ == "__main__":

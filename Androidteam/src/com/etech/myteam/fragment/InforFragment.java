@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,7 +28,9 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.etech.myteam.R;
 import com.etech.myteam.activity.InforActivity;
+import com.etech.myteam.adapter.CompetitionAdapter;
 import com.etech.myteam.adapter.StudentAdapter;
+import com.etech.myteam.adapter.TeacherAdapter;
 import com.etech.myteam.common.HttpgetEntity;
 import com.etech.myteam.common.HttppostEntity;
 import com.etech.myteam.common.StringToJSON;
@@ -42,7 +45,8 @@ public class InforFragment extends Fragment{
 //	private Map type_map = 
 	private String url = "http://"+AppConst.sServerURL ;
 	private ListView list;
-	private TextView tv_1,tv_2,tv_3;
+//	private TextView tv_1,tv_2,tv_3;
+	private EditText edName, edSchool, edStart, edEnd;
 	private Button btn_doit, btn_student, btn_teach, btn_com;
 	private BaseAdapter adapter;	
 	private int page_num = 1;
@@ -65,26 +69,27 @@ public class InforFragment extends Fragment{
 		
 		init(view);
 		Log.e("Info", "init over");
-		adapter = new StudentAdapter(entitys, getActivity(),Utype);
-		Log.e("adapter over", "over");
-		list.setAdapter(adapter);
-		tv_1.setOnClickListener(search);
-		tv_2.setOnClickListener(search);
-		tv_3.setOnClickListener(search);
+		
+		
 		return view;
 	}
 	
 	private void init(View view){
-		tv_1 = (TextView)view.findViewById(R.id.tv_1);
-		tv_2 = (TextView)view.findViewById(R.id.tv_2);
-		tv_3 = (TextView)view.findViewById(R.id.tv_3);
+		edName = (EditText) view.findViewById(R.id.ed_name);
+		edSchool = (EditText) view.findViewById(R.id.ed_school);		
+		edEnd = (EditText) view.findViewById(R.id.ed_grade_end);		
+		edStart = (EditText) view.findViewById(R.id.ed_grade_start);		
+		btn_student = (Button)view.findViewById(R.id.btn_1);
+		btn_teach = (Button)view.findViewById(R.id.btn_2);
+		btn_com = (Button)view.findViewById(R.id.btn_3);
 		btn_doit = (Button)view.findViewById(R.id.btn_doit);
 		spinner = (Spinner) view.findViewById(R.id.spinner1);
 		list = (ListView) view.findViewById(R.id.student_list);
 		btn_doit.setText(R.string.cha_xun);
 		initdata();
-		
-		
+		btn_student.setOnClickListener(changeInfo);
+		btn_teach.setOnClickListener(changeInfo);
+		btn_com.setOnClickListener(changeInfo);	
 	}
 	
 	
@@ -107,34 +112,44 @@ public class InforFragment extends Fragment{
     };
     
     //学生 教师 竞赛 监听器 
-    private OnClickListener search = new OnClickListener() {
+    private OnClickListener changeInfo = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.tv_2:
+			case R.id.btn_2:
 				infoType = 1;
 				break;
-			case R.id.tv_3:
+			case R.id.btn_3:
 				infoType = 2;
-			case R.id.tv_1:
+				break;
+			case R.id.btn_1:
 				
 			default:
 				infoType = 0;
 				break;
 			}
-			
-			result_info = null;
-			get_info();
-			while (true){
-				if (result_info != null){
-					break;
-				}
-			}
-			initdata();
+			page_num = 1;
+			setData();
 		}
 
 	};
+	
+	public void setData(){
+		page_num = 1;					
+		name = edName.getText().toString();
+		school = edSchool.getText().toString();
+		start = edStart.getText().toString();
+		end = edEnd.getText().toString();
+		result_info = null;
+		get_info();
+		while (true){
+			if (result_info != null){
+				break;
+			}
+		}
+		initdata();
+	}
 	
 	public void initdata(){
 		try{
@@ -197,6 +212,24 @@ public class InforFragment extends Fragment{
 				getActivity(),R.layout.spinner_item,data_list);
 
 		spinner.setAdapter(arr_adapter);
+		switch (infoType){
+		case 0:
+			adapter = new StudentAdapter(entitys, getActivity(),Utype);
+			break;
+		case 1:
+			adapter = new TeacherAdapter(entitys, getActivity(),Utype);
+			break;
+		case 2:
+			adapter = new CompetitionAdapter(entitys, getActivity(),Utype);
+			break;
+		default:
+			adapter = new StudentAdapter(entitys, getActivity(),Utype);
+			break;
+		}
+		
+//		list.c
+		Log.e("adapter over", "over");
+		list.setAdapter(adapter);
 	}
 	
 	public void get_info(){
@@ -245,22 +278,22 @@ public class InforFragment extends Fragment{
 	}
 	
 	/*通过infoType 以及筛选框的内容获取url*/
-	private String getUrl(){
-		TypeInfo info = new TypeInfo(infoType);
+	private String getUrl(){		
+		TypeInfo info = new TypeInfo(infoType);		
 		StringBuffer get_info_url = new StringBuffer();
 		get_info_url.append(url).append(info.getUrlType())
 		.append("?page_size=10&page_num=").append(page_num)
 		.append("&Uid=").append(Uid).append("&Utype=").append(Utype);						
-		if (name != null){
+		if (name != null && name.length() != 0){
 			get_info_url.append(info.getName()).append(name);
 		}
-		if (school != null){
+		if (school != null && school.length() != 0){
 			get_info_url.append(info.getSchool()).append(school);
 		}
-		if (start != null){
+		if (start != null && start.length() != 0){
 			get_info_url.append(info.getStart()).append(start);
 		}
-		if (end != null){
+		if (end != null && end.length() != 0){
 			get_info_url.append(info.getEnd()).append(end);
 		}
 		Log.e("url", get_info_url.toString());
@@ -352,6 +385,14 @@ public class InforFragment extends Fragment{
 		public void setEnd(String end) {
 			this.end = "&" + end + "=";
 		}
+
+		@Override
+		public String toString() {
+			return "TypeInfo [urlType=" + urlType + ", name=" + name
+					+ ", school=" + school + ", start=" + start + ", end="
+					+ end + "]";
+		}
+
 		
 	}
 	

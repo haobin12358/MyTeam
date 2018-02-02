@@ -62,10 +62,10 @@ public class TeacherAdapter extends BaseAdapter {
 			
 			holder.btn_doit.setVisibility(View.GONE);
 		}
-		holder.Sname.setText(entity.getName());
-		holder.Sgrade.setText(entity.getTtime());
-		holder.Sscool.setText(entity.getSchool());
-		holder.btn_doit.setText(entity.getBtn_name());
+		holder.Sname.setText(String.valueOf(entity.getName()));
+		holder.Sgrade.setText(String.valueOf(entity.getTtime()));
+		holder.Sscool.setText(String.valueOf(entity.getSchool()));
+		holder.btn_doit.setText(String.valueOf(entity.getBtn_name()));
 		convertView.setTag(holder);
 		return convertView;
 	}

@@ -63,10 +63,10 @@ public class CompetitionAdapter extends BaseAdapter{
 			
 			holder.btn_doit.setVisibility(View.GONE);
 		}
-		holder.Sname.setText(entity.getName());
-		holder.Sgrade.setText(entity.getStart_time()+"-"+entity.getEnd_time());
-		holder.Sscool.setText(entity.getLevel());
-		holder.btn_doit.setText(entity.getBtn_name());
+		holder.Sname.setText(String.valueOf(entity.getName()));
+		holder.Sgrade.setText(entity.getStart_time()+"~"+entity.getEnd_time());
+		holder.Sscool.setText(String.valueOf(entity.getLevel()));
+		holder.btn_doit.setText(String.valueOf(entity.getBtn_name()));
 		convertView.setTag(holder);
 		return convertView;
 	}
