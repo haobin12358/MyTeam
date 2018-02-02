@@ -389,7 +389,7 @@ class CPersonal():
                 if row["STname"] in stname_list:
                     return repeated_stname
                 '''
-                stid = self.sstudent.get_stid_by_stname_and_sid(sid, row["STname"])
+                stid = row["STid"]
                 # 更新数据库
                 update_personal_tech = self.spersonal.update_student_tech_by_stid(stid, row)
 
@@ -456,7 +456,7 @@ class CPersonal():
 
                 # 似乎应该进行一些校检，但是不知道该怎么校检
                 # 获取tcid
-                tcid = self.steacher.get_tcid_by_tcname_and_tid(tid, row["TCname"])
+                tcid = row["TCid"]
                 # 更新数据库
                 update_personal_use = self.spersonal.update_teacher_use_by_tcid(tcid, row)
                 if not update_personal_use:
@@ -498,7 +498,7 @@ class CPersonal():
                 if not self.judgeData.inData("STname", row):
                     return param_miss
 
-                stid = self.sstudent.get_stid_by_stname_and_sid(sid, row["STname"])
+                stid = row["STid"]
                 # 更新数据库
                 delete_personal_tech = self.spersonal.delete_student_tech_by_stid(stid)
 
@@ -538,7 +538,7 @@ class CPersonal():
                 if not self.judgeData.inData("SCname", row):
                     return param_miss
 
-                scid = self.sstudent.get_scid_by_scname_and_sid(sid, row["SCname"])
+                scid = row["SCid"]
 
                 # 更新数据库
                 delete_personal_use = self.spersonal.delete_student_use_by_scid(scid)
@@ -555,7 +555,7 @@ class CPersonal():
                     return param_miss
 
                 # 获取tcid
-                tcid = self.steacher.get_tcid_by_tcname_and_tid(tid, row["TCname"])
+                tcid = row["TCid"]
                 # 更新数据库
                 delete_personal_use = self.spersonal.delete_teacher_use_by_tcid(tcid)
                 if not delete_personal_use:
