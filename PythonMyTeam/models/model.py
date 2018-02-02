@@ -110,13 +110,13 @@ class TTasks(Base):
 class Perinfor(Base):
     __tablename__ = "Perinfor"
     Pid = Column(String(64), primary_key=True)
-    Uid = Column(String(64), nullable=False)
+    Uid = Column(String(64), nullable=False)  # 消息发出者
     Pmessage = Column(Text, nullable=False) # 消息内容
     Pstatus = Column(Integer, nullable=False) # 消息处理状态  1201已读 1200未读
     Ptype = Column(Integer) # 消息类型 901邀请 902任务 903通知 904其他 905申请
-    Cid = Column(String(64))
-    TEid = Column(String(64))
-    Sid = Column(String(64))
+    Cid = Column(String(64))  # 竞赛id
+    TEid = Column(String(64))  # 团队id
+    Sid = Column(String(64))  # 消息接收者
 
 # 学生技能表
 class STechs(Base):

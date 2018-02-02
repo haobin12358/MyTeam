@@ -9,6 +9,7 @@ import DBSession
 from common.TransformToList import trans_params
 from Config.SQLs import SQL_FOR_SELECT_COUNT_IN_TEAM, SQL_FOR_SELECT_TCOUNT_IN_TEAM
 import sqlalchemy
+from sqlalchemy import func
 
 # 操作teams表的相关方法
 class STeams():
@@ -22,39 +23,75 @@ class STeams():
 
     # 获取团队列表
     def get_all_teams(self, start_num, page_size):
-        team_list = self.session.query(model.Teams.TEid, model.Teams.TEname,
+        team_list = None
+        try:
+            team_list = self.session.query(model.Teams.TEid, model.Teams.TEname,
                                        model.Teams.Cid, model.Teams.TEuse, model.Teams.TEnum)\
-            .offset(start_num).limit(page_size).all()
+                .offset(start_num).limit(page_size).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return team_list
 
     # 分页获取团队列表
     def get_team_list_by_start_end(self, start_num, infor_num):
-        team_list = self.session.query(model.Teams.TEid, model.Teams.TEname,
+        team_list = None
+        try:
+            team_list = self.session.query(model.Teams.TEid, model.Teams.TEname,
                                        model.Teams.Cid, model.Teams.TEuse, model.Teams.TEnum).filter_by(TEuse=701)\
-            .offset(start_num-1).limit(infor_num).all()
+                .offset(start_num-1).limit(infor_num).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return team_list
 
     # 获取团队基础信息
     def get_team_abo_by_teid(self, teid):
-        team_abo = self.session.query(model.Teams.TEid, model.Teams.TEname, model.Teams.Cid,
+        team_abo = None
+        try:
+            team_abo = self.session.query(model.Teams.TEid, model.Teams.TEname, model.Teams.Cid,
                                       model.Teams.TEuse, model.Teams.TEnum).filter_by(TEid=teid).first()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return team_abo
 
     # 获取团队学生信息
     def get_student_list_by_teid(self, teid):
-        student_list = self.session.query(model.TStudent.Sid, model.TStudent.TStype)\
-            .filter_by(TEid=teid).filter_by(TSsubject=1101).all()
+        student_list = None
+        try:
+            student_list = self.session.query(model.TStudent.Sid, model.TStudent.TStype)\
+                .filter_by(TEid=teid).filter_by(TSsubject=1101).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return student_list
 
     # 获取团队教师信息
     def get_tid_by_teid(self, teid):
-        teacher_list = self.session.query(model.TTeacher.Tid).filter_by(TEid=teid).filter_by(TTsubject=1).scalar()
+        teacher_list = None
+        try:
+            teacher_list = self.session.query(model.TTeacher.Tid).filter_by(TEid=teid).filter_by(TTsubject=1).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return teacher_list
 
     # 获取团队任务列表
     def get_task_list_by_teid(self, teid):
-        task_list = self.session.query(model.TTasks.Tkname, model.TTasks.Sid, model.TTasks.Tkstatus)\
-            .filter_by(TEid=teid).order_by(model.TTasks.Tktime).desc().all()
+        task_list = None
+        try:
+            task_list = self.session.query(model.TTasks.Tkname, model.TTasks.Sid, model.TTasks.Tkstatus)\
+                .filter_by(TEid=teid).order_by(model.TTasks.Tktime).desc().all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return task_list
 
     # 创建团队
@@ -77,10 +114,11 @@ class STeams():
 
             self.session.add(new_team)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -104,10 +142,11 @@ class STeams():
 
             self.session.add(new_student_in_team)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -129,10 +168,11 @@ class STeams():
 
             self.session.add(new_teacher_in_team)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -145,10 +185,11 @@ class STeams():
         try:
             self.session.query(model.Teams).filter_by(TEid=teid).delete()
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -162,44 +203,92 @@ class STeams():
         try:
             self.session.query(model.Teams).filter_by(TEid=teid).update(update_team_item)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
     # 根据团队id获取竞赛id
     def get_cid_by_teid(self, teid):
-        return self.session.query(model.Teams.Cid).filter_by(TEid=teid).scalar()
+        cid = None
+        try:
+            cid = self.session.query(model.Teams.Cid).filter_by(TEid=teid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return cid
 
     # 获取团队的创建者sid
     def get_sid_by_teid(self, teid):
-        return self.session.query(model.TStudent.Sid).filter_by(TEid=teid).filter_by(TStype=1000).scalar()
+        sid = None
+        try:
+            sid = self.session.query(model.TStudent.Sid).filter_by(TEid=teid).filter_by(TStype=1000).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return sid
 
     # 根据团队id获取团队当前的学生数目
     def get_count_by_teid(self, teid):
-        sql = SQL_FOR_SELECT_COUNT_IN_TEAM.format(teid)
-        print sql
-        return self.session.execute(sql)
+        count = 0
+        try:
+            count = self.session.query(func.count(eval("model.TStudent.TSid")))\
+                .filter_by(TSsubject=1101).filter_by(TEid=teid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return count
+
+    # 根据团队id获取团队当前的教师数目
+    def get_tcount_by_teid(self, teid):
+        count = 0
+        try:
+            count = self.session.query(func.count(eval("model.TTeacher.TTid")))\
+                .filter_by(TTsubject=1101).filter_by(TEid=teid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return count
 
     # 根据团队id获取团队成员数目
     def get_tenum_by_teid(self, teid):
-        return self.session.query(model.Teams.TEnum).filter_by(TEid=teid).scalar()
-
-    # 根据团队id获取团队当前的学生数目
-    def get_tcount_by_teid(self, teid):
-        sql = SQL_FOR_SELECT_TCOUNT_IN_TEAM.format(teid)
-        print sql
-        return self.session.execute(sql)
+        tenum = None
+        try:
+            tenum = self.session.query(model.Teams.TEnum).filter_by(TEid=teid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tenum
 
     # 根据团队id和学生id获取tsid
     def get_tsid_by_teid_sid(self, teid, sid):
-        return self.session.query(model.TStudent.TSid).filter_by(TEid=teid).filter_by(Sid=sid).scalar()
+        tsid = None
+        try:
+            tsid = self.session.query(model.TStudent.TSid).filter_by(TEid=teid).filter_by(Sid=sid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tsid
 
     # 根据团队id和教师id获取ttid
     def get_ttid_by_teid_tid(self, teid, tid):
-        return self.session.query(model.TTeacher.TTid).filter_by(TEid=teid).filter_by(Tid=tid).scalar()
+        ttid = None
+        try:
+            ttid = self.session.query(model.TTeacher.TTid).filter_by(TEid=teid).filter_by(Tid=tid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return ttid
 
     # 根据tsid更新tstudent表
     def update_tstudent_by_tsid(self, tsid, tstudent_item):
@@ -211,10 +300,11 @@ class STeams():
         try:
             self.session.query(model.TStudent).filter_by(TSid=tsid).update(tstudent_item)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -228,33 +318,86 @@ class STeams():
         try:
             self.session.query(model.TTeacher).filter_by(TTid=ttid).update(tteacher_item)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
     # 根据团队id获取团队名称
     def get_tename_by_teid(self, teid):
-        return self.session.query(model.Teams.TEname).filter_by(TEid=teid).scalar()
+        tename = None
+        try:
+            tename = self.session.query(model.Teams.TEname).filter_by(TEid=teid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tename
 
     # 根据团队id和学生id获取成员类型
     def get_tstype_by_teid_sid(self, teid, sid):
-        return self.session.query(model.TStudent.TStype).filter_by(TEid=teid).filter_by(Sid=sid).scalar()
+        tstype = 0
+        try:
+            tstype = self.session.query(model.TStudent.TStype).filter_by(TEid=teid).filter_by(Sid=sid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tstype
 
     # 根据cid获取竞赛名称、竞赛届次、竞赛等级
     def get_cname_cno_clevel_by_cid(self, cid):
-        return self.session.query(model.Competitions.Cname, model.Competitions.Cno, model.Competitions.Clevel)\
-            .filter_by(Cid=cid).first()
+        cname_cno_clevel = None
+        try:
+            cname_cno_clevel = self.session.query(model.Competitions.Cname, model.Competitions.Cno, model.Competitions.Clevel)\
+                .filter_by(Cid=cid).first()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return cname_cno_clevel
 
     # 根据teid获取当前被待审核人数和被拒绝人数
     def get_count_wait_refuse_by_teid(self, teid):
-        wait_num = self.session.query(sqlalchemy.func.count(model.TStudent.TSid))\
-            .filter_by(TEid=teid).filter_by(TSsubject=1100).scalar()
-        refuse_num = self.session.query(sqlalchemy.func.count(model.TStudent.TSid))\
-            .filter_by(TEid=teid).filter_by(TSsubject=1102).scalar()
+        wait_num, refuse_num = 0,0
+        try:
+            wait_num = self.session.query(sqlalchemy.func.count(model.TStudent.TSid))\
+                .filter_by(TEid=teid).filter_by(TSsubject=1100).scalar()
+            refuse_num = self.session.query(sqlalchemy.func.count(model.TStudent.TSid))\
+                .filter_by(TEid=teid).filter_by(TSsubject=1102).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
         return wait_num, refuse_num
+
+    # 获取tstudent中具有的sid
+    @trans_params
+    def get_sid_list_by_teid(self, teid):
+        sid_list = None
+        try:
+            sid_list = self.session.query(model.TStudent.Sid).filter_by(TEid=teid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return sid_list
+
+    # 获取tteacher中具有的tid
+    @trans_params
+    def get_tid_list_by_teid(self, teid):
+        tid_list = None
+        try:
+            tid_list = self.session.query(model.TTeacher.Tid).filter_by(TEid=teid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tid_list
+
 
 if __name__ == '__main__':
     steams = STeams()

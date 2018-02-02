@@ -18,9 +18,6 @@ class SPersonal():
             print e.message
             self.status = False
 
-    def get_utype_by_uid(self, uid):
-        return self.session.query(model.Uers.Utype).filter_by(Uid = uid).scalar()
-
     def add_student_abo_by_uid(self, sid, uid, sname, sno, suniversity, sschool, stel, sgrade, ssex):
         """
         :param sid:
@@ -53,6 +50,7 @@ class SPersonal():
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -82,9 +80,11 @@ class SPersonal():
             self.session.add(new_teacher)
             self.session.commit()
 
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -110,14 +110,19 @@ class SPersonal():
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
     def get_tid_by_uid(self, uid):
-        return self.session.query(model.Teachers.Tid).filter_by(Uid = uid).scalar()
-
-    def get_sid_by_uid(self, uid):
-        return self.session.query(model.Students.Sid).filter_by(Uid = uid).scalar()
+        tid = None
+        try:
+            tid = self.session.query(model.Teachers.Tid).filter_by(Uid = uid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tid
 
     def add_student_use_by_sid(self, scid, sid, scname, scno):
         """
@@ -136,10 +141,11 @@ class SPersonal():
 
             self.session.add(new_student_use)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -162,10 +168,11 @@ class SPersonal():
 
             self.session.add(new_teacher_use)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -177,10 +184,11 @@ class SPersonal():
         try:
             self.session.query(model.STechs).filter_by(STid = stid).delete()
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -192,9 +200,11 @@ class SPersonal():
         try:
             self.session.query(model.SCuse).filter_by(SCid = scid).delete()
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
+            self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -206,9 +216,11 @@ class SPersonal():
         try:
             self.session.query(model.TCuse).filter_by(TCid = tcid).delete()
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
+            self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -221,10 +233,11 @@ class SPersonal():
         try:
             self.session.query(model.Students).filter_by(Uid = uid).update(student_abo)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -237,10 +250,11 @@ class SPersonal():
         try:
             self.session.query(model.Teachers).filter_by(Uid = uid).update(teacher_abo)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -253,10 +267,11 @@ class SPersonal():
         try:
             self.session.query(model.STechs).filter_by(STid = stid).update(student_tech)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -269,10 +284,11 @@ class SPersonal():
         try:
             self.session.query(model.SCuse).filter_by(SCid = scid).update(student_use)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
 
@@ -285,26 +301,10 @@ class SPersonal():
         try:
             self.session.query(model.TCuse).filter_by(TCid = tcid).update(teacher_use)
             self.session.commit()
-
+            self.session.close()
             return True
         except Exception as e:
             self.session.rollback()
+            self.session.close()
             print e.message
             return False
-
-    @trans_params
-    def get_stname_by_sid(self, sid):
-        return self.session.query(model.STechs.STname).filter_by(Sid = sid).all()
-
-    @trans_params
-    def get_scname_by_sid(self, sid):
-        return self.session.query(model.SCuse.SCname).filter_by(Sid = sid).all()
-
-    def get_stid_by_stname_and_sid(self, sid, stname):
-        return self.session.query(model.STechs.STid).filter_by(Sid = sid).filter_by(STname = stname).scalar()
-
-    def get_scid_by_scname_and_sid(self, sid, scname):
-        return self.session.query(model.SCuse.SCid).filter_by(Sid = sid).filter_by(SCname = scname).scalar()
-
-    def get_tcid_by_tcname_and_tid(self, tid, tcname):
-        return self.session.query(model.TCuse.TCid).filter_by(Tid = tid).filter_by(TCname = tcname).scalar()

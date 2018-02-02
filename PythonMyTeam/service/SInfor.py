@@ -49,3 +49,38 @@ class SInfor():
             self.session.rollback()
             print e.message
             return False
+
+    # 根据pid获取teid
+    def get_teid_by_pid(self, pid):
+        teid = None
+        try:
+            teid = self.session.query(model.Perinfor.TEid).filter_by(Pid=pid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return teid
+
+    # 根据pid获取发送人uid
+    def get_uid2_by_pid(self, pid):
+        uid = None
+        try:
+            uid = self.session.query(model.Perinfor.Uid).filter_by(Pid=pid).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return uid
+
+    # 获取个人信息list
+    def get_info_by_uid2(self, uid):
+        info_list = None
+        try:
+            info_list = self.session.query(model.Perinfor.Pid, model.Perinfor.TEid, model.Perinfor.Cid,
+                                           model.Perinfor.Uid, model.Perinfor.Pmessage,
+                                           model.Perinfor.Ptype).filter_by(Pstatus=1200).filter_by(Sid=uid).all()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return info_list

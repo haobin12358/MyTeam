@@ -243,6 +243,12 @@ join_team_success = {
     "messages": "Join the team successfully !"
 }
 
+# 拒绝加入团队成功
+refuse_join_team_success = {
+    "status": 200,
+    "messages": "Refuse to join the team successfully !"
+}
+
 # 删除团队成功
 delete_team_success = {
     "status": 200,
@@ -253,4 +259,10 @@ delete_team_success = {
 delete_student_from_team_success = {
     "status": 200,
     "messages": "Delete student from team success !"
+}
+
+# 已邀请过该成员
+have_invate_this_users = {
+    "status": 200,
+    "messages": "you have invated this users !"
 }

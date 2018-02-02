@@ -124,6 +124,7 @@
 	<!-- 性别 -->
 	<string name="nan">男</string>
 	<string name="nv">女</string>
+
 	<!-- team -->
 	<string name="jiao_shi_xing_ming">教师姓名:</string>
 	<string name="jing_sai_ming_cheng">竞赛名称:</string>
@@ -133,4 +134,11 @@
 	<string name="tuan_dui_ming_cheng">团队名称:</string>
 	<string name="shi_fu_man_yuan">是否满员:</string>
 	<string name="jia_ru">加入!</string>
+	
+	<!-- 详情 -->
+	<string name="xue_sheng_xiang_qing">学生详情</string>
+	<string name="jiao_shi_xiang_qing">教师详情</string>
+	<string name="jing_sai_xiang_qing">竞赛详情</string>
+	<string name="chuang_jian_dui_wu">创建队伍</string>
+	<string name="tuan_dui_xiang_qing">团队详情</string>
 </resources>

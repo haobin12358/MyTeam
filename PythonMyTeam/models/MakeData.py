@@ -75,7 +75,7 @@ class MakeData():
         tel = "177064411"
         while i < 11:
             self.personal.add_teacher_abo_by_uid(user_ids[i+11], teacher_ids[i],
-                                                 name + str(i), no + str(i), university, school, tel + str(i), i + 1)
+                                                 name + str(i), no, tel + str(i) + str(i), university, school, i + 1)
             i = i + 1
 
     def add_competitions(self, competition_ids):

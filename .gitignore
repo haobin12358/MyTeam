@@ -101,6 +101,7 @@ ENV/
 
 # idea
 */.idea/*
+PythonMyTeam/.idea/*
 
 #bin
 bin/*
