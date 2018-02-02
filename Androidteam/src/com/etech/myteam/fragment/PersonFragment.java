@@ -242,7 +242,7 @@ public class PersonFragment extends Fragment{
 		}
 		tvbutton.setOnClickListener(edit);
 		tvtech.setOnClickListener(new_tech);
-		tvuse.setOnClickListener(new_use);
+		tvuse.setOnClickListener(new_tech);
 		
 		if(new_update == 0){
 			tvbutton.setText(R.string.xin_zeng);
@@ -679,7 +679,7 @@ public class PersonFragment extends Fragment{
 		}
     };
   	
-  	public void showDialog(final JSONObject getJSON, String title, final String list_index){
+  	private void showDialog(final JSONObject getJSON, String title, final String list_index){
   		//getJSON表示获取的服务端值，title表示标题内容，list_index表示业务类型
 		android.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		final LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -884,15 +884,10 @@ public class PersonFragment extends Fragment{
   		
   	};
   	
-  	
-  	
-  	private OnClickListener new_use = new OnClickListener(){
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			
-		}
+  	private void showDialog_new(final JSONObject getJSON, String title, final String list_index){
   		
-  	};
+  	}
+  	
+  	
+  	
 }
