@@ -30,6 +30,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.etech.myteam.R;
 import com.etech.myteam.activity.InforActivity;
+import com.etech.myteam.activity.MainActivity;
 import com.etech.myteam.activity.TeamActivity;
 import com.etech.myteam.adapter.CompetitionAdapter;
 import com.etech.myteam.adapter.StudentAdapter;
@@ -64,6 +65,7 @@ public class TeamFragment extends Fragment{
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		getBd();
 		View view = inflater.inflate(R.layout.fragment_team_info, container, false);
 		
 		get_info();
@@ -92,7 +94,7 @@ public class TeamFragment extends Fragment{
 		btn_search = (Button)view.findViewById(R.id.btn_search);
 		sp_Isfull = (Spinner)view.findViewById(R.id.sp_Isfull);
 		spinner = (Spinner)view.findViewById(R.id.spinner1);
-		team_list = (ListView) view.findViewById(R.id.team_list);		
+		team_list = (ListView) view.findViewById(R.id.team_list);
 		is_full_list.add("已满员");
 		is_full_list.add("未满员");
 		is_full_list.add("");
@@ -105,7 +107,11 @@ public class TeamFragment extends Fragment{
 		team_list.setOnItemClickListener(doit);
 		Log.e("end","doit");
 	}
-	
+	private void getBd(){
+		Uid = ((MainActivity)getActivity()).getUid();
+		Utype = ((MainActivity)getActivity()).getUtype();
+		index = ((MainActivity)getActivity()).getIndex();
+	}
 	
 	//邀请、请求加入的btn的监听事件
     private OnItemClickListener doit = new OnItemClickListener(){
@@ -218,22 +224,6 @@ public class TeamFragment extends Fragment{
 				getText();
 			}
 		}.start();
-	}
-	
-	//获取从上一个界面传来的值
-	private void getBd(){
-		Intent intent = getActivity().getIntent();
-		Bundle bd = intent.getExtras();
-		
-		if (bd.containsKey("index")) index = getindex(bd.getInt("index"));
-		
-		try{
-			Uid = bd.getString("Uid");
-			Utype = bd.getInt("Utpe");
-		}catch (Exception e){
-			e.printStackTrace();
-			Log.e("GET Uid and Utype error.","false");
-		}
 	}
 	
 	public int getindex(int n){

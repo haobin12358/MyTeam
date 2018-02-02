@@ -84,7 +84,7 @@ public class InforActivity extends Activity{
 
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		//getBd();
+		getBd();
 		new Thread(){
 			public void run(){
 				getSTText();

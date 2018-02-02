@@ -20,19 +20,29 @@ public class MainActivity extends Activity{
 	//定义组件变量
 	private TextView tv1, tv2, tv3;
 	//定义默认参数
-	private int index = 1;
-	private String Uid = null;
-	private int Utype = 0;
+	public int index = 0;
+	public String Uid;
+	public int Utype;
 	
 	//主线程+主要生命周期
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		getBd();
 		setContentView(R.layout.activity_main);
 		init();
 		setListener();
-		//getBd();
 		SwitchFragment(index);
+	}
+	
+	public String getUid(){
+		return Uid;
+	}
+	public int getUtype(){
+		return Utype;
+	}
+	public int getIndex(){
+		return index;
 	}
 	
 	//注册所有组件

@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.etech.myteam.R;
+import com.etech.myteam.activity.MainActivity;
 import com.etech.myteam.adapter.MyTeamAdapter;
 import com.etech.myteam.adapter.TechsAdapter;
 import com.etech.myteam.adapter.UsesAdapter;
@@ -124,6 +125,7 @@ public class PersonFragment extends Fragment{
 	//主界面
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		getBd();
 		View view;
 		view = inflater.inflate(R.layout.fragment_personal, null);
 		
@@ -141,6 +143,11 @@ public class PersonFragment extends Fragment{
 		}
 		init(view);
 		return view;
+	}
+	private void getBd(){
+		Uid = ((MainActivity)getActivity()).getUid();
+		Utype = ((MainActivity)getActivity()).getUtype();
+		//index = ((MainActivity)getActivity()).getIndex();
 	}
 	
 	//获取布局
