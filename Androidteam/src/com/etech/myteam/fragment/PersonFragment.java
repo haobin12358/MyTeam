@@ -46,8 +46,8 @@ import android.widget.Toast;
 public class PersonFragment extends Fragment{
 	
 	//定义组件参数
-	private LinearLayout ll1, ll2, ll3, ll4, ll5;
-	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tvtitle, tvbutton;
+	private LinearLayout ll1, ll2, ll3, ll4, ll5, ll6, ll7;
+	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tvtitle, tvbutton, tvtech, tvuse;
 	private EditText et1, et2, et3, et4, et5, et6, et7;
 	private MyListView lst1, lst2, lst3, lst4;
 	private ViewGroup vg;
@@ -144,6 +144,8 @@ public class PersonFragment extends Fragment{
 		ll3 = (LinearLayout)view.findViewById(R.id.ll_3);
 		ll4 = (LinearLayout)view.findViewById(R.id.ll_4);
 		ll5 = (LinearLayout)view.findViewById(R.id.ll_5);
+		ll6 = (LinearLayout)view.findViewById(R.id.ll_6);
+		ll7 = (LinearLayout)view.findViewById(R.id.ll_7);
 		
 		tv1 = (TextView)view.findViewById(R.id.tv_1);
 		tv2 = (TextView)view.findViewById(R.id.tv_2);
@@ -158,6 +160,8 @@ public class PersonFragment extends Fragment{
 		tv11 = (TextView)view.findViewById(R.id.tv_11);
 		tvbutton = (TextView)view.findViewById(R.id.tv_top).findViewById(R.id.tv_editbutton);
 		tvtitle = (TextView)view.findViewById(R.id.tv_top).findViewById(R.id.tv_title);
+		tvtech = (TextView)view.findViewById(R.id.new_tech);
+		tvuse = (TextView)view.findViewById(R.id.new_use);
 		
 		et1 = (EditText)view.findViewById(R.id.et_1);
 		et2 = (EditText)view.findViewById(R.id.et_2);
@@ -193,6 +197,8 @@ public class PersonFragment extends Fragment{
 			tv9.setText(R.string.jing_sai_jing_li);
 			tv10.setText(R.string.tuan_dui);
 			tv11.setText(R.string.ren_wu);
+			tvtech.setText(R.string.xin_zeng);
+			tvuse.setText(R.string.xin_zeng);
 			btn1.setVisibility(View.GONE);
 			isEdit.notEdit(et1);
 			isEdit.notEdit(et2);
@@ -215,7 +221,7 @@ public class PersonFragment extends Fragment{
 				tv4.setText(R.string.ren_jiao_shi_jian);
 				et4.setHint(R.string.ren_jiao_shi_jian);
 				ll5.setVisibility(View.GONE);
-				tv8.setVisibility(View.GONE);
+				ll6.setVisibility(View.GONE);
 				lst1.setVisibility(View.GONE);
 			}
 		}else{
@@ -224,8 +230,8 @@ public class PersonFragment extends Fragment{
 			ll3.setVisibility(View.GONE);
 			ll4.setVisibility(View.GONE);
 			ll5.setVisibility(View.GONE);
-			tv8.setVisibility(View.GONE);
-			tv9.setVisibility(View.GONE);
+			ll6.setVisibility(View.GONE);
+			ll7.setVisibility(View.GONE);
 			tv10.setVisibility(View.GONE);
 			tv11.setVisibility(View.GONE);
 			lst1.setVisibility(View.GONE);
@@ -235,6 +241,8 @@ public class PersonFragment extends Fragment{
 			btn1.setVisibility(View.GONE);
 		}
 		tvbutton.setOnClickListener(edit);
+		tvtech.setOnClickListener(new_tech);
+		tvuse.setOnClickListener(new_use);
 		
 		if(new_update == 0){
 			tvbutton.setText(R.string.xin_zeng);
@@ -865,4 +873,26 @@ public class PersonFragment extends Fragment{
 	 
 	    builder.show();
 	}
+  	
+  	private OnClickListener new_tech = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+  		
+  	};
+  	
+  	
+  	
+  	private OnClickListener new_use = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+  		
+  	};
 }

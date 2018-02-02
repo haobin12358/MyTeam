@@ -42,8 +42,8 @@ import android.widget.Toast;
 public class InforActivity extends Activity{
 	
 	//定义组件参数
-	private LinearLayout ll1, ll2, ll3, ll4, ll5;
-	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tvtitle, tvbutton;
+	private LinearLayout ll1, ll2, ll3, ll4, ll5, ll6, ll7;
+	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tvtitle, tvbutton, tvtech, tvuse;
 	private TextView tv_cno, tv_clevel, tv_cname, tv_ctime, tv_cstart, tv_c, tv_cend, tv_cnum, tv_ccnum, tv_cown, tv_cowner, tv_cabo, tv_caboall;
 	private EditText et1, et2, et3, et4, et5, et6, et7;
 	private MyListView lst1, lst2, lst3, lst4;
@@ -121,6 +121,8 @@ public class InforActivity extends Activity{
 		ll3 = (LinearLayout)findViewById(R.id.ll_3);
 		ll4 = (LinearLayout)findViewById(R.id.ll_4);
 		ll5 = (LinearLayout)findViewById(R.id.ll_5);
+		ll6 = (LinearLayout)findViewById(R.id.ll_6);
+		ll7 = (LinearLayout)findViewById(R.id.ll_7);
 		
 		tv1 = (TextView)findViewById(R.id.tv_1);
 		tv2 = (TextView)findViewById(R.id.tv_2);
@@ -135,6 +137,8 @@ public class InforActivity extends Activity{
 		tv11 = (TextView)findViewById(R.id.tv_11);
 		tvbutton = (TextView)findViewById(R.id.tv_top).findViewById(R.id.tv_editbutton);
 		tvtitle = (TextView)findViewById(R.id.tv_top).findViewById(R.id.tv_title);
+		tvtech = (TextView)findViewById(R.id.new_tech);
+		tvuse = (TextView)findViewById(R.id.new_use);
 		
 		et1 = (EditText)findViewById(R.id.et_1);
 		et2 = (EditText)findViewById(R.id.et_2);
@@ -165,6 +169,7 @@ public class InforActivity extends Activity{
 			tv10.setText(R.string.tuan_dui);
 			tv11.setText(R.string.ren_wu);
 			btn1.setVisibility(View.GONE);
+			tvuse.setVisibility(View.GONE);
 			isEdit.notEdit(et1);
 			isEdit.notEdit(et2);
 			isEdit.notEdit(et3);
@@ -177,12 +182,13 @@ public class InforActivity extends Activity{
 				tv7.setText(R.string.xing_bie);
 				tv8.setText(R.string.ji_neng);
 				tvtitle.setText(R.string.xue_sheng_xiang_qing);
+				tvtech.setVisibility(View.GONE);
 				isEdit.notEdit(et7);
 			}else if(infoType == 1){
 				tv2.setText(R.string.jiao_gong_hao);
 				tv4.setText(R.string.ren_jiao_shi_jian);
 				ll5.setVisibility(View.GONE);
-				tv8.setVisibility(View.GONE);
+				ll6.setVisibility(View.GONE);
 				lst1.setVisibility(View.GONE);
 				tvtitle.setText(R.string.jiao_shi_xiang_qing);
 			}
@@ -192,8 +198,8 @@ public class InforActivity extends Activity{
 			ll3.setVisibility(View.GONE);
 			ll4.setVisibility(View.GONE);
 			ll5.setVisibility(View.GONE);
-			tv8.setVisibility(View.GONE);
-			tv9.setVisibility(View.GONE);
+			ll6.setVisibility(View.GONE);
+			ll6.setVisibility(View.GONE);
 			tv10.setVisibility(View.GONE);
 			tv11.setVisibility(View.GONE);
 			lst1.setVisibility(View.GONE);

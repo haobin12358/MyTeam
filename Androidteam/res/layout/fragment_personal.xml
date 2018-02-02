@@ -136,22 +136,43 @@
             		android:layout_weight="1"
             	/>
     		</LinearLayout>
-    		<TextView 
-        		android:id="@+id/tv_8"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text="@string/xing_ming"/>
+    		<LinearLayout 
+    		    android:id="@+id/ll_6"
+    		    android:layout_width="fill_parent"
+    		    android:layout_height="wrap_content">
+    		    <TextView 
+        			android:id="@+id/tv_8"
+        			android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:text="@string/xing_ming"/>
+    		    <TextView 
+    		        android:id="@+id/new_tech"
+    		        android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:text="@string/xing_ming"/>
+    		</LinearLayout>
+    		
     		<com.etech.myteam.view.MyListView 
     		    android:id="@+id/lst_1"
     		    android:layout_width="fill_parent"
     		    android:layout_height="wrap_content">
     		    
     		</com.etech.myteam.view.MyListView>
-    		<TextView 
-        		android:id="@+id/tv_9"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text="@string/xing_ming"/>
+    		<LinearLayout 
+    		    android:id="@+id/ll_7"
+    		    android:layout_width="fill_parent"
+    		    android:layout_height="wrap_content">
+    		    <TextView 
+        			android:id="@+id/tv_9"
+        			android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:text="@string/xing_ming"/>
+    		    <TextView 
+    		        android:id="@+id/new_use"
+    		        android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:text="@string/xing_ming"/>
+    		</LinearLayout>
     		<com.etech.myteam.view.MyListView 
     		    android:id="@+id/lst_2"
     		    android:layout_width="fill_parent"
