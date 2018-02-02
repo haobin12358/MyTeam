@@ -48,7 +48,7 @@ public class TeamFragment extends Fragment{
 	private int Utype = 101;
 	private String TEid;
 	private String url = "http://"+AppConst.sServerURL ;
-	private ListView list;
+	private ListView team_list;
 //	private TextView tv_1,tv_2,tv_3;
 	private EditText ed_Tetname, ed_Tename, ed_Teleader,
 	ed_Tecname, ed_Teclevel, ed_Tecno;
@@ -92,7 +92,7 @@ public class TeamFragment extends Fragment{
 		btn_search = (Button)view.findViewById(R.id.btn_search);
 		sp_Isfull = (Spinner)view.findViewById(R.id.sp_Isfull);
 		spinner = (Spinner)view.findViewById(R.id.spinner1);
-		list = (ListView) view.findViewById(R.id.team_list);		
+		team_list = (ListView) view.findViewById(R.id.team_list);		
 		is_full_list.add("已满员");
 		is_full_list.add("未满员");
 		is_full_list.add("");
@@ -101,6 +101,9 @@ public class TeamFragment extends Fragment{
 		sp_Isfull.setAdapter(is_full_adapter);
 		initdata();
 		btn_add.setOnClickListener(changeInfo);
+		Log.e("start i", "doit");
+		team_list.setOnItemClickListener(doit);
+		Log.e("end","doit");
 	}
 	
 	
@@ -110,6 +113,7 @@ public class TeamFragment extends Fragment{
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			//跳转
+			Log.e("doit","start");
 			Intent it = new Intent(getActivity(), TeamActivity.class);
 			it.putExtra("Uid", Uid);
 			it.putExtra("Utype", Utype);
@@ -117,8 +121,7 @@ public class TeamFragment extends Fragment{
 			it.putExtra("index", index);
 			startActivity(it);
 			getActivity().finish();
-			//拼接邀请url
-			
+			Log.e("doit", "end");
 		}
     };
     
@@ -187,7 +190,7 @@ public class TeamFragment extends Fragment{
 						getActivity(),R.layout.spinner_item,data_list);				
 				spinner.setAdapter(arr_adapter);
 				adapter = new TeamAdapter(entitys, getActivity());
-				list.setAdapter(adapter);
+				team_list.setAdapter(adapter);
 			}
 			else if(jsonobj.optInt("status") == 404){
 				new AlertDialog.Builder(getActivity())

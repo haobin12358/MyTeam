@@ -20,7 +20,7 @@ public class MainActivity extends Activity{
 	//定义组件变量
 	private TextView tv1, tv2, tv3;
 	//定义默认参数
-	private int index = 2;
+	private int index = 1;
 	private String Uid = null;
 	private int Utype = 0;
 	

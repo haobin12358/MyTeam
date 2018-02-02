@@ -3,11 +3,9 @@ package com.etech.myteam.adapter;
 import java.util.List;
 
 import com.etech.myteam.R;
-import com.etech.myteam.adapter.MyTeamAdapter.ViewHolder;
 import com.etech.myteam.entity.MyTeamEntity;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +39,6 @@ public class TeamAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
-		Log.e("start init adapter", String.valueOf(position));
 		if(convertView == null){
 			convertView = LayoutInflater.from(context)
 					.inflate(R.layout.layout_item_team_list, null);
@@ -57,7 +54,6 @@ public class TeamAdapter extends BaseAdapter {
 			holder = (ViewHolder)convertView.getTag();
 		}		
 		MyTeamEntity entity = entitys.get(position);
-		Log.e("GET entity", entity.getCname());
 		holder.TECname.setText(String.valueOf(entity.getCname()));
 		holder.TEname.setText(String.valueOf(entity.getTEname()));
 		holder.TETname.setText(String.valueOf(entity.getTetname()));
@@ -66,7 +62,6 @@ public class TeamAdapter extends BaseAdapter {
 		holder.TECno.setText(String.valueOf(entity.getCno()));
 		holder.IsFull.setText(String.valueOf(entity.getIsfull()));
 		convertView.setTag(holder);
-		Log.e("end init adapter", "end");
 		return convertView;
 	}
 	
