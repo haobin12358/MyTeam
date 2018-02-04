@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.etech.myteam.R;
 import com.etech.myteam.activity.InforActivity;
+import com.etech.myteam.activity.MainActivity;
 import com.etech.myteam.adapter.CompetitionAdapter;
 import com.etech.myteam.adapter.StudentAdapter;
 import com.etech.myteam.adapter.TeacherAdapter;
@@ -38,10 +40,10 @@ import com.etech.myteam.entity.StudentListEntity;
 import com.etech.myteam.global.AppConst;
 
 public class InforFragment extends Fragment{
-	private int index = 0;
-	private String Uid;
-	private int Utype = 101;
-	private int infoType = 0;// 0:学生list、1:教师list、2:竞赛list
+	private int index;
+	private String Uid = null;
+	private int Utype;
+	private int infoType;// 0:学生list、1:教师list、2:竞赛list
 //	private Map type_map = 
 	private String url = "http://"+AppConst.sServerURL ;
 	private ListView list;
@@ -52,13 +54,16 @@ public class InforFragment extends Fragment{
 	private int page_num = 1;
 	private List<StudentListEntity> entitys = new ArrayList<StudentListEntity>();
 	private Spinner spinner;
-	private String name, school, start, end;
-	private String result_info;
+	private String name, school, start, end, modelid;
+	private String result_info, postResult;
 	private List<Integer> data_list = new ArrayList<Integer>();
+	private HttppostEntity postEntity;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		getBd();
 		View view = inflater.inflate(R.layout.fragment_student_info, container, false);
+		Log.e("Uid", Uid);
 		
 		get_info();
 		while (true) {
@@ -85,6 +90,7 @@ public class InforFragment extends Fragment{
 		btn_doit = (Button)view.findViewById(R.id.btn_doit);
 		spinner = (Spinner) view.findViewById(R.id.spinner1);
 		list = (ListView) view.findViewById(R.id.student_list);
+		list.setOnItemClickListener(doit);
 		btn_doit.setText(R.string.cha_xun);
 		initdata();
 		btn_student.setOnClickListener(changeInfo);
@@ -98,16 +104,23 @@ public class InforFragment extends Fragment{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			if (view.getId() == R.id.btn_doit){
+				//拼接邀请url
+				String inviteUrl = "";
+				
+			}else{
 			//跳转
 			Intent it = new Intent(getActivity(), InforActivity.class);
+			modelid = entitys.get(position).getId();
 			it.putExtra("Uid", Uid);
 			it.putExtra("Utype", Utype);
 			it.putExtra("infoType", infoType);
 			it.putExtra("index", index);
+			it.putExtra("id", modelid);
 			startActivity(it);
 			getActivity().finish();
-			//拼接邀请url
 			
+			}
 		}
     };
     
@@ -242,18 +255,9 @@ public class InforFragment extends Fragment{
 	
 	//获取从上一个界面传来的值
 	private void getBd(){
-		Intent intent = getActivity().getIntent();
-		Bundle bd = intent.getExtras();
-		
-		if (bd.containsKey("index")) index = getindex(bd.getInt("index"));
-		if (bd.containsKey("infoType")) infoType = getindex(bd.getInt("infoType"));
-		try{
-			Uid = bd.getString("Uid");
-			Utype = bd.getInt("Utpe");
-		}catch (Exception e){
-			e.printStackTrace();
-			Log.e("GET Uid and Utype error.","false");
-		}
+		Uid = ((MainActivity)getActivity()).getUid();
+		Utype = ((MainActivity)getActivity()).getUtype();
+		index = ((MainActivity)getActivity()).getIndex();
 	}
 	
 	public int getindex(int n){
@@ -277,6 +281,16 @@ public class InforFragment extends Fragment{
 		}
 	}
 	
+	private void postText(){
+		try{
+			JSONObject obj = new JSONObject();
+			String post_url = "";
+			postResult = postEntity.doPost(obj, url);
+		}catch (Exception e){
+			e.printStackTrace();
+			Log.e("Post error", "post method error.");
+		}
+	}
 	/*通过infoType 以及筛选框的内容获取url*/
 	private String getUrl(){		
 		TypeInfo info = new TypeInfo(infoType);		

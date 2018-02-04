@@ -88,17 +88,25 @@ public class LoginActivity extends Activity{
 						postText();
 					}
 				}.start();
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Log.e("json", result_login);
 				JSONObject json_obj = StringToJSON.toJSONObject(result_login);
 				if(json_obj.optInt("status") == 200){
 					String messages = json_obj.optString("messages");
 					JSONObject json_messages = StringToJSON.toJSONObject(messages);
 					Uid = json_messages.optString("Uid");
 					Utype = json_messages.optInt("Utype");
-					new AlertDialog.Builder(LoginActivity.this)
-						.setTitle(R.string.ti_xing)
-						.setMessage(R.string.deng_lu_cheng_gong)
-						.setPositiveButton(R.string.que_ding, (android.content.DialogInterface.OnClickListener) positive)
-						.show();
+					Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+					intent.putExtra("Uid", Uid);
+					intent.putExtra("Utype", Utype);
+					intent.putExtra("index", 0);
+					startActivity(intent);
+					finish();
 				}else if(json_obj.optInt("status") == 405){
 					if(json_obj.optInt("status_code") == 405103){
 						new AlertDialog.Builder(LoginActivity.this)
