@@ -52,7 +52,7 @@ public class TeamFragment extends Fragment{
 //	private TextView tv_1,tv_2,tv_3;
 	private EditText ed_Tetname, ed_Tename, ed_Teleader,
 	ed_Tecname, ed_Teclevel, ed_Tecno;
-	private Button btn_add, btn_search;
+	private Button btn_add, btn_search, btn_join;
 	private BaseAdapter adapter;	
 	private int page_num = 1;
 	private List<MyTeamEntity> entitys = new ArrayList<MyTeamEntity>();

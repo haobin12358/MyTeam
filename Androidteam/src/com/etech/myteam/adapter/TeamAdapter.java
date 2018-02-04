@@ -6,10 +6,13 @@ import com.etech.myteam.R;
 import com.etech.myteam.entity.MyTeamEntity;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -50,6 +53,15 @@ public class TeamAdapter extends BaseAdapter {
 			holder.TEClevel = (TextView)convertView.findViewById(R.id.ed_Teclevel);
 			holder.TECno = (TextView)convertView.findViewById(R.id.ed_Tecno);
 			holder.IsFull = (TextView)convertView.findViewById(R.id.ed_Isfull);
+			holder.join = (Button)convertView.findViewById(R.id.join);
+            holder.join.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Log.e("this is btn click", "starts");
+					
+				}
+			});
 		}else{
 			holder = (ViewHolder)convertView.getTag();
 		}		
@@ -68,6 +80,7 @@ public class TeamAdapter extends BaseAdapter {
 
 	private class ViewHolder{
 		private TextView TECname, TEname, TETname, TEClevel, TECno, IsFull, TECleader;
+		private Button join;
 	}
 
 }

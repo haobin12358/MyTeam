@@ -107,10 +107,10 @@ public final class R {
         public static final int alert_1=0x7f080047;
         public static final int alert_2=0x7f080048;
         public static final int alert_3=0x7f080049;
-        public static final int bar_text1=0x7f08004f;
-        public static final int bar_text2=0x7f080053;
-        public static final int bar_text3=0x7f080051;
-        public static final int bar_text3_layout=0x7f080050;
+        public static final int bar_text1=0x7f080050;
+        public static final int bar_text2=0x7f080054;
+        public static final int bar_text3=0x7f080052;
+        public static final int bar_text3_layout=0x7f080051;
         public static final int btn_1=0x7f080012;
         public static final int btn_2=0x7f080013;
         public static final int btn_3=0x7f080035;
@@ -135,10 +135,11 @@ public final class R {
         public static final int et_5=0x7f080028;
         public static final int et_6=0x7f08002a;
         public static final int et_7=0x7f08002c;
-        public static final int fl_1=0x7f080054;
+        public static final int fl_1=0x7f080055;
         public static final int fl_fragment_layout=0x7f080014;
         public static final int include1=0x7f08003a;
-        public static final int iv_1=0x7f080055;
+        public static final int iv_1=0x7f080056;
+        public static final int join=0x7f08004f;
         public static final int ll_1=0x7f080024;
         public static final int ll_2=0x7f080025;
         public static final int ll_3=0x7f080027;
@@ -153,7 +154,7 @@ public final class R {
         public static final int lst_4=0x7f080034;
         public static final int new_tech=0x7f08002e;
         public static final int new_use=0x7f080031;
-        public static final int num_1=0x7f080052;
+        public static final int num_1=0x7f080053;
         public static final int radioGroup=0x7f080015;
         public static final int rb_1=0x7f080016;
         public static final int rb_2=0x7f080017;
@@ -186,12 +187,12 @@ public final class R {
         public static final int tv_cowner=0x7f08000b;
         public static final int tv_cstart=0x7f080005;
         public static final int tv_ctime=0x7f080004;
-        public static final int tv_editbutton=0x7f080057;
+        public static final int tv_editbutton=0x7f080058;
         public static final int tv_grade=0x7f08004c;
         public static final int tv_name=0x7f08004a;
         public static final int tv_school=0x7f08004b;
-        public static final int tv_spinner=0x7f080058;
-        public static final int tv_title=0x7f080056;
+        public static final int tv_spinner=0x7f080059;
+        public static final int tv_title=0x7f080057;
         public static final int tv_top=0x7f080000;
     }
     public static final class layout {
