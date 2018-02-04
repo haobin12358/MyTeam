@@ -219,143 +219,144 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f060000;
-        public static final int bian_ji=0x7f060056;
-        public static final int biao_ti=0x7f060018;
+        public static final int bao_ming_shi_jian=0x7f060011;
+        public static final int bian_ji=0x7f060057;
+        public static final int biao_ti=0x7f060019;
         public static final int ce_shi=0x7f060007;
         public static final int cha_xun=0x7f06000b;
-        public static final int chuang_jian_dui_wu=0x7f060068;
+        public static final int chuang_jian_dui_wu=0x7f060069;
         /**  登录 
          */
-        public static final int deng_lu=0x7f060042;
-        public static final int deng_lu_cheng_gong=0x7f060043;
-        public static final int dian_zan_shu=0x7f060020;
+        public static final int deng_lu=0x7f060043;
+        public static final int deng_lu_cheng_gong=0x7f060044;
+        public static final int dian_zan_shu=0x7f060021;
         /**  商品详情页 
          */
-        public static final int fa_bu_ren=0x7f060013;
-        public static final int fa_bu_ri_qi=0x7f060014;
-        public static final int fa_bu_shi_jian=0x7f060024;
+        public static final int fa_bu_ren=0x7f060014;
+        public static final int fa_bu_ri_qi=0x7f060015;
+        public static final int fa_bu_shi_jian=0x7f060025;
         /**  个人信息 
          */
-        public static final int ge_ren_xin_xi=0x7f06004b;
+        public static final int ge_ren_xin_xi=0x7f06004c;
         public static final int ge_ren_zhong_xin=0x7f060005;
-        public static final int gou_mai=0x7f060016;
-        public static final int guan_zhu_de_idol=0x7f060032;
-        public static final int ji_neng=0x7f060053;
-        public static final int jia_ge=0x7f06001b;
-        public static final int jia_ge_fu_hao=0x7f06001d;
-        public static final int jia_ru=0x7f060064;
-        public static final int jiao_gong_hao=0x7f06004e;
+        public static final int gou_mai=0x7f060017;
+        public static final int guan_zhu_de_idol=0x7f060033;
+        public static final int ji_neng=0x7f060054;
+        public static final int jia_ge=0x7f06001c;
+        public static final int jia_ge_fu_hao=0x7f06001e;
+        public static final int jia_ru=0x7f060065;
+        public static final int jiao_gong_hao=0x7f06004f;
         /**  教师信息查询页 
          */
         public static final int jiao_shi=0x7f06000e;
-        public static final int jiao_shi_xiang_qing=0x7f060066;
+        public static final int jiao_shi_xiang_qing=0x7f060067;
         /**  team 
          */
-        public static final int jiao_shi_xing_ming=0x7f06005d;
-        public static final int jie_shu_shi_jian=0x7f060012;
+        public static final int jiao_shi_xing_ming=0x7f06005e;
+        public static final int jie_shu_shi_jian=0x7f060013;
         public static final int jing_sai=0x7f060010;
-        public static final int jing_sai_deng_ji=0x7f06005f;
-        public static final int jing_sai_jie_ci=0x7f060060;
-        public static final int jing_sai_jing_li=0x7f060054;
-        public static final int jing_sai_ming_cheng=0x7f06005e;
-        public static final int jing_sai_xiang_qing=0x7f060067;
-        public static final int kai_shi_shi_jian=0x7f060011;
-        public static final int lian_xi_fang_shi=0x7f06004f;
-        public static final int lian_xi_wo_men=0x7f06002d;
-        public static final int liu_lan_li_shi=0x7f060030;
-        public static final int mi_ma=0x7f060037;
-        public static final int mi_ma_bu_he_fa=0x7f060047;
-        public static final int mi_ma_cuo_wu=0x7f06004a;
+        public static final int jing_sai_deng_ji=0x7f060060;
+        public static final int jing_sai_jie_ci=0x7f060061;
+        public static final int jing_sai_jing_li=0x7f060055;
+        public static final int jing_sai_ming_cheng=0x7f06005f;
+        public static final int jing_sai_xiang_qing=0x7f060068;
+        public static final int kai_shi_shi_jian=0x7f060012;
+        public static final int lian_xi_fang_shi=0x7f060050;
+        public static final int lian_xi_wo_men=0x7f06002e;
+        public static final int liu_lan_li_shi=0x7f060031;
+        public static final int mi_ma=0x7f060038;
+        public static final int mi_ma_bu_he_fa=0x7f060048;
+        public static final int mi_ma_cuo_wu=0x7f06004b;
         /**  性别 
          */
-        public static final int nan=0x7f06005b;
+        public static final int nan=0x7f06005c;
         public static final int network_unused=0x7f060001;
         public static final int nian_ji=0x7f06000a;
-        public static final int nv=0x7f06005c;
-        public static final int ping_lu_guan_li=0x7f06002a;
-        public static final int ping_lun=0x7f060031;
-        public static final int ping_lun_nei_rong=0x7f06001f;
-        public static final int ping_lun_shi_jian=0x7f060026;
-        public static final int qing_shu_ru=0x7f060059;
-        public static final int qing_shu_ru_mi_ma=0x7f06003d;
-        public static final int qing_shu_ru_yong_hu_ming=0x7f06003c;
-        public static final int qing_tian_xie_xin_xi=0x7f06003f;
-        public static final int qing_xian_tian_xie_ge_ren_xin_xi=0x7f060057;
-        public static final int qing_xuan_ze_lei_xing=0x7f06003e;
-        public static final int qu_xiao=0x7f060023;
-        public static final int que_ding=0x7f060041;
+        public static final int nv=0x7f06005d;
+        public static final int ping_lu_guan_li=0x7f06002b;
+        public static final int ping_lun=0x7f060032;
+        public static final int ping_lun_nei_rong=0x7f060020;
+        public static final int ping_lun_shi_jian=0x7f060027;
+        public static final int qing_shu_ru=0x7f06005a;
+        public static final int qing_shu_ru_mi_ma=0x7f06003e;
+        public static final int qing_shu_ru_yong_hu_ming=0x7f06003d;
+        public static final int qing_tian_xie_xin_xi=0x7f060040;
+        public static final int qing_xian_tian_xie_ge_ren_xin_xi=0x7f060058;
+        public static final int qing_xuan_ze_lei_xing=0x7f06003f;
+        public static final int qu_xiao=0x7f060024;
+        public static final int que_ding=0x7f060042;
         /**  圈子list使用内容 
          */
-        public static final int re_men_ping_lun=0x7f06001e;
-        public static final int ren_jiao_shi_jian=0x7f060050;
-        public static final int ren_wu=0x7f060055;
+        public static final int re_men_ping_lun=0x7f06001f;
+        public static final int ren_jiao_shi_jian=0x7f060051;
+        public static final int ren_wu=0x7f060056;
         /**  商品list使用字符 
          */
-        public static final int shang_pin_ming_cheng=0x7f06001a;
-        public static final int shang_pin_wei_zhi=0x7f060015;
-        public static final int shang_pin_xiang_qing=0x7f060017;
-        public static final int she_zhi=0x7f06002f;
-        public static final int shi_fu_man_yuan=0x7f060063;
+        public static final int shang_pin_ming_cheng=0x7f06001b;
+        public static final int shang_pin_wei_zhi=0x7f060016;
+        public static final int shang_pin_xiang_qing=0x7f060018;
+        public static final int she_zhi=0x7f060030;
+        public static final int shi_fu_man_yuan=0x7f060064;
         /**  订单list 
          */
-        public static final int shi_jian=0x7f060027;
-        public static final int ti_jiao=0x7f060022;
+        public static final int shi_jian=0x7f060028;
+        public static final int ti_jiao=0x7f060023;
         /**  评论alert 
          */
-        public static final int ti_jiao_ping_lun=0x7f060021;
-        public static final int ti_xing=0x7f06003b;
+        public static final int ti_jiao_ping_lun=0x7f060022;
+        public static final int ti_xing=0x7f06003c;
         public static final int tuan_dui=0x7f060003;
-        public static final int tuan_dui_chuang_jian_ren=0x7f060061;
-        public static final int tuan_dui_ming_cheng=0x7f060062;
-        public static final int tuan_dui_xiang_qing=0x7f060069;
-        public static final int tui_chu=0x7f060035;
-        public static final int wei_zhi_cuo_wu=0x7f060048;
-        public static final int wo_de_ding_dan=0x7f06002b;
-        public static final int wo_de_idol=0x7f06002c;
-        public static final int wo_de_quan_zi=0x7f06002e;
+        public static final int tuan_dui_chuang_jian_ren=0x7f060062;
+        public static final int tuan_dui_ming_cheng=0x7f060063;
+        public static final int tuan_dui_xiang_qing=0x7f06006a;
+        public static final int tui_chu=0x7f060036;
+        public static final int wei_zhi_cuo_wu=0x7f060049;
+        public static final int wo_de_ding_dan=0x7f06002c;
+        public static final int wo_de_idol=0x7f06002d;
+        public static final int wo_de_quan_zi=0x7f06002f;
         public static final int wo_de_xin_xi=0x7f060004;
-        public static final int wo_shi_jiao_shi=0x7f060039;
-        public static final int wo_shi_xue_sheng=0x7f060038;
+        public static final int wo_shi_jiao_shi=0x7f06003a;
+        public static final int wo_shi_xue_sheng=0x7f060039;
         /**  返回错误相关 
          */
-        public static final int xi_tong_yi_chang=0x7f060044;
+        public static final int xi_tong_yi_chang=0x7f060045;
         /**  资讯评论listitem 
          */
-        public static final int xiang_xi_nei_rong=0x7f060019;
+        public static final int xiang_xi_nei_rong=0x7f06001a;
         /**  主activity 
          */
         public static final int xin_xi=0x7f060002;
-        public static final int xin_zeng=0x7f060058;
-        public static final int xing_bie=0x7f060052;
-        public static final int xing_ming=0x7f06004c;
-        public static final int xue_hao=0x7f06004d;
+        public static final int xin_zeng=0x7f060059;
+        public static final int xing_bie=0x7f060053;
+        public static final int xing_ming=0x7f06004d;
+        public static final int xue_hao=0x7f06004e;
         /**  学生信息查询页
          */
         public static final int xue_sheng=0x7f060008;
         /**  详情 
          */
-        public static final int xue_sheng_xiang_qing=0x7f060065;
-        public static final int xue_xiao=0x7f060051;
+        public static final int xue_sheng_xiang_qing=0x7f060066;
+        public static final int xue_xiao=0x7f060052;
         public static final int xue_yuan=0x7f060009;
         public static final int yao_qing=0x7f06000c;
-        public static final int yi_shou_shu_mu=0x7f06001c;
-        public static final int yong_hu_bu_cun_zai=0x7f060049;
-        public static final int yong_hu_hui_fu=0x7f060025;
+        public static final int yi_shou_shu_mu=0x7f06001d;
+        public static final int yong_hu_bu_cun_zai=0x7f06004a;
+        public static final int yong_hu_hui_fu=0x7f060026;
         /**  注册 
          */
-        public static final int yong_hu_ming=0x7f060036;
-        public static final int yong_hu_ming_bu_he_fa=0x7f060046;
-        public static final int yong_hu_ming_chong_fu=0x7f060045;
-        public static final int yong_hu_xin_xi_xiu_gai=0x7f060033;
+        public static final int yong_hu_ming=0x7f060037;
+        public static final int yong_hu_ming_bu_he_fa=0x7f060047;
+        public static final int yong_hu_ming_chong_fu=0x7f060046;
+        public static final int yong_hu_xin_xi_xiu_gai=0x7f060034;
         /**  用户中心 
          */
-        public static final int yong_hu_zhong_xin=0x7f060029;
-        public static final int zhang_hu_yu_an_quan=0x7f060034;
+        public static final int yong_hu_zhong_xin=0x7f06002a;
+        public static final int zhang_hu_yu_an_quan=0x7f060035;
         public static final int zhi=0x7f06000d;
-        public static final int zhi_dui_wu=0x7f06005a;
-        public static final int zhu_ce=0x7f06003a;
-        public static final int zhu_ce_cheng_gong=0x7f060040;
-        public static final int zhuang_tai=0x7f060028;
+        public static final int zhi_dui_wu=0x7f06005b;
+        public static final int zhu_ce=0x7f06003b;
+        public static final int zhu_ce_cheng_gong=0x7f060041;
+        public static final int zhuang_tai=0x7f060029;
         public static final int zi_xun_xiang_qing=0x7f060006;
         /**  竞赛信息查询页 
          */

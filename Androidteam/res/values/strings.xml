@@ -25,6 +25,8 @@
     <!-- 竞赛信息查询页 -->
     <string name="zu_dui">组队</string>
     <string name="jing_sai">竞赛</string>
+    <string name="bao_ming_shi_jian">报名时间</string>
+    
     <string name="kai_shi_shi_jian">开始时间</string>
     <string name="jie_shu_shi_jian">结束时间</string>
     <!-- 商品详情页 -->
