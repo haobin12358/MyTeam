@@ -58,7 +58,7 @@ public class InforFragment extends Fragment{
 	private List<Integer> data_list = new ArrayList<Integer>();
 	private HttppostEntity postEntity;
 	private ViewGroup title;
-	private TextView tv_name, tv_grade, tv_school;
+	private TextView tv_name, tv_grade, tv_school, title_name, title_school, title_grade;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -85,6 +85,9 @@ public class InforFragment extends Fragment{
 		tv_name = (TextView) title.findViewById(R.id.tv_name);
 		tv_grade = (TextView) title.findViewById(R.id.tv_grade);
 		tv_school = (TextView) title.findViewById(R.id.tv_school);
+		title_name = (TextView) view.findViewById(R.id.title_name);
+		title_grade = (TextView) view.findViewById(R.id.title_grade);
+		title_school = (TextView) view.findViewById(R.id.title_school);
 		edName = (EditText) view.findViewById(R.id.ed_name);
 		edSchool = (EditText) view.findViewById(R.id.ed_school);		
 		edEnd = (EditText) view.findViewById(R.id.ed_grade_end);		
@@ -139,13 +142,19 @@ public class InforFragment extends Fragment{
 			case R.id.btn_2:
 				tv_name.setText(R.string.jiao_shi_xing_ming);
 				tv_school.setText(R.string.xue_yuan);
-				tv_grade.setText(R.string.nian_ji);
+				tv_grade.setText(R.string.gong_ling);
+				title_name.setText(R.string.jiao_shi_xing_ming);
+				title_school.setText(R.string.xue_yuan);
+				title_grade.setText(R.string.gong_ling);
 				infoType = 1;
 				break;
 			case R.id.btn_3:
 				tv_name.setText(R.string.jing_sai_ming_cheng);
 				tv_school.setText(R.string.jing_sai_deng_ji);
 				tv_grade.setText(R.string.bao_ming_shi_jian);
+				title_name.setText(R.string.jing_sai_ming_cheng);
+				title_school.setText(R.string.jing_sai_deng_ji);
+				title_grade.setText(R.string.bao_ming_shi_jian);
 				infoType = 2;
 				break;
 			case R.id.btn_1:
@@ -154,6 +163,9 @@ public class InforFragment extends Fragment{
 				tv_name.setText(R.string.xing_ming);
 				tv_school.setText(R.string.xue_yuan);
 				tv_grade.setText(R.string.nian_ji);
+				title_name.setText(R.string.xing_ming);
+				title_school.setText(R.string.xue_yuan);
+				title_grade.setText(R.string.nian_ji);
 				infoType = 0;
 				break;
 			}

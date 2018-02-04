@@ -22,6 +22,7 @@
     <string name="zhi">-</string>
     <!-- 教师信息查询页 -->
     <string name="jiao_shi">教师</string>
+    <string name="gong_ling">工龄</string>
     <!-- 竞赛信息查询页 -->
     <string name="zu_dui">组队</string>
     <string name="jing_sai">竞赛</string>
