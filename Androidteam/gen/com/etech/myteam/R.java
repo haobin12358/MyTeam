@@ -135,10 +135,10 @@ public final class R {
         public static final int et_5=0x7f080028;
         public static final int et_6=0x7f08002a;
         public static final int et_7=0x7f08002c;
-        public static final int fl_1=0x7f080054;
+        public static final int fl_1=0x7f080055;
         public static final int fl_fragment_layout=0x7f080014;
         public static final int include1=0x7f08003a;
-        public static final int iv_1=0x7f080055;
+        public static final int iv_1=0x7f080056;
         public static final int ll_1=0x7f080024;
         public static final int ll_2=0x7f080025;
         public static final int ll_3=0x7f080027;
@@ -151,6 +151,7 @@ public final class R {
         public static final int lst_2=0x7f080032;
         public static final int lst_3=0x7f080033;
         public static final int lst_4=0x7f080034;
+        public static final int myownteam=0x7f080054;
         public static final int new_tech=0x7f08002e;
         public static final int new_use=0x7f080031;
         public static final int num_1=0x7f080052;
@@ -186,12 +187,12 @@ public final class R {
         public static final int tv_cowner=0x7f08000b;
         public static final int tv_cstart=0x7f080005;
         public static final int tv_ctime=0x7f080004;
-        public static final int tv_editbutton=0x7f080057;
+        public static final int tv_editbutton=0x7f080058;
         public static final int tv_grade=0x7f08004c;
         public static final int tv_name=0x7f08004a;
         public static final int tv_school=0x7f08004b;
-        public static final int tv_spinner=0x7f080058;
-        public static final int tv_title=0x7f080056;
+        public static final int tv_spinner=0x7f080059;
+        public static final int tv_title=0x7f080057;
         public static final int tv_top=0x7f080000;
     }
     public static final class layout {
@@ -211,8 +212,9 @@ public final class R {
         public static final int layout_item_tech_list=0x7f03000d;
         public static final int layout_item_uses_list=0x7f03000e;
         public static final int layout_main_bottom1=0x7f03000f;
-        public static final int layout_titlebar_2=0x7f030010;
-        public static final int spinner_item=0x7f030011;
+        public static final int layout_myownteam=0x7f030010;
+        public static final int layout_titlebar_2=0x7f030011;
+        public static final int spinner_item=0x7f030012;
     }
     public static final class string {
         public static final int app_name=0x7f060000;

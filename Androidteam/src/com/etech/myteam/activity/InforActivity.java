@@ -28,6 +28,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -78,6 +79,11 @@ public class InforActivity extends Activity{
 			+ AppConst.sServerURL 
 			+ "/competitions/abo?Cid=" 
 			+ id;
+	private String get_myownteam = "http://" 
+			+ AppConst.sServerURL 
+			+ "/team/myteam?Uid=" 
+			+ Uid 
+			+ "&is_index=1";
 	
 	private HttpgetEntity getEntity;
 	private HttppostEntity postEntity;
@@ -88,6 +94,7 @@ public class InforActivity extends Activity{
 		new Thread(){
 			public void run(){
 				getSTText();
+				getMyOwnTeam();
 			}
 		}.start();
 		if(infoType == 1 || infoType == 0){
@@ -314,6 +321,16 @@ public class InforActivity extends Activity{
 		}
 	}
 	
+	private String myownteam = null;
+	private void getMyOwnTeam(){
+		getEntity = new HttpgetEntity();
+		try{
+			myownteam = getEntity.doGet(get_myownteam);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private String tc_use = null;
 	private String sc_use = null;
 	private String s_tech = null;
@@ -491,4 +508,43 @@ public class InforActivity extends Activity{
 		}
 		
 	};
+	
+	private OnClickListener invate = new OnClickListener(){
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			if(tvbutton.getText().toString() == getText(R.string.yao_qing)){
+				showMyTeamDialog("请选择团队");
+			}else if(tvbutton.getText().toString() == getText(R.string.chuang_jian_dui_wu)){
+				
+			}
+		}
+	};
+	
+	private void showMyTeamDialog(String title){
+		android.app.AlertDialog.Builder builder = new AlertDialog.Builder(InforActivity.this);
+		final LayoutInflater inflater = LayoutInflater.from(InforActivity.this);
+		final View view = inflater.inflate(R.layout.layout_myownteam, null);
+		builder.setTitle(title);
+		final MyListView myownlist = (MyListView)findViewById(R.id.myownteam);
+		myownlist.setAdapter(adapter_myteam);
+		JSONArray jsonArray = StringToJSON.toJSONArray(myownteam);
+		entitys_myteam.clear();
+		for(int i = 0; i < jsonArray.length(); i++){
+			try {
+				JSONObject jsonobj = jsonArray.getJSONObject(i);
+				MyTeamEntity entity_myteam = new MyTeamEntity();
+				entity_myteam.setTEname(jsonobj.optString("TEname"));
+				entity_myteam.setCname("第" + jsonobj.optInt("Cno") + "届" 
+						+ NumToString.getCLevel(jsonobj.optInt("Clevel")) 
+						+ jsonobj.optString("Sname"));
+				entitys_myteam.add(entity_myteam);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
