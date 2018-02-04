@@ -101,6 +101,7 @@ public class LoginActivity extends Activity{
 					JSONObject json_messages = StringToJSON.toJSONObject(messages);
 					Uid = json_messages.optString("Uid");
 					Utype = json_messages.optInt("Utype");
+					Log.e("Utypeget", Integer.toString(Utype));
 					Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 					intent.putExtra("Uid", Uid);
 					intent.putExtra("Utype", Utype);
