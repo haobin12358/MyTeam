@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import com.etech.myteam.R;
 import com.etech.myteam.activity.MainActivity;
+import com.etech.myteam.activity.MyInfoActivity;
 import com.etech.myteam.activity.TeamActivity;
 import com.etech.myteam.adapter.MyTeamAdapter;
 import com.etech.myteam.adapter.TechsAdapter;
@@ -206,6 +207,7 @@ public class PersonFragment extends Fragment{
 			tvtech.setText(R.string.xin_zeng);
 			tvuse.setText(R.string.xin_zeng);
 			btn1.setVisibility(View.GONE);
+			iv1.setOnClickListener(my_info);
 			isEdit.notEdit(et1);
 			isEdit.notEdit(et2);
 			isEdit.notEdit(et3);
@@ -273,6 +275,20 @@ public class PersonFragment extends Fragment{
 		setPersonalTeam(myteam);
 	}
 	
+	private OnClickListener my_info = new OnClickListener(){
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(getActivity(), MyInfoActivity.class);
+			intent.putExtra("index", 2);
+			intent.putExtra("Uid", Uid);
+			intent.putExtra("Utype", Utype);
+			startActivity(intent);
+			getActivity().finish();
+		}
+		
+	};
 	//编辑功能button的监听器
 	private OnClickListener edit = new OnClickListener(){
 		@Override
