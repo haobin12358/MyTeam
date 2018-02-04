@@ -540,7 +540,7 @@ public class PersonFragment extends Fragment{
 			entity_myteam.setCname("");
 		}
 		entitys_myteam.clear();
-		for(int i = 1; i < jsonArray.length(); i++){
+		for(int i = 0; i < jsonArray.length(); i++){
 			try {
 				JSONObject jsonobj = jsonArray.getJSONObject(i);
 				MyTeamEntity entity_myteam = new MyTeamEntity();

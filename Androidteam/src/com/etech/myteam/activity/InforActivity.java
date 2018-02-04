@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.etech.myteam.R;
+import com.etech.myteam.adapter.MyOwnTeamAdapter;
 import com.etech.myteam.adapter.MyTeamAdapter;
 import com.etech.myteam.adapter.TechsAdapter;
 import com.etech.myteam.adapter.UsesAdapter;
@@ -32,11 +33,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +65,7 @@ public class InforActivity extends Activity{
 	private List<TechsEntity> entitys_tech = new ArrayList<TechsEntity>();
 	private List<UsesEntity> entitys_use = new ArrayList<UsesEntity>();
 	private List<MyTeamEntity> entitys_myteam = new ArrayList<MyTeamEntity>();
+	private List<String> data_list = new ArrayList<String>();
 	//定义默认值
 	private int Utype = 100;
 	private String Uid = "2b7e8e9d-ce2a-4476-bd1b-ddcb77ceee0b";
@@ -69,21 +75,22 @@ public class InforActivity extends Activity{
 	//定义接口url
 	private String get_student_abo = "http://" 
 			+ AppConst.sServerURL 
-			+ "/students/abo?Sid="
-			+ id;
+			+ "/students/abo?Sid=";
 	private String get_teacher_abo = "http://" 
 			+ AppConst.sServerURL 
-			+ "/teachers/abo?Tid=" 
-			+ id;
+			+ "/teachers/abo?Tid=";
 	private String get_competition_abo = "http://" 
 			+ AppConst.sServerURL 
-			+ "/competitions/abo?Cid=" 
-			+ id;
+			+ "/competitions/abo?Cid=";
 	private String get_myownteam = "http://" 
 			+ AppConst.sServerURL 
-			+ "/team/myteam?Uid=" 
-			+ Uid 
-			+ "&is_index=1";
+			+ "/team/myteam?is_index=1111&Uid=";
+	private String invate_student = "http://" 
+			+ AppConst.sServerURL 
+			+ "/team/addstudent?Uid=";
+	private String invate_teacher = "http://" 
+			+ AppConst.sServerURL 
+			+ "/team/addteacher?Uid=";
 	
 	private HttpgetEntity getEntity;
 	private HttppostEntity postEntity;
@@ -183,6 +190,10 @@ public class InforActivity extends Activity{
 			isEdit.notEdit(et4);
 			isEdit.notEdit(et5);
 			isEdit.notEdit(et6);
+			tv10.setVisibility(View.GONE);
+			tv11.setVisibility(View.GONE);
+			lst3.setVisibility(View.GONE);
+			lst4.setVisibility(View.GONE);
 			if(infoType == 0){
 				tv2.setText(R.string.xue_hao);
 				tv4.setText(R.string.nian_ji);
@@ -215,27 +226,17 @@ public class InforActivity extends Activity{
 			lst4.setVisibility(View.GONE);
 			btn1.setVisibility(View.GONE);
 		}
-		//tvbutton.setOnClickListener(edit);
-		
+		tvbutton.setOnClickListener(invate);
+		Log.e("Utype", Integer.toString(Utype));
 		if(Utype == 100){
 			tvbutton.setText(R.string.yao_qing);
 		}else if(Utype == 101){
 			tvbutton.setVisibility(View.GONE);
 		}
-		//NewListView.setListViewHeightBasedOnChildren(lst1);
 		adapter_tech = new TechsAdapter(entitys_tech, InforActivity.this);
 		lst1.setAdapter(adapter_tech);
-		//lst1.setOnScrollListener(NewListView.scroll);
-		//NewListView.setListViewHeightBasedOnChildren(lst2);
 		adapter_use = new UsesAdapter(entitys_use, InforActivity.this, Utype);
 		lst2.setAdapter(adapter_use);
-		//lst2.setOnScrollListener(NewListView.scroll);
-		//NewListView.setListViewHeightBasedOnChildren(lst3);
-		adapter_myteam = new MyTeamAdapter(entitys_myteam, InforActivity.this);
-		lst3.setAdapter(adapter_myteam);
-		//lst3.setOnScrollListener(NewListView.scroll);
-		//NewListView.setListViewHeightBasedOnChildren(lst4);
-		//Log.e("json_obj",ts_text);
 		setSTText(ts_text);
 	}
 	
@@ -270,9 +271,12 @@ public class InforActivity extends Activity{
 		
 		if(Utype == 100){
 			tvbutton.setText(R.string.chuang_jian_dui_wu);
+		}else if(Utype == 102){
+			tvbutton.setText(R.string.bian_ji);
 		}else{
 			tvbutton.setVisibility(View.GONE);
 		}
+		tvbutton.setOnClickListener(create_team);
 		setSTText(ts_text);
 	}
 	
@@ -286,7 +290,7 @@ public class InforActivity extends Activity{
 				index = n;
 			}
 			Uid = bd.getString("Uid");
-			Utype = bd.getInt("Utpe");
+			Utype = bd.getInt("Utype");
 			id = bd.getString("id");
 			infoType = bd.getInt("infoType");
 		}catch (Exception e) {
@@ -302,16 +306,16 @@ public class InforActivity extends Activity{
 		getEntity = new HttpgetEntity();
 		try {
 			if(infoType == 0){
-				Log.e("url", get_student_abo);
-				ts_text = getEntity.doGet(get_student_abo);
+				Log.e("url", get_student_abo + id);
+				ts_text = getEntity.doGet(get_student_abo + id);
 				Log.e("ts_text", ts_text);
 			}else if(infoType == 1){
-				Log.e("url", get_teacher_abo);
-				ts_text = getEntity.doGet(get_teacher_abo);
+				Log.e("url", get_teacher_abo + id);
+				ts_text = getEntity.doGet(get_teacher_abo + id);
 				Log.e("ts_text", ts_text);
 			}else if(infoType == 2){
-				Log.e("url", get_competition_abo);
-				ts_text = getEntity.doGet(get_competition_abo);
+				Log.e("url", get_competition_abo + id);
+				ts_text = getEntity.doGet(get_competition_abo + id);
 				Log.e("ts_text", ts_text);
 			}
 		} catch (Exception e) {
@@ -325,7 +329,8 @@ public class InforActivity extends Activity{
 	private void getMyOwnTeam(){
 		getEntity = new HttpgetEntity();
 		try{
-			myownteam = getEntity.doGet(get_myownteam);
+			myownteam = getEntity.doGet(get_myownteam + Uid);
+			Log.e("myownteam", myownteam);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -369,9 +374,8 @@ public class InforActivity extends Activity{
 							}
 							sc_use = json_obj.optString("SCUse");
 							s_tech = json_obj.optString("STech");
-							entitys_use.clear();
-							UsesEntity entity_use = new UsesEntity();
 							if(sc_use == "[]"){
+								UsesEntity entity_use = new UsesEntity();
 								entity_use.setCname("无");
 								entity_use.setCno("");
 								entity_use.setTCnum("");
@@ -379,8 +383,10 @@ public class InforActivity extends Activity{
 							else{
 								try{
 									JSONArray json_uses = StringToJSON.toJSONArray(sc_use);
+									entitys_use.clear();
 									for(int i = 0;i < json_uses.length();i++){
 										JSONObject json_use = json_uses.getJSONObject(i);
+										UsesEntity entity_use = new UsesEntity();
 										entity_use.setCname(json_use.optString("SCname"));
 										entity_use.setCno(json_use.optString("SCno"));
 										entitys_use.add(entity_use);
@@ -389,17 +395,18 @@ public class InforActivity extends Activity{
 									e.printStackTrace();
 								}
 							}
-							entitys_tech.clear();
-							TechsEntity entity_tech = new TechsEntity();
 							if(s_tech == "[]"){
+								TechsEntity entity_tech = new TechsEntity();
 								entity_tech.setSTname("无");
 								entity_tech.setSTlevel("");
 							}
 							else{
 								try{
 									JSONArray json_techs = StringToJSON.toJSONArray(s_tech);
+									entitys_tech.clear();
 									for(int i = 0;i < json_techs.length();i++){
 										JSONObject json_tech = json_techs.getJSONObject(i);
+										TechsEntity entity_tech = new TechsEntity();
 										entity_tech.setSTname(json_tech.optString("STname"));
 										entity_tech.setSTlevel(
 												NumToString.getLevel(json_tech.optInt("STlevel")));
@@ -427,9 +434,8 @@ public class InforActivity extends Activity{
 							et5.setText(json_obj.optString("Tuniversity"));
 							et6.setText(json_obj.optString("Tschool"));
 							tc_use = json_obj.optString("TCuse");
-							entitys_use.clear();
-							UsesEntity entity_use = new UsesEntity();
 							if(tc_use == "[]"){
+								UsesEntity entity_use = new UsesEntity();
 								entity_use.setCname("无");
 								entity_use.setCno("");
 								entity_use.setTCnum("");
@@ -437,8 +443,10 @@ public class InforActivity extends Activity{
 							else{
 								try{
 									JSONArray json_uses = StringToJSON.toJSONArray(tc_use);
+									entitys_use.clear();
 									for(int i = 0;i < json_uses.length();i++){
 										JSONObject json_use = json_uses.getJSONObject(i);
+										UsesEntity entity_use = new UsesEntity();
 										entity_use.setCname(json_use.optString("TCname"));
 										entity_use.setCno(json_use.optString("TCno"));
 										entity_use.setTCnum(json_use.optString("TCnum") + getText(R.string.zhi_dui_wu).toString());
@@ -509,11 +517,13 @@ public class InforActivity extends Activity{
 		
 	};
 	
+	
 	private OnClickListener invate = new OnClickListener(){
 
 		@Override
-		public void onClick(View arg0) {
+		public void onClick(View view) {
 			// TODO Auto-generated method stub
+			Log.e("invate", "onClick");
 			if(tvbutton.getText().toString() == getText(R.string.yao_qing)){
 				showMyTeamDialog("请选择团队");
 			}else if(tvbutton.getText().toString() == getText(R.string.chuang_jian_dui_wu)){
@@ -522,29 +532,155 @@ public class InforActivity extends Activity{
 		}
 	};
 	
+	private OnClickListener create_team = new OnClickListener(){
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			if(Utype == 102){
+				
+			}else if(Utype == 100){
+				Intent intent = new Intent(InforActivity.this, NewTeamActivity.class);
+				intent.putExtra("Uid", Uid);
+				intent.putExtra("Utype", Utype);
+				startActivity(intent);
+				finish();
+			}
+		}
+		
+	};
+	
 	private void showMyTeamDialog(String title){
 		android.app.AlertDialog.Builder builder = new AlertDialog.Builder(InforActivity.this);
 		final LayoutInflater inflater = LayoutInflater.from(InforActivity.this);
 		final View view = inflater.inflate(R.layout.layout_myownteam, null);
+		final MyListView myownlist = (MyListView)view.findViewById(R.id.lst_myownteam);
 		builder.setTitle(title);
-		final MyListView myownlist = (MyListView)findViewById(R.id.myownteam);
+		setAdapterText(myownteam);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		adapter_myteam = new MyTeamAdapter(entitys_myteam, builder.getContext());
 		myownlist.setAdapter(adapter_myteam);
-		JSONArray jsonArray = StringToJSON.toJSONArray(myownteam);
+		myownlist.setOnItemClickListener(post_invate);
+		builder.setView(view);
+		builder.setNegativeButton("取消", null);
+		
+		builder.show();
+	}
+	
+	private void setAdapterText(String myownteam){
+		Log.e("toJSON", "error1");
+		final JSONArray jsonArray = StringToJSON.toJSONArray(myownteam);
 		entitys_myteam.clear();
 		for(int i = 0; i < jsonArray.length(); i++){
+			Log.e("toJSON", "error2");
 			try {
 				JSONObject jsonobj = jsonArray.getJSONObject(i);
 				MyTeamEntity entity_myteam = new MyTeamEntity();
 				entity_myteam.setTEname(jsonobj.optString("TEname"));
+				Log.e("TEname", jsonobj.optString("TEname"));
 				entity_myteam.setCname("第" + jsonobj.optInt("Cno") + "届" 
 						+ NumToString.getCLevel(jsonobj.optInt("Clevel")) 
-						+ jsonobj.optString("Sname"));
+						+ jsonobj.optString("Cname"));
 				entitys_myteam.add(entity_myteam);
 			} catch (JSONException e) {
+				Log.e("toJSON", "error");
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
+	
+	private OnItemClickListener post_invate = new OnItemClickListener(){
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			// TODO Auto-generated method stub
+			JSONArray jsonArray = StringToJSON.toJSONArray(myownteam);
+			try {
+				JSONObject jsonobj = jsonArray.getJSONObject(position);
+				final String TEid = jsonobj.optString("TEid");
+				JSONObject json_abo = StringToJSON.toJSONObject(ts_text);
+				if(infoType == 0){
+					String abo = json_abo.optString("student_abo");
+					JSONArray studentArray = StringToJSON.toJSONArray(abo);
+					JSONObject studentObject = studentArray.getJSONObject(0);
+					String Sno = studentObject.optString("Sno");
+					String Suniversity = studentObject.optString("Suniversity");
+					final JSONObject post_obj = new JSONObject();
+					post_obj.put("Sno", Sno);
+					post_obj.put("Suniversity", Suniversity);
+					new Thread(){
+						public void run(){
+							try {
+								String post_url = invate_student + Uid + "&TEid=" + TEid;
+								Log.e("post_url", post_url);
+								String response = postEntity.doPost(post_obj, post_url);
+								Log.e("response", response);
+								JSONObject response_obj = StringToJSON.toJSONObject(response);
+								if(response_obj.optInt("status") == 200){
+									Toast.makeText(InforActivity.this, "邀请成功", Toast.LENGTH_SHORT);
+								}else{
+									Toast.makeText(InforActivity.this, "邀请失败", Toast.LENGTH_SHORT);
+								}
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}.start();
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else if(infoType == 1){
+					String abo = json_abo.optString("teacher_abo");
+					JSONArray teacherArray = StringToJSON.toJSONArray(abo);
+					JSONObject teacherObject = teacherArray.getJSONObject(0);
+					String Tno = teacherObject.optString("Tno");
+					String Tuniversity = teacherObject.optString("Tuniversity");
+					final JSONObject post_obj = new JSONObject();
+					post_obj.put("Tno", Tno);
+					post_obj.put("Tuniversity", Tuniversity);
+					new Thread(){
+						public void run(){
+							try{
+								String post_url = invate_teacher + Uid + "&TEid=" + TEid;
+								Log.e("post_url", post_url);
+								String response = postEntity.doPost(post_obj, post_url);
+								Log.e("response", response);
+								JSONObject response_obj = StringToJSON.toJSONObject(response);
+								if(response_obj.optInt("status") == 200){
+									Toast.makeText(InforActivity.this, "邀请成功", Toast.LENGTH_SHORT);
+								}else{
+									Toast.makeText(InforActivity.this, "邀请失败", Toast.LENGTH_SHORT);
+								}
+							}catch(Exception e){
+								e.printStackTrace();
+							}
+						}
+					}.start();
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+	};
 	
 }

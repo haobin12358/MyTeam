@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    <TextView
+        android:id="@+id/tv_listitem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/xing_ming"
+        />
 
-    <com.etech.myteam.view.MyListView 
-        android:id="@+id/lst_myownteam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </com.etech.myteam.view.MyListView>
-    
 </LinearLayout>

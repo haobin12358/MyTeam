@@ -74,6 +74,7 @@ public class MyTeamAdapter extends BaseAdapter{
 		holder.TEname.setText(entity.getTEname());
 		//holder.Cname.setText("比赛1");
 		//holder.TEname.setText("团队名");
+		convertView.setTag(holder);
 		return convertView;
 	}
 	
