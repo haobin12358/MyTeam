@@ -64,59 +64,49 @@ public class PersonFragment extends Fragment{
 	private List<UsesEntity> entitys_use = new ArrayList<UsesEntity>();
 	private List<MyTeamEntity> entitys_myteam = new ArrayList<MyTeamEntity>();
 	//定义默认值
-	private int Utype = 100;
-	private String Uid = "2b7e8e9d-ce2a-4476-bd1b-ddcb77ceee0b";
+	private int Utype = 0;
+	private String Uid = null;
 	private int new_update = 0;//判断应该新增还是更新
 	//定义接口url
 	private String get_personal_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/personal/findall?Uid=" 
-			+ Uid;
+			+ "/personal/findall?Uid=";
 	
 	private String post_personal_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/personal/new?Uid=" 
-			+ Uid;
+			+ "/personal/new?Uid=";
 	
 	private String update_personal_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/personal/update?Uid=" 
-			+ Uid;
+			+ "/personal/update?Uid=";
 	
 	private String post_personal_tech_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/personal/stech_new?Uid=" 
-			+ Uid;
+			+ "/personal/stech_new?Uid=";
 	
 	private String update_personal_tech_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/personal/stech_update?Uid=" 
-			+ Uid;
+			+ "/personal/stech_update?Uid=";
 	
 	private String post_personal_use_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/personal/scuse_new?Uid=" 
-			+ Uid;
+			+ "/personal/scuse_new?Uid=";
 	
 	private String update_personal_use_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/personal/scuse_update?Uid=" 
-			+ Uid;
+			+ "/personal/scuse_update?Uid=";
 	
 	private String delete_personal_tech_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/personal/stech_delete?Uid=" 
-			+ Uid;
+			+ "/personal/stech_delete?Uid=";
 	
 	private String delete_personal_use_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/personal/scuse_delete?Uid=" 
-			+ Uid;
+			+ "/personal/scuse_delete?Uid=";
 	
 	private String get_myteam_url = "http://" 
 			+ AppConst.sServerURL 
-			+ "/team/myteam?is_index=0000&Uid=" 
-			+ Uid;
+			+ "/team/myteam?is_index=0000&Uid=";
 	
 	private HttpgetEntity getEntity;
 	private HttppostEntity postEntity;
@@ -128,7 +118,8 @@ public class PersonFragment extends Fragment{
 		getBd();
 		View view;
 		view = inflater.inflate(R.layout.fragment_personal, null);
-		
+		Log.e("Uid", Uid);
+		Log.e("Utype", Integer.toString(Utype));
 		new Thread(){
 			public void run(){
 				getPersonalText();
@@ -371,7 +362,8 @@ public class PersonFragment extends Fragment{
 	private void getPersonalText(){
 		getEntity = new HttpgetEntity();
 		try {
-			personal_text = getEntity.doGet(get_personal_url);
+			Log.e("Url", get_personal_url);
+			personal_text = getEntity.doGet(get_personal_url + Uid);
 			Log.e("personal_text", personal_text);
 			if(personal_text != null){
 				final JSONObject json_obj = StringToJSON.toJSONObject(personal_text);
@@ -390,7 +382,7 @@ public class PersonFragment extends Fragment{
 	private void getMyteam(){
 		getEntity = new HttpgetEntity();
 		try{
-			myteam = getEntity.doGet(get_myteam_url);
+			myteam = getEntity.doGet(get_myteam_url + Uid);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -627,9 +619,9 @@ public class PersonFragment extends Fragment{
 	private String url_update_new = null;
 	private void post_personal_infor(){
 		if(new_update == 0){
-			url_update_new = post_personal_url;
+			url_update_new = post_personal_url + Uid;
 		}else{
-			url_update_new = update_personal_url;
+			url_update_new = update_personal_url + Uid;
 		}
 		JSONObject obj = new JSONObject();
 		if(Utype == 100){
@@ -790,7 +782,7 @@ public class PersonFragment extends Fragment{
 	                		new Thread(){
 	                			public void run(){
 	                				try {
-										String response = postEntity.doPostA(jsonArray, update_personal_use_url);
+										String response = postEntity.doPostA(jsonArray, update_personal_use_url + Uid);
 										Log.e("response",response);
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
@@ -818,7 +810,7 @@ public class PersonFragment extends Fragment{
 	                		new Thread(){
 	                			public void run(){
 	                				try {
-										String response = postEntity.doPostA(jsonArray, update_personal_use_url);
+										String response = postEntity.doPostA(jsonArray, update_personal_use_url + Uid);
 										Log.e("response",response);
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
@@ -845,7 +837,7 @@ public class PersonFragment extends Fragment{
 	                		new Thread(){
 	                			public void run(){
 	                				try {
-										String response = postEntity.doPostA(jsonArray, update_personal_tech_url);
+										String response = postEntity.doPostA(jsonArray, update_personal_tech_url + Uid);
 										Log.e("response",response);
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
@@ -895,9 +887,9 @@ public class PersonFragment extends Fragment{
 	                		public void run(){
 	                			try{
 	                				if(list_index == "st"){
-	                					String response = postEntity.doPostA(jsonArray, delete_personal_tech_url);
+	                					String response = postEntity.doPostA(jsonArray, delete_personal_tech_url + Uid);
 		                			}else if(list_index == "sc" || list_index == "tc"){
-		                				String response = postEntity.doPostA(jsonArray, delete_personal_use_url);
+		                				String response = postEntity.doPostA(jsonArray, delete_personal_use_url + Uid);
 		                			}
 	                			}catch (Exception e) {
 									// TODO Auto-generated catch block
@@ -996,7 +988,7 @@ public class PersonFragment extends Fragment{
 	                		new Thread(){
 	                			public void run(){
 	                				try {
-										String response = postEntity.doPostA(jsonArray, post_personal_use_url);
+										String response = postEntity.doPostA(jsonArray, post_personal_use_url + Uid);
 										Log.e("response",response);
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
@@ -1023,7 +1015,7 @@ public class PersonFragment extends Fragment{
 	                		new Thread(){
 	                			public void run(){
 	                				try {
-										String response = postEntity.doPostA(jsonArray, post_personal_use_url);
+										String response = postEntity.doPostA(jsonArray, post_personal_use_url + Uid);
 										Log.e("response",response);
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
@@ -1049,7 +1041,7 @@ public class PersonFragment extends Fragment{
 	                		new Thread(){
 	                			public void run(){
 	                				try {
-										String response = postEntity.doPostA(jsonArray, post_personal_tech_url);
+										String response = postEntity.doPostA(jsonArray, post_personal_tech_url + Uid);
 										Log.e("response",response);
 									} catch (Exception e) {
 										// TODO Auto-generated catch block

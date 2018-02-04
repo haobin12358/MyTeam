@@ -256,7 +256,9 @@ public class InforFragment extends Fragment{
 	//获取从上一个界面传来的值
 	private void getBd(){
 		Uid = ((MainActivity)getActivity()).getUid();
+		Log.e("Uid", Uid);
 		Utype = ((MainActivity)getActivity()).getUtype();
+		Log.e("Utype", Integer.toString(Utype));
 		index = ((MainActivity)getActivity()).getIndex();
 	}
 	

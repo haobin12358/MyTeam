@@ -29,6 +29,7 @@ public class MainActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		getBd();
+		Log.e("Utype", Integer.toString(Utype));
 		setContentView(R.layout.activity_main);
 		init();
 		setListener();
@@ -69,7 +70,7 @@ public class MainActivity extends Activity{
 				index = n;
 			}
 			Uid = bd.getString("Uid");
-			Utype = bd.getInt("Utpe");
+			Utype = bd.getInt("Utype");
 		}catch (Exception e) {
 			e.printStackTrace();
 			Log.e("changeError", "false");
