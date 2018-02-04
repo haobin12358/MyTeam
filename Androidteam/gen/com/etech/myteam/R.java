@@ -135,19 +135,11 @@ public final class R {
         public static final int et_5=0x7f080028;
         public static final int et_6=0x7f08002a;
         public static final int et_7=0x7f08002c;
-<<<<<<< HEAD
-        public static final int fl_1=0x7f080057;
-        public static final int fl_fragment_layout=0x7f080014;
-        public static final int include1=0x7f08003a;
-        public static final int iv_1=0x7f080058;
-        public static final int join=0x7f08004f;
-=======
-        public static final int fl_1=0x7f080059;
+        public static final int fl_1=0x7f08005a;
         public static final int fl_fragment_layout=0x7f080014;
         public static final int include1=0x7f08003d;
-        public static final int iv_1=0x7f08005a;
+        public static final int iv_1=0x7f08005b;
         public static final int join=0x7f080052;
->>>>>>> d0641833fc324ad1cb90a91b5b94af6bca2987bf
         public static final int ll_1=0x7f080024;
         public static final int ll_2=0x7f080025;
         public static final int ll_3=0x7f080027;
@@ -160,11 +152,7 @@ public final class R {
         public static final int lst_2=0x7f080032;
         public static final int lst_3=0x7f080033;
         public static final int lst_4=0x7f080034;
-<<<<<<< HEAD
-        public static final int lst_myownteam=0x7f080055;
-=======
-        public static final int myownteam=0x7f080058;
->>>>>>> d0641833fc324ad1cb90a91b5b94af6bca2987bf
+        public static final int lst_myownteam=0x7f080058;
         public static final int new_tech=0x7f08002e;
         public static final int new_use=0x7f080031;
         public static final int num_1=0x7f080056;
@@ -203,22 +191,13 @@ public final class R {
         public static final int tv_cowner=0x7f08000b;
         public static final int tv_cstart=0x7f080005;
         public static final int tv_ctime=0x7f080004;
-<<<<<<< HEAD
-        public static final int tv_editbutton=0x7f08005a;
-        public static final int tv_grade=0x7f08004c;
-        public static final int tv_listitem=0x7f080056;
-        public static final int tv_name=0x7f08004a;
-        public static final int tv_school=0x7f08004b;
-        public static final int tv_spinner=0x7f08005b;
-        public static final int tv_title=0x7f080059;
-=======
-        public static final int tv_editbutton=0x7f08005c;
+        public static final int tv_editbutton=0x7f08005d;
         public static final int tv_grade=0x7f08004f;
+        public static final int tv_listitem=0x7f080059;
         public static final int tv_name=0x7f08004d;
         public static final int tv_school=0x7f08004e;
-        public static final int tv_spinner=0x7f08005d;
-        public static final int tv_title=0x7f08005b;
->>>>>>> d0641833fc324ad1cb90a91b5b94af6bca2987bf
+        public static final int tv_spinner=0x7f08005e;
+        public static final int tv_title=0x7f08005c;
         public static final int tv_top=0x7f080000;
     }
     public static final class layout {
@@ -323,6 +302,9 @@ public final class R {
         public static final int shang_pin_wei_zhi=0x7f060017;
         public static final int shang_pin_xiang_qing=0x7f060019;
         public static final int she_zhi=0x7f060031;
+        /**  团队相关操作 
+         */
+        public static final int shen_qing_jia_ru=0x7f06006c;
         public static final int shi_fu_man_yuan=0x7f060065;
         /**  订单list 
          */
