@@ -33,8 +33,8 @@ public class StudentListEntity {
 		try {
 			setId(jsonobj.optString("Tid"));
 			setName(jsonobj.optString("Tname"));
-			setTtime(jsonobj.optInt("TTime"));			
-			setSchool(jsonobj.optString("Tshool"));
+			setTtime(jsonobj.optInt("Ttime"));			
+			setSchool(jsonobj.optString("Tschool"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.e("Teacher list error","error");
