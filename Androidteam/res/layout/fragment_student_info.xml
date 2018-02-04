@@ -33,42 +33,45 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/xing_ming"/>
+           	android:id="@+id/title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/xing_ming"/>
         <EditText
-                android:id = "@+id/ed_name"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id = "@+id/ed_name"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/xue_yuan"/>
+            android:id="@+id/title_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/xue_yuan"/>
         <EditText
-                android:id = "@+id/ed_school"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id = "@+id/ed_school"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nian_ji"/>
+            android:id="@+id/title_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nian_ji"/>
         <EditText
-                android:id = "@+id/ed_grade_start"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id = "@+id/ed_grade_start"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/zhi">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/zhi">
         </TextView>
         <EditText
-                android:id = "@+id/ed_grade_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+	        android:id = "@+id/ed_grade_end"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"/>
     </LinearLayout>
     <include 
         android:id="@+id/include1"
