@@ -54,9 +54,10 @@ public class InforFragment extends Fragment{
 	private int page_num = 1;
 	private List<StudentListEntity> entitys = new ArrayList<StudentListEntity>();
 	private Spinner spinner;
-	private String name, school, start, end;
-	private String result_info;
+	private String name, school, start, end, modelid;
+	private String result_info, postResult;
 	private List<Integer> data_list = new ArrayList<Integer>();
+	private HttppostEntity postEntity;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -103,17 +104,23 @@ public class InforFragment extends Fragment{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			if (view.getId() == R.id.btn_doit){
+				//拼接邀请url
+				String inviteUrl = "";
+				
+			}else{
 			//跳转
 			Intent it = new Intent(getActivity(), InforActivity.class);
+			modelid = entitys.get(position).getId();
 			it.putExtra("Uid", Uid);
 			it.putExtra("Utype", Utype);
 			it.putExtra("infoType", infoType);
 			it.putExtra("index", index);
-			//it.putExtra("id", );
+			it.putExtra("id", modelid);
 			startActivity(it);
 			getActivity().finish();
-			//拼接邀请url
 			
+			}
 		}
     };
     
@@ -274,6 +281,16 @@ public class InforFragment extends Fragment{
 		}
 	}
 	
+	private void postText(){
+		try{
+			JSONObject obj = new JSONObject();
+			String post_url = "";
+			postResult = postEntity.doPost(obj, url);
+		}catch (Exception e){
+			e.printStackTrace();
+			Log.e("Post error", "post method error.");
+		}
+	}
 	/*通过infoType 以及筛选框的内容获取url*/
 	private String getUrl(){		
 		TypeInfo info = new TypeInfo(infoType);		

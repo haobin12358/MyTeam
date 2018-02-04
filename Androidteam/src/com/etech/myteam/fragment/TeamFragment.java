@@ -53,13 +53,14 @@ public class TeamFragment extends Fragment{
 //	private TextView tv_1,tv_2,tv_3;
 	private EditText ed_Tetname, ed_Tename, ed_Teleader,
 	ed_Tecname, ed_Teclevel, ed_Tecno;
-	private Button btn_add, btn_search;
+	private Button btn_add, btn_search, btn_join;
 	private BaseAdapter adapter;	
 	private int page_num = 1;
 	private List<MyTeamEntity> entitys = new ArrayList<MyTeamEntity>();
 	private Spinner spinner, sp_Isfull;
 	private String tetName, tename, teleader, tecname, teclevel, tecno;
-	private String result_info;
+	private String result_info, postResult;
+	private HttppostEntity postEntity;
 	private List<Integer> data_list = new ArrayList<Integer>();
 	private List<String> is_full_list = new ArrayList<String>();
 	
@@ -119,8 +120,13 @@ public class TeamFragment extends Fragment{
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			//跳转
+			if (view.getId() == R.id.btn_add){
+				//拼接加入url
+				String addUrl = "";
+			}
 			Log.e("doit","start");
 			Intent it = new Intent(getActivity(), TeamActivity.class);
+			TEid = entitys.get(position).getTEid();
 			it.putExtra("Uid", Uid);
 			it.putExtra("Utype", Utype);
 			it.putExtra("TEid", TEid);
@@ -159,6 +165,17 @@ public class TeamFragment extends Fragment{
 			}
 		}
 		initdata();
+	}
+	
+	private void postText(){
+		try{
+			JSONObject obj = new JSONObject();
+			String post_url = "";
+			postResult = postEntity.doPost(obj, url);
+		}catch (Exception e){
+			e.printStackTrace();
+			Log.e("Post error", "post method error.");
+		}
 	}
 	
 	public void initdata(){
