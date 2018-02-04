@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import com.etech.myteam.R;
 import com.etech.myteam.activity.MainActivity;
+import com.etech.myteam.activity.TeamActivity;
 import com.etech.myteam.adapter.MyTeamAdapter;
 import com.etech.myteam.adapter.TechsAdapter;
 import com.etech.myteam.adapter.UsesAdapter;
@@ -28,6 +29,7 @@ import com.etech.myteam.view.MyListView;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -253,22 +255,17 @@ public class PersonFragment extends Fragment{
 		}else if(new_update == 1){
 			tvbutton.setText(R.string.bian_ji);
 		}
-		//NewListView.setListViewHeightBasedOnChildren(lst1);
 		adapter_tech = new TechsAdapter(entitys_tech, getActivity());
 		lst1.setAdapter(adapter_tech);
-		//lst1.setOnScrollListener(NewListView.scroll);
 		lst1.setOnItemClickListener(itemupdate);
 		
-		//NewListView.setListViewHeightBasedOnChildren(lst2);
 		adapter_use = new UsesAdapter(entitys_use, getActivity(), Utype);
 		lst2.setAdapter(adapter_use);
-		//lst2.setOnScrollListener(NewListView.scroll);
 		lst2.setOnItemClickListener(itemupdate);
 		
-		//NewListView.setListViewHeightBasedOnChildren(lst3);
 		adapter_myteam = new MyTeamAdapter(entitys_myteam, getActivity());
 		lst3.setAdapter(adapter_myteam);
-		//lst3.setOnScrollListener(NewListView.scroll);
+		lst3.setOnItemClickListener(go_team);
 		
 		NewListView.setListViewHeightBasedOnChildren(lst4);
 		
@@ -679,6 +676,32 @@ public class PersonFragment extends Fragment{
 			}
 		}
 	}
+	
+	private OnItemClickListener go_team = new OnItemClickListener(){
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			// TODO Auto-generated method stub
+			final JSONArray jsonArray = StringToJSON.toJSONArray(myteam);
+			String TEid = null;
+			try {
+				JSONObject json_myteam = jsonArray.getJSONObject(position);
+				TEid = json_myteam.optString("TEid");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Intent intent = new Intent(getActivity(), TeamActivity.class);
+			intent.putExtra("TEid", TEid);
+			intent.putExtra("Uid", Uid);
+			intent.putExtra("Utype", Utype);
+			intent.putExtra("index", 2);
+			startActivity(intent);
+			getActivity().finish();
+		}
+		
+	};
 	
     //更新&删除个人技能&个人比赛经历的监听事件
     private OnItemClickListener itemupdate = new OnItemClickListener(){

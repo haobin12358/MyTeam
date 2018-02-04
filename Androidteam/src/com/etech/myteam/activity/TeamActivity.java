@@ -54,6 +54,9 @@ public class TeamActivity extends Activity{
 	private String invate_add_team = "http://" 
 			+ AppConst.sServerURL 
 			+ "/team/invatestudent?Uid=";
+	private String update_team = "http://" 
+			+ AppConst.sServerURL 
+			+ "/team/updateteam?Uid=";
 	
 	private TStudentAdapter ts_adapter;
 	private List<TStudentEntity> ts_entitys = new ArrayList<TStudentEntity>();
@@ -161,6 +164,7 @@ public class TeamActivity extends Activity{
 		try {
 			String get_teamabo_url = get_team_abo + TEid + "&Uid=" + Uid;
 			team_abo = getEntity.doGet(get_teamabo_url);
+			Log.e("team_abo", team_abo);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.e("getJSON", "error");
@@ -185,7 +189,7 @@ public class TeamActivity extends Activity{
 						tv4.setText(team_json.optString("Cname"));
 						et1.setText(team_json.optString("TEleader"));
 						et2.setText(team_json.optString("Teachername"));
-						et3.setText(team_json.optInt("TEnum")+"人");
+						et3.setText(team_json.optInt("TEnum")+" ");
 						tv10.setText(team_json.optInt("Wait")+"人");
 						tv12.setText(team_json.optInt("Refuse")+"人");
 						String student_list = team_json.optString("student_list");
@@ -281,17 +285,70 @@ public class TeamActivity extends Activity{
 					.setTitle(R.string.ti_xing)
 					.setMessage("申请成功")
 					.show();
-			}else if(tvbutton.getText().toString() == getText(R.string.bian_ji)){
-				isEdit.yesEdit(et1);
-				isEdit.yesEdit(et2);
-				isEdit.yesEdit(et3);
-				isEdit.yesEdit(tv1);
-				isEdit.yesEdit(tv2);
-				isEdit.yesEdit(tv3);
-				isEdit.yesEdit(tv4);
+			}else if(tvbutton.getText().toString().equals(getText(R.string.bian_ji).toString())){
+				isEdit.yesEdit(et3);//团队限制人数
+				isEdit.yesEdit(tv1);//团队名称
 				tvbutton.setText(R.string.que_ding);
-			}else if(tvbutton.getText().toString() == "发布任务"){
-				
+			}else if(tvbutton.getText().toString().equals("发布任务")){
+				new AlertDialog.Builder(TeamActivity.this)
+					.setTitle(R.string.ti_xing)
+					.setMessage("功能开发中")
+					.show();
+			}else if(tvbutton.getText().toString().equals(getText(R.string.que_ding).toString())){
+				final JSONObject json_obj = StringToJSON.toJSONObject(team_abo);
+				String abo = json_obj.optString("team_abo");
+				JSONObject team_json = StringToJSON.toJSONObject(abo);
+				String Cname = team_json.optString("Cname");
+				int Clevel = team_json.optInt("Clevel");
+				int Cno = team_json.optInt("Cno");
+				String TEname = tv1.getText().toString();
+				String TEid = team_json.optString("TEid");
+				int TEnum;
+				if(et3.getText().toString() == ""){
+					TEnum = 1;
+				}else{
+					TEnum = Integer.parseInt(et3.getText().toString());
+				}
+				final JSONObject post_team = new JSONObject();
+				try {
+					post_team.put("TEid", TEid);
+					post_team.put("TEname", TEname);
+					post_team.put("Cname", Cname);
+					post_team.put("Cno", Cno);
+					post_team.put("Clevel", Clevel);
+					post_team.put("TEnum", TEnum);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				new Thread(){
+					public void run(){
+						String post_url = update_team + Uid;
+						Log.e("post_url", post_url);
+						try {
+							String response = postEntity.doPost(post_team, post_url);
+							while(true){
+								if(response != null){
+									break;
+								}
+							}
+							Log.e("response", response);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}.start();
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				new AlertDialog.Builder(TeamActivity.this)
+					.setTitle(R.string.ti_xing)
+					.setMessage("修改成功")
+					.show();
 			}
 		}
 		
