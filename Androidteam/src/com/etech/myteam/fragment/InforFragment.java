@@ -30,6 +30,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.etech.myteam.R;
 import com.etech.myteam.activity.InforActivity;
 import com.etech.myteam.activity.MainActivity;
+import com.etech.myteam.activity.NewTeamActivity;
 import com.etech.myteam.adapter.CompetitionAdapter;
 import com.etech.myteam.adapter.StudentAdapter;
 import com.etech.myteam.adapter.TeacherAdapter;
@@ -114,7 +115,21 @@ public class InforFragment extends Fragment{
 				long id) {
 			if (view.getId() == R.id.btn_doit){
 				//拼接邀请url
-				String inviteUrl = "";
+				switch (infoType){
+				case 0:
+					break;
+				case 1:
+					break;
+				case 2:
+					Intent it = new Intent(getActivity(), NewTeamActivity.class);
+					it.putExtra("Uid", Uid);
+					it.putExtra("Utype", Utype);
+					it.putExtra("Cname", entitys.get(position).getName());
+					it.putExtra("Clevel", entitys.get(position).getLevel());
+					it.putExtra("Cno", entitys.get(position).getGrade());
+					it.putExtra("index", index);
+				}
+//				String inviteUrl = "";
 				
 			}else{
 			//跳转
@@ -131,6 +146,21 @@ public class InforFragment extends Fragment{
 			}
 		}
     };
+    private OnItemClickListener changePage = new OnItemClickListener() {
+		
+    	public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			page_num = data_list.get(position);
+			result_info = null;
+			get_info();		
+			while (true){
+				if (result_info != null){
+					break;
+				}
+			}
+			initdata();
+		}
+	};
     
     //学生 教师 竞赛 监听器 
     private OnClickListener changeInfo = new OnClickListener() {
@@ -224,7 +254,7 @@ public class InforFragment extends Fragment{
 				data = null;
 				break;
 			}
-			String btn_value = infoType == 2? "申请加入":"邀请";
+			String btn_value = infoType == 2? "去组队":"邀请";
 			for (int i = 0; i <data.length(); i++){
 				StudentListEntity entity = new StudentListEntity();
 				JSONObject item = data.getJSONObject(i);
