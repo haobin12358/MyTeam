@@ -51,24 +51,24 @@ class CTeams():
 
         # 判断是否含有参数
         try:
+            params_Te = set()
+            params_C = set()
+            params_T = set()
             # 参数成对存在，判断是否缺失,并判断具体内容是否合法，非法或为空均报错
             page_num, page_size = self.judgeData.check_page_params(args)
+            from models.model import Teams, Competitions, Teachers
             if "Tname" in args:
-                tename = get_str(args, "TEname")
-                # params.append(Students.Sname.like("%{0}%".format(name)))
+                params_Te.add(Teams.TEname.like("%{0}%".format(get_str(args, "TEname"))))
             if "Cname" in args:
-                cname = get_str(args, "Cname")
-                # params.append(Students.Sschool.like("%{0}%".format(school)))
+                params_C.add(Competitions.Cname.like("%{0}%".format(get_str(args, "Cname"))))
             if "Cno" in args:
-                cno = get_str(args, "Cno")
+                params_C.add(Competitions.Cno == args.get("Cno"))
             if "Clevel" in args:
-                clevel = get_str(args, "Clevel")
-            if "Sname" in args:
-                sname = get_str(args, "Sname")
-            if "isFull" in args:
-                isFull = get_str(args, "Sname")
+                params_C.add(Competitions.Clevel == args.get("Clevel"))
+            if "TEteachername" in args:
+                params_T.add(Teachers.Tname.like("%{0}%".format(get_str("TEteachername", args))))
 
-            team_list_data = self.steams.get_all_teams(page_size*(page_num-1)+1,page_size)
+            team_list_data = self.steams.get_all_teams(params_Te)  # 第一层筛选 通过团队名称来筛选
             result_of_team_list = []
             for row in team_list_data:
                 result_of_team_item = {}
@@ -76,18 +76,31 @@ class CTeams():
                 result_of_team_item["TEname"] = row.TEname
                 tenum = row.TEnum
                 tenum_now = self.steams.get_count_by_teid(row.TEid)
-                if tenum != 0 and tenum > tenum_now:
-                    result_of_team_item["isFull"] = 0
-                else:
-                    result_of_team_item["isFull"] = 1
-                competitions_item = self.steams.get_cname_cno_clevel_by_cid(row.Cid)
+                # 第二层筛选，通过isFUll筛选
+                if "isFull" in args and bool(args.get("isFull")) != bool(tenum_now in range(0, tenum + 1)):
+                    continue
+
+                result_of_team_item["isFull"] = 0 if bool(tenum_now in range(0, tenum + 1)) else 1
+                competitions_item = self.steams.get_cname_cno_clevel_by_cid(row.Cid, params_C)
+                # 第三层筛选，通过竞赛相关的三个筛选条件筛选
+                if not competitions_item:
+                    continue
+
                 result_of_team_item["Cname"] = competitions_item.Cname
                 result_of_team_item["Cno"] = competitions_item.Cno
                 result_of_team_item["Clevel"] = competitions_item.Clevel
                 leader_id = self.steams.get_sid_by_teid(row.TEid)
+                # 第四层筛选， 通过团队leader筛选
+                if "TEleader" in args and args.get("TEleader") not in self.sstudent.get_sname_by_sid(leader_id) :
+                    continue
+
                 result_of_team_item["TEleader"] = self.sstudent.get_sname_by_sid(leader_id)
                 teacher_id = self.steams.get_tid_by_teid(row.TEid)
-                result_of_team_item["TEteachername"] = self.steacher.get_tname_by_tid(teacher_id)
+                params_T.add(Teachers.Tid == teacher_id)
+                # 第5层筛选，通过教师名称来筛选
+                if not self.steacher.get_tname_by_tid(params_T):
+                    continue
+                result_of_team_item["TEteachername"] = self.steacher.get_tname_by_tid(params_T)
 
                 result_of_team_list.append(result_of_team_item)
             result_response = {}
@@ -404,7 +417,6 @@ class CTeams():
         if not add_status:
             return system_error
         return invent_success
-
 
     # 邀请教师，入口在教师信息和团队详情中
     def add_teacher(self):

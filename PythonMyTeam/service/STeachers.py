@@ -78,6 +78,17 @@ class STeachers():
             self.session.close()
         return tname
 
+    # 根据教师id获取教师姓名
+    def get_tname_by_params(self, params):
+        tname = None
+        try:
+            tname = self.session.query(model.Teachers.Tname).filter(*params).scalar()
+        except Exception as e:
+            print e.message
+        finally:
+            self.session.close()
+        return tname
+
     # 根据教师姓名或学院或任教时间查询教师
     def get_teachers_list(self, start_num, page_size, params):
         sql = None

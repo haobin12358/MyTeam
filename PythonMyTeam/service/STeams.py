@@ -22,12 +22,12 @@ class STeams():
             self.status = False
 
     # 获取团队列表
-    def get_all_teams(self, start_num, page_size):
+    def get_all_teams(self, params):
         team_list = None
         try:
-            team_list = self.session.query(model.Teams.TEid, model.Teams.TEname,
-                                       model.Teams.Cid, model.Teams.TEuse, model.Teams.TEnum)\
-                .offset(start_num).limit(page_size).all()
+            team_list = self.session.query(
+                model.Teams.TEid, model.Teams.TEname, model.Teams.Cid,
+                model.Teams.TEuse, model.Teams.TEnum).filter(*params).all()
         except Exception as e:
             print e.message
         finally:
@@ -384,10 +384,11 @@ class STeams():
         return tstype
 
     # 根据cid获取竞赛名称、竞赛届次、竞赛等级
-    def get_cname_cno_clevel_by_cid(self, cid):
+    def get_cname_cno_clevel_by_cid(self, cid, params):
         cname_cno_clevel = None
         try:
-            cname_cno_clevel = self.session.query(model.Competitions.Cname, model.Competitions.Cno, model.Competitions.Clevel)\
+            cname_cno_clevel = self.session.query(
+                model.Competitions.Cname, model.Competitions.Cno, model.Competitions.Clevel).filter(*params)\
                 .filter_by(Cid=cid).first()
         except Exception as e:
             print e.message

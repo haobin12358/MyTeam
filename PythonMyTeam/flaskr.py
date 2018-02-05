@@ -29,3 +29,9 @@ api.add_resource(AInfo, "/info/<string:info>")
 # 启动方法
 if __name__ == '__main__':
     app.run('0.0.0.0', 7443, debug=True)
+
+@app.error_handlers(Exception)
+def catchException(error):
+    from flask import jsonify
+    response = dict(status=0, message="500 Error")
+    return jsonify(response), 400
