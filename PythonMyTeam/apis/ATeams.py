@@ -46,6 +46,7 @@ class ATeams(Resource):
             "updateteam": "cteams.update_team()",
             "addstudent": "cteams.add_student()",
             "addteacher": "cteams.add_teacher()",
+            "invatestudent": "cteams.invate_add_team()",
             "substudent": "cteams.sub_student()",
             "subteacher": "cteams.sub_teacher()",
             "addtask": "cteams.add_task()",

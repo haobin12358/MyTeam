@@ -3,11 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <com.etech.myteam.view.MyListView 
-        android:id="@+id/lst_myownteam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </com.etech.myteam.view.MyListView>
     
+	<include
+	    android:id="@+id/tv_top"
+	    layout="@layout/layout_titlebar_2" />
+	
+	<ListView 
+	    android:id="@+id/lst"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	</ListView>
 </LinearLayout>

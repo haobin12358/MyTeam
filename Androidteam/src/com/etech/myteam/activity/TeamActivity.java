@@ -19,6 +19,7 @@ import com.etech.myteam.global.AppConst;
 import com.etech.myteam.view.MyListView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,33 +34,36 @@ import android.widget.Toast;
 
 public class TeamActivity extends Activity{
 	
-	private TextView tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tvbutton, tvtitle;
+	private TextView tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tvbutton, tvtitle;
 	private EditText tv1, tv2, tv3, tv4, et1, et2, et3;
 	private ViewGroup vg;
 	private MyListView lst_1;
 	private ImageView iv1;
 	
-	private String TEid = "212bcc2b-da73-4f31-a63a-85973135f6ad";
-	private String Uid = "51574be2-0fe0-403e-9f5e-fdafa306a4d0";
-	private int index = 1;
-	private int Utype = 0;
+	private String TEid;
+	private String Uid;
+	private int index;
+	private int Utype;
 	
 	private HttpgetEntity getEntity;
 	private HttppostEntity postEntity;
 	
 	private String get_team_abo = "http://" 
 			+ AppConst.sServerURL 
-			+ "/team/teamabo?TEid=" 
-			+ TEid 
-			+ "&Uid=" 
-			+ Uid; 
+			+ "/team/teamabo?TEid="; 
+	private String invate_add_team = "http://" 
+			+ AppConst.sServerURL 
+			+ "/team/invatestudent?Uid=";
+	private String update_team = "http://" 
+			+ AppConst.sServerURL 
+			+ "/team/updateteam?Uid=";
 	
 	private TStudentAdapter ts_adapter;
 	private List<TStudentEntity> ts_entitys = new ArrayList<TStudentEntity>();
 	
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		//getBd();
+		getBd();
 		new Thread(){
 			public void run(){
 				getTeamabo();
@@ -91,8 +95,10 @@ public class TeamActivity extends Activity{
 		tv11 = (TextView)findViewById(R.id.tv_11);
 		tv11.setText("被拒人数：");
 		tv12 = (TextView)findViewById(R.id.tv_12);
-		tvbutton = (TextView)findViewById(R.id.tv_editbutton);
-		tvtitle = (TextView)findViewById(R.id.tv_title);
+		tv13 = (TextView)findViewById(R.id.tv_13);
+		tv13.setVisibility(View.GONE);
+		tvbutton = (TextView)findViewById(R.id.tv_top).findViewById(R.id.tv_editbutton);
+		tvtitle = (TextView)findViewById(R.id.tv_top).findViewById(R.id.tv_title);
 		tvtitle.setText(R.string.tuan_dui_xiang_qing);
 		
 		iv1 = (ImageView)findViewById(R.id.iv_1);
@@ -118,15 +124,20 @@ public class TeamActivity extends Activity{
 		lst_1 = (MyListView)findViewById(R.id.lst);
 		ts_adapter = new TStudentAdapter(ts_entitys, TeamActivity.this);
 		lst_1.setAdapter(ts_adapter);
-		
-		if(Utype == 100){
-			tvbutton.setText("编辑");
-		}else if(Utype == 101){
-			tvbutton.setText("发布任务");
-		}else{
-			tvbutton.setVisibility(View.GONE);
+		Log.e("Utype", Integer.toString(Utype));
+		Log.e("index", Integer.toString(index));
+		if(index == 1 && Utype == 100){
+			tvbutton.setText("申请加入");
+		}else if(index == 2){
+			if(Utype == 100){
+				tvbutton.setText("编辑");
+			}else if(Utype == 101){
+				tvbutton.setText("发布任务");
+			}else{
+				tvbutton.setVisibility(View.GONE);
+			}
 		}
-		
+		tvbutton.setOnClickListener(editTeam);
 		setText(team_abo);
 	}
 	
@@ -139,7 +150,7 @@ public class TeamActivity extends Activity{
 				index = n;
 			}
 			Uid = bd.getString("Uid");
-			Utype = bd.getInt("Utpe");
+			Utype = bd.getInt("Utype");
 			TEid = bd.getString("TEid");
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -153,9 +164,12 @@ public class TeamActivity extends Activity{
 	private void getTeamabo(){
 		getEntity = new HttpgetEntity();
 		try {
-			team_abo = getEntity.doGet(get_team_abo);
+			String get_teamabo_url = get_team_abo + TEid + "&Uid=" + Uid;
+			team_abo = getEntity.doGet(get_teamabo_url);
+			Log.e("team_abo", team_abo);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			Log.e("getJSON", "error");
 			e.printStackTrace();
 		}
 	}
@@ -177,7 +191,7 @@ public class TeamActivity extends Activity{
 						tv4.setText(team_json.optString("Cname"));
 						et1.setText(team_json.optString("TEleader"));
 						et2.setText(team_json.optString("Teachername"));
-						et3.setText(team_json.optInt("TEnum")+"人");
+						et3.setText(team_json.optInt("TEnum")+" ");
 						tv10.setText(team_json.optInt("Wait")+"人");
 						tv12.setText(team_json.optInt("Refuse")+"人");
 						String student_list = team_json.optString("student_list");
@@ -229,4 +243,116 @@ public class TeamActivity extends Activity{
 		
 	};
 
+	private OnClickListener editTeam = new OnClickListener(){
+
+		@Override
+		public void onClick(View view) {
+			// TODO Auto-generated method stub
+			if(tvbutton.getText().toString().equals(getText(R.string.shen_qing_jia_ru).toString())){
+				final JSONObject invate_team = new JSONObject();
+				try {
+					invate_team.put("TEid", TEid);
+					Log.e("TEid", TEid);
+					Log.e("Uid", Uid);
+					new Thread(){
+						public void run(){
+							try {
+								String response = postEntity.doPost(invate_team, invate_add_team + Uid);
+								Log.e("invate_url", invate_add_team + Uid);
+								while(true){
+									if(response != null){
+										break;
+									}
+								}
+								Log.e("response", response);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								Log.e("error", "1");
+								e.printStackTrace();
+							}
+						}
+					}.start();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					Log.e("error", "2");
+					e.printStackTrace();
+				}
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				new AlertDialog.Builder(TeamActivity.this)
+					.setTitle(R.string.ti_xing)
+					.setMessage("申请成功")
+					.show();
+			}else if(tvbutton.getText().toString().equals(getText(R.string.bian_ji).toString())){
+				isEdit.yesEdit(et3);//团队限制人数
+				isEdit.yesEdit(tv1);//团队名称
+				tvbutton.setText(R.string.que_ding);
+			}else if(tvbutton.getText().toString().equals("发布任务")){
+				new AlertDialog.Builder(TeamActivity.this)
+					.setTitle(R.string.ti_xing)
+					.setMessage("功能开发中")
+					.show();
+			}else if(tvbutton.getText().toString().equals(getText(R.string.que_ding).toString())){
+				final JSONObject json_obj = StringToJSON.toJSONObject(team_abo);
+				String abo = json_obj.optString("team_abo");
+				JSONObject team_json = StringToJSON.toJSONObject(abo);
+				String Cname = team_json.optString("Cname");
+				int Clevel = team_json.optInt("Clevel");
+				int Cno = team_json.optInt("Cno");
+				String TEname = tv1.getText().toString();
+				String TEid = team_json.optString("TEid");
+				int TEnum;
+				if(et3.getText().toString() == ""){
+					TEnum = 1;
+				}else{
+					TEnum = Integer.parseInt(et3.getText().toString());
+				}
+				final JSONObject post_team = new JSONObject();
+				try {
+					post_team.put("TEid", TEid);
+					post_team.put("TEname", TEname);
+					post_team.put("Cname", Cname);
+					post_team.put("Cno", Cno);
+					post_team.put("Clevel", Clevel);
+					post_team.put("TEnum", TEnum);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				new Thread(){
+					public void run(){
+						String post_url = update_team + Uid;
+						Log.e("post_url", post_url);
+						try {
+							String response = postEntity.doPost(post_team, post_url);
+							while(true){
+								if(response != null){
+									break;
+								}
+							}
+							Log.e("response", response);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}.start();
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				new AlertDialog.Builder(TeamActivity.this)
+					.setTitle(R.string.ti_xing)
+					.setMessage("修改成功")
+					.show();
+			}
+		}
+		
+	};
 }

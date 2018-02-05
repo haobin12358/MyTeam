@@ -263,6 +263,7 @@ delete_student_from_team_success = {
 
 # 已邀请过该成员
 have_invate_this_users = {
-    "status": 200,
+    "status": 405,
+    "status_code": 405210,
     "messages": "you have invated this users !"
 }

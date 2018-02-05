@@ -198,7 +198,7 @@ class CTeams():
                 team_list_item["Clevel"] = cname_clevel_cno.Clevel
                 team_list.append(team_list_item)
             return team_list
-        elif is_index == 1:
+        elif int(is_index) == 1111:
             team_list_abo = self.steams.get_my_own_team(sid)
             for row in team_list_abo:
                 team_list_item = {}

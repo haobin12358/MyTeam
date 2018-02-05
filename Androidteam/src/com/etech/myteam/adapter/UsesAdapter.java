@@ -80,7 +80,6 @@ public class UsesAdapter extends BaseAdapter{
 			holder = (ViewHolder)convertView.getTag();
 		}
 		UsesEntity entity = entitys.get(position);
-		Log.e("entitys", entity.getCname());
 		holder.Cname.setText(entity.getCname());
 		holder.Cno.setText(entity.getCno());
 		if(Utype == 101){

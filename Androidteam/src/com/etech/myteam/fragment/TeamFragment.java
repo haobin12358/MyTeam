@@ -44,7 +44,7 @@ import com.etech.myteam.entity.StudentListEntity;
 import com.etech.myteam.global.AppConst;
 
 public class TeamFragment extends Fragment{
-	private int index = 0;
+	private int index = 1;
 	private String Uid;
 	private int Utype = 101;
 	private String TEid;
@@ -111,7 +111,7 @@ public class TeamFragment extends Fragment{
 	private void getBd(){
 		Uid = ((MainActivity)getActivity()).getUid();
 		Utype = ((MainActivity)getActivity()).getUtype();
-		index = ((MainActivity)getActivity()).getIndex();
+		//index = ((MainActivity)getActivity()).getIndex();
 	}
 	
 	//邀请、请求加入的btn的监听事件
@@ -127,6 +127,8 @@ public class TeamFragment extends Fragment{
 			Log.e("doit","start");
 			Intent it = new Intent(getActivity(), TeamActivity.class);
 			TEid = entitys.get(position).getTEid();
+			Log.e("Utype", Integer.toString(Utype));
+			Log.e("index", Integer.toString(index));
 			it.putExtra("Uid", Uid);
 			it.putExtra("Utype", Utype);
 			it.putExtra("TEid", TEid);
