@@ -102,7 +102,7 @@ public class NewTeamActivity extends Activity{
 		addteacherview = (LinearLayout)findViewById(R.id.addview2);
 		
 		iv1 = (ImageView)findViewById(R.id.iv_1);
-		//iv1.setOnClickListener(backto);
+		iv1.setOnClickListener(backto);
 		
 		tv1 = (EditText)findViewById(R.id.tv_1);
 		isEdit.yesEdit(tv1);
@@ -124,6 +124,21 @@ public class NewTeamActivity extends Activity{
 		tv8.setOnClickListener(add_student);
 		tv13.setOnClickListener(add_teacher);
 	}
+	
+	private OnClickListener backto = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(NewTeamActivity.this, MainActivity.class);
+			intent.putExtra("Uid", Uid);
+			intent.putExtra("Utype", Utype);
+			intent.putExtra("index", index);
+			startActivity(intent);
+			finish();
+		}
+		
+	};
 	
 	private OnClickListener add_student = new OnClickListener(){
 

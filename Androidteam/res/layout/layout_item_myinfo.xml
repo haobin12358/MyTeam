@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:orientation="vertical" >
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal" >
+	            <TextView
+	                android:id="@+id/tv_1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="信息内容："/>
+	        	<TextView
+	                android:id = "@+id/tv_2"
+	                android:layout_width="match_parent"
+	                android:layout_weight="1"
+	                android:layout_height="wrap_content"/>
+	        </LinearLayout>
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal" >
+	            <TextView
+	                android:id="@+id/tv_3"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="发送人："/>
+	        	<TextView
+	                android:id = "@+id/tv_4"
+	                android:layout_weight="1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	        </LinearLayout>
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal">
+	            <TextView
+	                android:id="@+id/tv_5"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="竞赛名称：" />
+	        	<TextView
+	        	    android:id="@+id/tv_6"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"/>
+	        </LinearLayout>
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal">
+	            <TextView
+	                android:id="@+id/tv_7"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="团队名称：" />
+	        	<TextView
+	                android:id = "@+id/tv_8"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"/>
+	        </LinearLayout>
+		</LinearLayout>
+	    
+        
+	</LinearLayout>
+	<View 
+	    android:layout_width="match_parent"
+	    android:layout_height="1dp"
+	    android:background="@color/cBlue"/>  
+
+</LinearLayout>

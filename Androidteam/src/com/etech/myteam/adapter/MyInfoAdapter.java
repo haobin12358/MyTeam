@@ -2,9 +2,11 @@ package com.etech.myteam.adapter;
 
 import java.util.List;
 
+import com.etech.myteam.R;
 import com.etech.myteam.entity.MyInfoEntity;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,12 +16,10 @@ public class MyInfoAdapter extends BaseAdapter{
 	
 	private Context context;
 	private List<MyInfoEntity> entitys;
-	private int Ptype;
 	
-	public MyInfoAdapter(Context context, List<MyInfoEntity> entitys, int Ptype){
+	public MyInfoAdapter(Context context, List<MyInfoEntity> entitys){
 		this.context = context;
 		this.entitys = entitys;
-		this.Ptype = Ptype;
 	}
 
 	@Override
@@ -46,10 +46,20 @@ public class MyInfoAdapter extends BaseAdapter{
 		ViewHolder holder;
 		if(convertView == null){
 			holder = new ViewHolder();
+			convertView = LayoutInflater.from(context)
+					.inflate(R.layout.layout_item_myinfo, null);
+			holder.Pmessage = (TextView)convertView.findViewById(R.id.tv_2);
+			holder.Sname = (TextView)convertView.findViewById(R.id.tv_4);
+			holder.Cname = (TextView)convertView.findViewById(R.id.tv_6);
+			holder.TEname = (TextView)convertView.findViewById(R.id.tv_8);
 		}else{
 			holder = (ViewHolder)convertView.getTag();
 		}
 		MyInfoEntity entity = entitys.get(position);
+		holder.Pmessage.setText(entity.getPmessage());
+		holder.Sname.setText(entity.getSname());
+		holder.Cname.setText(entity.getCname());
+		holder.TEname.setText(entity.getTEname());
 		convertView.setTag(holder);
 		return convertView;
 	}
