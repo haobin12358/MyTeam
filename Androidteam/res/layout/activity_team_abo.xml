@@ -90,6 +90,12 @@
                android:layout_height="wrap_content">
            </com.etech.myteam.view.MyListView>
            <LinearLayout 
+               android:id="@+id/addview"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
+           </LinearLayout>
+           <LinearLayout 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -114,8 +120,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/xing_ming"/>
            </LinearLayout>
-            
+           <TextView 
+                android:id="@+id/tv_13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/xing_ming"/>
+           <LinearLayout 
+               android:id="@+id/addview2"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
+			</LinearLayout>
         </LinearLayout>
+        
     </ScrollView>
     
 

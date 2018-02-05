@@ -34,7 +34,7 @@ import android.widget.Toast;
 
 public class TeamActivity extends Activity{
 	
-	private TextView tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tvbutton, tvtitle;
+	private TextView tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tvbutton, tvtitle;
 	private EditText tv1, tv2, tv3, tv4, et1, et2, et3;
 	private ViewGroup vg;
 	private MyListView lst_1;
@@ -95,6 +95,8 @@ public class TeamActivity extends Activity{
 		tv11 = (TextView)findViewById(R.id.tv_11);
 		tv11.setText("被拒人数：");
 		tv12 = (TextView)findViewById(R.id.tv_12);
+		tv13 = (TextView)findViewById(R.id.tv_13);
+		tv13.setVisibility(View.GONE);
 		tvbutton = (TextView)findViewById(R.id.tv_top).findViewById(R.id.tv_editbutton);
 		tvtitle = (TextView)findViewById(R.id.tv_top).findViewById(R.id.tv_title);
 		tvtitle.setText(R.string.tuan_dui_xiang_qing);
