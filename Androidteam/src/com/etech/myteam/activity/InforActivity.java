@@ -540,9 +540,23 @@ public class InforActivity extends Activity{
 			if(Utype == 102){
 				
 			}else if(Utype == 100){
+				final JSONObject json_obj = StringToJSON.toJSONObject(ts_text);
+				String abo = json_obj.optString("competition_abo");
+				//Log.e("student_abo", json_obj.optString("student_abo"));
+				JSONArray jsonarray_abo = StringToJSON.toJSONArray(abo);
+				JSONObject json_abo = null;
+				try {
+					json_abo = jsonarray_abo.getJSONObject(0);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				Intent intent = new Intent(InforActivity.this, NewTeamActivity.class);
 				intent.putExtra("Uid", Uid);
 				intent.putExtra("Utype", Utype);
+				intent.putExtra("Cname", json_abo.optString("Cname"));
+				intent.putExtra("Cno", json_abo.optInt("Cno"));
+				intent.putExtra("Clevel", json_abo.optInt("Clevel"));
 				startActivity(intent);
 				finish();
 			}

@@ -59,14 +59,18 @@ public class MyInfoActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		getBd();
 		setContentView(R.layout.activity_myinfo);
-		getMyInfo();
-		while(true){
-			if(myinfo != null){
-				break;
+		new Thread(){
+			public void run(){
+				getMyInfo();
 			}
+		}.start();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		
+		init();
 	}
 	
 	private void getBd(){
@@ -78,6 +82,7 @@ public class MyInfoActivity extends Activity{
 				index = n;
 			}
 			Uid = bd.getString("Uid");
+			Log.e("Uid", Uid);
 			Utype = bd.getInt("Utype");
 		}catch (Exception e) {
 			e.printStackTrace();

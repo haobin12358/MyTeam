@@ -126,6 +126,10 @@ public class PersonFragment extends Fragment{
 		new Thread(){
 			public void run(){
 				getPersonalText();
+			}
+		}.start();
+		new Thread(){
+			public void run(){
 				getMyteam();
 			}
 		}.start();
@@ -269,8 +273,6 @@ public class PersonFragment extends Fragment{
 		lst3.setAdapter(adapter_myteam);
 		lst3.setOnItemClickListener(go_team);
 		
-		NewListView.setListViewHeightBasedOnChildren(lst4);
-		
 		setPersonalText(personal_text);
 		setPersonalTeam(myteam);
 	}
@@ -375,7 +377,7 @@ public class PersonFragment extends Fragment{
 	private void getPersonalText(){
 		getEntity = new HttpgetEntity();
 		try {
-			Log.e("Url", get_personal_url);
+			Log.e("Url", get_personal_url + Uid);
 			personal_text = getEntity.doGet(get_personal_url + Uid);
 			Log.e("personal_text", personal_text);
 			if(personal_text != null){
@@ -395,7 +397,9 @@ public class PersonFragment extends Fragment{
 	private void getMyteam(){
 		getEntity = new HttpgetEntity();
 		try{
+			Log.e("Url", get_myteam_url + Uid);
 			myteam = getEntity.doGet(get_myteam_url + Uid);
+			Log.e("myteam", myteam);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

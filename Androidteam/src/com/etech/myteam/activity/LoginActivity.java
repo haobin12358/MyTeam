@@ -94,7 +94,7 @@ public class LoginActivity extends Activity{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				Log.e("json", result_login);
+				//Log.e("json", result_login);
 				JSONObject json_obj = StringToJSON.toJSONObject(result_login);
 				if(json_obj.optInt("status") == 200){
 					String messages = json_obj.optString("messages");
