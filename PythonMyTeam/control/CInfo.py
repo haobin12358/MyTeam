@@ -37,13 +37,20 @@ class CInfo():
             info_list_item = {}
             print str(row)
             info_list_item["Pid"] = row.Pid
-
-            info_list_item["TEname"] = self.team.get_tename_by_teid(row.TEid)
-            cname_cno = self.competition.get_competitions_name_level_no_by_cid(row.Cid)
-            print cname_cno
-            info_list_item["Cname"] = cname_cno.Cname
-            info_list_item["Cno"] = cname_cno.Cno
-            info_list_item["Clevel"] = cname_cno.Clevel
+            if row.TEid != None:
+                info_list_item["TEname"] = self.team.get_tename_by_teid(row.TEid)
+            else:
+                info_list_item["TEname"] = None
+            if row.Cid != None:
+                cname_cno = self.competition.get_competitions_name_level_no_by_cid(row.Cid)
+                print cname_cno
+                info_list_item["Cname"] = cname_cno.Cname
+                info_list_item["Cno"] = cname_cno.Cno
+                info_list_item["Clevel"] = cname_cno.Clevel
+            else:
+                info_list_item["Cname"] = None
+                info_list_item["Cno"] = None
+                info_list_item["Clevel"] = None
             info_list_item["Sname"] = self.student.get_sname_by_sid(self.student.get_sid_by_uid(row.Uid))
             info_list_item["Pmessage"] = row.Pmessage
             info_list_item["Ptype"] = row.Ptype
