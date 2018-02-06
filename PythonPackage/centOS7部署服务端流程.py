@@ -37,6 +37,7 @@ exit; # 退出
 
 # linux安装
 # 2.安装uwsgi
+yum install python-devel
 yum install -y pcre pcre-devel pcre-static # 预安装基础组件
 pip install uwsgi # 安装
 
