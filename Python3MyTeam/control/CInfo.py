@@ -32,10 +32,10 @@ class CInfo():
 
         uid = args["Uid"]
         model_info_list = self.info.get_info_by_uid2(uid)
-        print str(model_info_list)
+        print(str(model_info_list))
         for row in model_info_list:
             info_list_item = {}
-            print str(row)
+            print(str(row))
             info_list_item["Pid"] = row.Pid
             if row.TEid != None:
                 info_list_item["TEname"] = self.team.get_tename_by_teid(row.TEid)
@@ -43,7 +43,7 @@ class CInfo():
                 info_list_item["TEname"] = None
             if row.Cid != None:
                 cname_cno = self.competition.get_competitions_name_level_no_by_cid(row.Cid)
-                print cname_cno
+                print(cname_cno)
                 info_list_item["Cname"] = cname_cno.Cname
                 info_list_item["Cno"] = cname_cno.Cno
                 info_list_item["Clevel"] = cname_cno.Clevel
