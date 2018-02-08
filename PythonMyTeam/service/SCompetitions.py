@@ -53,11 +53,8 @@ class SCompetitions():
             self.session.commit()
             return True
         except Exception as e:
-            # 数据库操作异常，回退操作
-            import traceback
-
-            print traceback.format_exc()
             self.session.rollback()
+            self.session.commit()
             print e.message
             return False
 

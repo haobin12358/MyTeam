@@ -50,6 +50,7 @@ public class NewTeamActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		getBd();
 		setContentView(R.layout.activity_team_abo);
+		init();
 	}
 	
 	private void getBd(){
@@ -149,8 +150,8 @@ public class NewTeamActivity extends Activity{
 		}
 		
 	};
-	private JSONArray student_array;
-	private JSONArray teacher_array;
+	private JSONArray student_array = new JSONArray();
+	private JSONArray teacher_array = new JSONArray();
 	private void showDialog(String title, final int add_index){
 		android.app.AlertDialog.Builder builder = new AlertDialog.Builder(NewTeamActivity.this);
 		final LayoutInflater inflater = LayoutInflater.from(NewTeamActivity.this);
@@ -327,10 +328,15 @@ public class NewTeamActivity extends Activity{
 		
 	};
 	
-	private JSONObject post_obj;
+	private JSONObject post_obj = new JSONObject();
 	private boolean getText(){
 		if(tv1.getText().toString().length() <= 0 || et3.getText().toString().length() <= 0 || 
-				Cno == 0 || Clevel == 0 || Cname == null){
+				Cno < 0 || Clevel == 0 || Cname == null){
+			Log.e("test", tv1.getText().toString());
+			Log.e("test", et3.getText().toString());
+			Log.e("test", Cno + " ");
+			Log.e("test", Clevel + " ");
+			Log.e("test", Cname);
 			return false;
 		}
 		try {

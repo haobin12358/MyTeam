@@ -231,6 +231,7 @@ class CTeams():
 
         data = request.data # 获取body体
         data = json.loads(data)
+        print data
         # 判断body体中含有必要参数
         if not self.judgeData.inData("TEname", data) or not self.judgeData.inData("Cname", data) \
             or not self.judgeData.inData("TEnum", data) or not self.judgeData.inData("Cno", data) \

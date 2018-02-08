@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sex">
+        <item>男</item>
+        <item>女</item>
+        <item> </item>
+    </string-array>
+    <string-array name="tech_level">
+        <item>请选择技能熟练度</item>
+        <item>入门</item>
+        <item>一般</item>
+        <item>掌握</item>
+        <item>熟练</item>
+        <item>精通</item>
+    </string-array>
+    <string-array name="competitions_level">
+        <item>院初赛</item>
+        <item>院复赛</item>
+        <item>院决赛</item>
+        <item>校初赛</item>
+        <item>校复赛</item>
+        <item>校决赛</item>
+        <item>省初赛</item>
+        <item>省复赛</item>
+        <item>省决赛</item>
+        <item>国初赛</item>
+        <item>国复赛</item>
+        <item>国决赛</item>
+        <item>    </item>
+    </string-array>
+</resources>
