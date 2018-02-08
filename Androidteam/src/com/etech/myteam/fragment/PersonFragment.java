@@ -20,6 +20,7 @@ import com.etech.myteam.common.HttppostEntity;
 import com.etech.myteam.common.NewListView;
 import com.etech.myteam.common.NumToString;
 import com.etech.myteam.common.StringToJSON;
+import com.etech.myteam.common.StringToNum;
 import com.etech.myteam.common.isEdit;
 import com.etech.myteam.entity.MyTeamEntity;
 import com.etech.myteam.entity.TechsEntity;
@@ -789,6 +790,7 @@ public class PersonFragment extends Fragment{
 	    final EditText editText1 = (EditText)view.findViewById(R.id.alert_1);
 	    final EditText editText2 = (EditText)view.findViewById(R.id.alert_2);
 	    final EditText editText3 = (EditText)view.findViewById(R.id.alert_3);
+	    final Spinner spinner_alert = (Spinner)view.findViewById(R.id.spinner_alert);
 	    builder.setView(view);
 	    if(list_index == "st" || list_index == "sc" || list_index == "tc"){
 		    if(list_index == "tc"){
@@ -798,18 +800,20 @@ public class PersonFragment extends Fragment{
 		    	editText1.setText(getJSON.optString("TCname"));
 		    	editText2.setText(getJSON.optString("TCno"));
 		    	editText3.setText(getJSON.optString("TCnum"));
+		    	spinner_alert.setVisibility(View.GONE);
 		    }else if(list_index == "st"){
 		    	editText1.setHint("请输入技能名称");
-		    	editText2.setHint("请输入技能熟练度");
+		    	editText2.setVisibility(View.GONE);
 		    	editText3.setVisibility(View.GONE);
 		    	editText1.setText(getJSON.optString("STname"));
-		    	editText2.setText(getJSON.optString("STlevel"));
+		    	spinner_alert.setSelection(getJSON.optInt("STlevel"));
 		    }else if(list_index == "sc"){
 		    	editText3.setVisibility(View.GONE);
 		    	editText1.setHint("请输入竞赛名称");
 		    	editText2.setHint("请输入获奖等级/名次");
 		    	editText1.setText(getJSON.optString("SCname"));
 		    	editText2.setText(getJSON.optString("SCno"));
+		    	spinner_alert.setVisibility(View.GONE);
 		    }
 	    }
 	    builder.setPositiveButton("修改",
@@ -889,7 +893,7 @@ public class PersonFragment extends Fragment{
 	                						Toast.LENGTH_SHORT).show();
 	                			}
 	                			obj.put("STname", editText1.getText().toString());
-	                			obj.put("STlevel", editText2.getText().toString());
+	                			obj.put("STlevel", StringToNum.getLevel(spinner_alert.getSelectedItem().toString()));
 	                			obj.put("STid", getJSON.opt("STid"));
 	                			jsonArray.put(obj);
 	                		}catch (JSONException e){
@@ -1003,20 +1007,24 @@ public class PersonFragment extends Fragment{
 	    final EditText editText1 = (EditText)view.findViewById(R.id.alert_1);
 	    final EditText editText2 = (EditText)view.findViewById(R.id.alert_2);
 	    final EditText editText3 = (EditText)view.findViewById(R.id.alert_3);
+	    final Spinner spinner_alert = (Spinner)view.findViewById(R.id.spinner_alert);
 	    builder.setView(view);
 	    if(index == 1 || index == 2){
 		    if(index == 2 && Utype == 101){
 		    	editText1.setHint("请输入竞赛名称");
 		    	editText2.setHint("请输入获奖等级/名次");
 		    	editText3.setHint("请输入获奖队伍数目");
+		    	spinner_alert.setVisibility(View.GONE);
 		    }else if(index == 1 && Utype == 100){
 		    	editText1.setHint("请输入技能名称");
-		    	editText2.setHint("请输入技能熟练度");
+		    	editText2.setVisibility(View.GONE);
 		    	editText3.setVisibility(View.GONE);
+		    	spinner_alert.setSelection(0);
 		    }else if(index == 2 && Utype == 100){
 		    	editText3.setVisibility(View.GONE);
 		    	editText1.setHint("请输入竞赛名称");
 		    	editText2.setHint("请输入获奖等级/名次");
+		    	spinner_alert.setVisibility(View.GONE);
 		    }
 	    }
 	    builder.setPositiveButton("新建",
@@ -1094,7 +1102,7 @@ public class PersonFragment extends Fragment{
 	                						Toast.LENGTH_SHORT).show();
 	                			}
 	                			obj.put("STname", editText1.getText().toString());
-	                			obj.put("STlevel", Integer.parseInt(editText2.getText().toString()));
+	                			obj.put("STlevel", StringToNum.getLevel(spinner_alert.getSelectedItem().toString()));
 	                			jsonArray.put(obj);
 	                		}catch (JSONException e){
 	                			e.printStackTrace();

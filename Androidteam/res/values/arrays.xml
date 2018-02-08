@@ -6,12 +6,12 @@
         <item> </item>
     </string-array>
     <string-array name="tech_level">
+        <item>请选择技能熟练度</item>
         <item>入门</item>
         <item>一般</item>
         <item>掌握</item>
         <item>熟练</item>
         <item>精通</item>
-        <item>  </item>
     </string-array>
     <string-array name="competitions_level">
         <item>院初赛</item>
