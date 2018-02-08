@@ -4,7 +4,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.getcwd())) # 增加系统路径
 # 引用项目类
-import DBSession
+from service import DBSession
 from models import model
 from common.TransformToList import trans_params
 
@@ -16,7 +16,7 @@ class SCompetitions():
             self.session = DBSession.db_session()  # 实例化
             self.status = True  # session异常的判断标记
         except Exception as e:
-            print e.message
+            print(e)
             self.status = False
 
     # 增加竞赛信息
@@ -53,9 +53,12 @@ class SCompetitions():
             self.session.commit()
             return True
         except Exception as e:
+            # 数据库操作异常，回退操作
+            import traceback
+
+            print(traceback.format_exc())
             self.session.rollback()
-            self.session.commit()
-            print e.message
+            print(e)
             return False
 
     # 竞赛信息详情
@@ -69,7 +72,7 @@ class SCompetitions():
                                              model.Competitions.Cown, model.Competitions.Cabo) \
                 .filter_by(Cid=cid).all()
         except Exception as e:
-            print e.message
+            print(e)
         finally:
             self.session.close()
         return competition_abo
@@ -82,7 +85,7 @@ class SCompetitions():
                                                           model.Competitions.Clevel)\
                 .filter_by(Cid=cid).first()
         except Exception as e:
-            print e.message
+            print(e)
         finally:
             self.session.close()
         return competitions_name_and_no
@@ -94,7 +97,7 @@ class SCompetitions():
             cid = self.session.query(model.Competitions.Cid).filter_by(Cname=cname).filter_by(Cno=cno)\
                 .filter_by(Clevel=clevel).scalar()
         except Exception as e:
-            print e.message
+            print(e)
         finally:
             self.session.close()
         return cid
@@ -108,7 +111,7 @@ class SCompetitions():
                                  model.Competitions.Cend, model.Competitions.Cno).filter(*params)\
                 .offset(start_num).limit(page_size).all()
         except Exception as e:
-            print e.message
+            print(e)
         finally:
             self.session.close()
         return sql
@@ -116,5 +119,3 @@ class SCompetitions():
 if __name__ == '__main__':
     scompetitions = SCompetitions()
     a = scompetitions.get_competitions_abo_by_cid("6e120ed9-0334-4780-ac77-68c7b2832a4e")
-    print a
-    print type(a)

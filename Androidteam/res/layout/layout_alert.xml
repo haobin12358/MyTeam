@@ -17,5 +17,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
+    <Spinner
+        android:id="@+id/spinner_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/tech_level"
+        android:spinnerMode="dropdown" />
 
 </LinearLayout>
