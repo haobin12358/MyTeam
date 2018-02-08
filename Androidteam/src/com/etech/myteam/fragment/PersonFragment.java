@@ -198,6 +198,7 @@ public class PersonFragment extends Fragment{
 		
 		spinner_sex = (Spinner)view.findViewById(R.id.spinner);
 		spinner_sex.setOnItemSelectedListener(set_sex);
+		spinner_sex.setClickable(false);
 		
 		if(Utype == 100 || Utype == 101){
 			//LinearLayoutContain.setText(vg, getResources().getString(R.string.ge_ren_xin_xi));
@@ -325,6 +326,7 @@ public class PersonFragment extends Fragment{
 				isEdit.yesEdit(et4);
 				isEdit.yesEdit(et5);
 				isEdit.yesEdit(et6);
+				spinner_sex.setClickable(true);
 				tvbutton.setText(R.string.que_ding);
 			}else if(tvbutton.getText().toString() == getText(R.string.que_ding)){
 				isEdit.notEdit(et1);
@@ -333,6 +335,7 @@ public class PersonFragment extends Fragment{
 				isEdit.notEdit(et4);
 				isEdit.notEdit(et5);
 				isEdit.notEdit(et6);
+				spinner_sex.setClickable(false);
 				tvbutton.setText(R.string.bian_ji);
 				if(getText()){
 					new Thread(){
