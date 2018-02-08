@@ -128,13 +128,13 @@
             		android:layout_weight="0.2"
             		android:text="@string/xing_ming"
             		android:textColor="@color/cBlack"/>
-        		<EditText 
-            		android:id="@+id/et_7"
-            		android:layout_width="wrap_content"
+        		<Spinner 
+            		android:id="@+id/spinner"
+            		android:layout_width="match_parent"
             		android:layout_height="wrap_content"
-            		android:hint="@string/xing_ming"
-            		android:layout_weight="1"
-            	/>
+            		android:layout_weight="20"
+            		android:spinnerMode="dropdown"
+        			android:entries="@array/sex" />
     		</LinearLayout>
     		<LinearLayout 
     		    android:id="@+id/ll_6"

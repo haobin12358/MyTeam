@@ -51,11 +51,12 @@ public class InforActivity extends Activity{
 	private LinearLayout ll1, ll2, ll3, ll4, ll5, ll6, ll7;
 	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tvtitle, tvbutton, tvtech, tvuse;
 	private TextView tv_cno, tv_clevel, tv_cname, tv_ctime, tv_cstart, tv_c, tv_cend, tv_cnum, tv_ccnum, tv_cown, tv_cowner, tv_cabo, tv_caboall;
-	private EditText et1, et2, et3, et4, et5, et6, et7;
+	private EditText et1, et2, et3, et4, et5, et6;
 	private MyListView lst1, lst2, lst3, lst4;
 	private ViewGroup vg;
 	private ImageView iv1;
 	private Button btn1;
+	private Spinner spinner;
 	
 	//设置adapter和entity
 	private TechsAdapter adapter_tech;
@@ -160,7 +161,6 @@ public class InforActivity extends Activity{
 		et4 = (EditText)findViewById(R.id.et_4);
 		et5 = (EditText)findViewById(R.id.et_5);
 		et6 = (EditText)findViewById(R.id.et_6);
-		et7 = (EditText)findViewById(R.id.et_7);
 		
 		lst1 = (MyListView)findViewById(R.id.lst_1);
 		lst2 = (MyListView)findViewById(R.id.lst_2);
@@ -201,7 +201,6 @@ public class InforActivity extends Activity{
 				tv8.setText(R.string.ji_neng);
 				tvtitle.setText(R.string.xue_sheng_xiang_qing);
 				tvtech.setVisibility(View.GONE);
-				isEdit.notEdit(et7);
 			}else if(infoType == 1){
 				tv2.setText(R.string.jiao_gong_hao);
 				tv4.setText(R.string.ren_jiao_shi_jian);
@@ -265,7 +264,7 @@ public class InforActivity extends Activity{
 		tv_cabo = (TextView)findViewById(R.id.tv_cabo);
 		tv_cabo.setText("竞赛详情");
 		tv_caboall = (TextView)findViewById(R.id.tv_caboall);
-		
+		spinner = (Spinner)findViewById(R.id.spinner);
 		iv1 = (ImageView)findViewById(R.id.iv_1);
 		iv1.setOnClickListener(backto);
 		
@@ -366,11 +365,11 @@ public class InforActivity extends Activity{
 							et5.setText(json_obj.optString("Suniversity"));
 							et6.setText(json_obj.optString("Sschool"));
 							if(json_obj.optInt("Ssex") == 201){
-								et7.setText(R.string.nan);
+								spinner.setSelection(0);
 							}else if(json_obj.optInt("Ssex") == 202){
-								et7.setText(R.string.nv);
+								spinner.setSelection(1);
 							}else{
-								et7.setText("");
+								spinner.setSelection(2);
 							}
 							sc_use = json_obj.optString("SCUse");
 							s_tech = json_obj.optString("STech");
