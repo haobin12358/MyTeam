@@ -39,11 +39,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,11 +54,12 @@ public class PersonFragment extends Fragment{
 	//定义组件参数
 	private LinearLayout ll1, ll2, ll3, ll4, ll5, ll6, ll7;
 	private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tvtitle, tvbutton, tvtech, tvuse;
-	private EditText et1, et2, et3, et4, et5, et6, et7;
+	private EditText et1, et2, et3, et4, et5, et6;
 	private MyListView lst1, lst2, lst3, lst4;
 	private ViewGroup vg;
 	private ImageView iv1;
 	private Button btn1;
+	private Spinner spinner_sex;
 	
 	//设置adapter和entity
 	private TechsAdapter adapter_tech;
@@ -180,7 +183,6 @@ public class PersonFragment extends Fragment{
 		et4 = (EditText)view.findViewById(R.id.et_4);
 		et5 = (EditText)view.findViewById(R.id.et_5);
 		et6 = (EditText)view.findViewById(R.id.et_6);
-		et7 = (EditText)view.findViewById(R.id.et_7);
 		
 		lst1 = (MyListView)view.findViewById(R.id.lst_1);
 		lst2 = (MyListView)view.findViewById(R.id.lst_2);
@@ -192,6 +194,9 @@ public class PersonFragment extends Fragment{
 		iv1 = (ImageView)view.findViewById(R.id.iv_1);
 		
 		btn1 = (Button)view.findViewById(R.id.btn_1);
+		
+		spinner_sex = (Spinner)view.findViewById(R.id.spinner);
+		spinner_sex.setOnItemSelectedListener(set_sex);
 		
 		if(Utype == 100 || Utype == 101){
 			//LinearLayoutContain.setText(vg, getResources().getString(R.string.ge_ren_xin_xi));
@@ -224,9 +229,7 @@ public class PersonFragment extends Fragment{
 				tv4.setText(R.string.nian_ji);
 				et4.setHint(R.string.nian_ji);
 				tv7.setText(R.string.xing_bie);
-				et7.setHint(R.string.xing_bie);
 				tv8.setText(R.string.ji_neng);
-				isEdit.notEdit(et7);
 			}else if(Utype == 101){
 				tv2.setText(R.string.jiao_gong_hao);
 				et2.setHint(R.string.jiao_gong_hao);
@@ -277,6 +280,23 @@ public class PersonFragment extends Fragment{
 		setPersonalTeam(myteam);
 	}
 	
+	private OnItemSelectedListener set_sex = new OnItemSelectedListener(){
+
+		@Override
+		public void onItemSelected(AdapterView<?> parent, View view, int position,
+				long id) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	};
+	
 	private OnClickListener my_info = new OnClickListener(){
 
 		@Override
@@ -304,7 +324,6 @@ public class PersonFragment extends Fragment{
 				isEdit.yesEdit(et4);
 				isEdit.yesEdit(et5);
 				isEdit.yesEdit(et6);
-				isEdit.yesEdit(et7);
 				tvbutton.setText(R.string.que_ding);
 			}else if(tvbutton.getText().toString() == getText(R.string.que_ding)){
 				isEdit.notEdit(et1);
@@ -313,7 +332,6 @@ public class PersonFragment extends Fragment{
 				isEdit.notEdit(et4);
 				isEdit.notEdit(et5);
 				isEdit.notEdit(et6);
-				isEdit.notEdit(et7);
 				tvbutton.setText(R.string.bian_ji);
 				if(getText()){
 					new Thread(){
@@ -437,11 +455,11 @@ public class PersonFragment extends Fragment{
 							et5.setText(json_personal.optString("Suniversity"));
 							et6.setText(json_personal.optString("Sschool"));
 							if(json_personal.optInt("Ssex") == 201){
-								et7.setText(R.string.nan);
+								spinner_sex.setSelection(0);
 							}else if(json_personal.optInt("Ssex") == 202){
-								et7.setText(R.string.nv);
+								spinner_sex.setSelection(1);
 							}else{
-								et7.setText(" ");
+								spinner_sex.setSelection(2);
 							}
 							sc_use = json_personal.optString("SCUse");
 							s_tech = json_personal.optString("STech");
@@ -622,11 +640,11 @@ public class PersonFragment extends Fragment{
 		}else{
 			time = Integer.parseInt(et4.getText().toString());
 		}
-		if(et7.getText().toString().length() == 0){
+		if(spinner_sex.getSelectedItem().toString().length() == 0){
 			sex = -1;
-		}else if(et7.getText().toString() == getText(R.string.nan)){
+		}else if(spinner_sex.getSelectedItem().toString() == getText(R.string.nan)){
 			sex = 201;
-		}else if(et7.getText().toString() == getText(R.string.nv)){
+		}else if(spinner_sex.getSelectedItem().toString() == getText(R.string.nv)){
 			sex = 202;
 		}
 		return true;
