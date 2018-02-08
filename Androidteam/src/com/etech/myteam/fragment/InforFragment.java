@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -60,7 +61,7 @@ public class InforFragment extends Fragment{
 	private HttppostEntity postEntity;
 	private ViewGroup title;
 	private TextView tv_name, tv_grade, tv_school, title_name, title_school, title_grade;
-	
+	private 	ArrayAdapter<Integer> arr_adapter ;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		getBd();
@@ -101,10 +102,42 @@ public class InforFragment extends Fragment{
 		list = (ListView) view.findViewById(R.id.student_list);
 		list.setOnItemClickListener(doit);
 		btn_doit.setText(R.string.cha_xun);
+		arr_adapter = new ArrayAdapter<Integer>(
+				getActivity(),R.layout.spinner_item,data_list);
+
+		spinner.setAdapter(arr_adapter);
 		initdata();
 		btn_student.setOnClickListener(changeInfo);
 		btn_teach.setOnClickListener(changeInfo);
 		btn_com.setOnClickListener(changeInfo);	
+		btn_doit.setOnClickListener(changeInfo);
+		spinner.setSelection(0);
+		spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				Log.e("position ", Integer.toString(data_list.get(position)));
+				page_num = data_list.get(position);
+				result_info = null;
+				get_info();		
+				while (true){
+					if (result_info != null){
+						break;
+					}
+				}
+				initdata();
+				
+				spinner.setSelection(position, true);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				Log.e("position ", "none");
+			}
+			
+		});
 	}
 	
 	
@@ -113,6 +146,8 @@ public class InforFragment extends Fragment{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			Log.e("on item ", "get id");
+			Log.e("id is ",String.valueOf(view.getId() == R.id.btn_doit));
 			if (view.getId() == R.id.btn_doit){
 				//拼接邀请url
 				switch (infoType){
@@ -128,6 +163,7 @@ public class InforFragment extends Fragment{
 					it.putExtra("Clevel", entitys.get(position).getLevel());
 					it.putExtra("Cno", entitys.get(position).getGrade());
 					it.putExtra("index", index);
+					break;
 				}
 //				String inviteUrl = "";
 				
@@ -146,21 +182,16 @@ public class InforFragment extends Fragment{
 			}
 		}
     };
-    private OnItemClickListener changePage = new OnItemClickListener() {
-		
-    	public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			page_num = data_list.get(position);
-			result_info = null;
-			get_info();		
-			while (true){
-				if (result_info != null){
-					break;
-				}
-			}
-			initdata();
-		}
-	};
+//   查询btn监听器
+//    private OnClickListener search = new OnClickListener() {
+//		
+//		@Override
+//		public void onClick(View v) {
+//			// TODO Auto-generated method stub
+//			page_num = 1;
+//			set					
+//		}
+//	};
     
     //学生 教师 竞赛 监听器 
     private OnClickListener changeInfo = new OnClickListener() {
@@ -188,8 +219,6 @@ public class InforFragment extends Fragment{
 				infoType = 2;
 				break;
 			case R.id.btn_1:
-				
-			default:
 				tv_name.setText(R.string.xing_ming);
 				tv_school.setText(R.string.xue_yuan);
 				tv_grade.setText(R.string.nian_ji);
@@ -197,6 +226,10 @@ public class InforFragment extends Fragment{
 				title_school.setText(R.string.xue_yuan);
 				title_grade.setText(R.string.nian_ji);
 				infoType = 0;
+				break;				
+			case R.id.btn_doit:
+				
+			default:
 				break;
 			}
 			page_num = 1;
@@ -278,10 +311,7 @@ public class InforFragment extends Fragment{
 		} catch (Exception e){
 			Log.e("error", "get info error");
 		}
-		ArrayAdapter<Integer> arr_adapter = new ArrayAdapter<Integer>(
-				getActivity(),R.layout.spinner_item,data_list);
-
-		spinner.setAdapter(arr_adapter);
+		
 		switch (infoType){
 		case 0:
 			adapter = new StudentAdapter(entitys, getActivity(),Utype);
@@ -290,13 +320,13 @@ public class InforFragment extends Fragment{
 			adapter = new TeacherAdapter(entitys, getActivity(),Utype);
 			break;
 		case 2:
-			adapter = new CompetitionAdapter(entitys, getActivity(),Utype);
+			adapter = new CompetitionAdapter(entitys, getActivity(),Utype, Uid, index);
 			break;
 		default:
 			adapter = new StudentAdapter(entitys, getActivity(),Utype);
 			break;
 		}
-		
+		arr_adapter.notifyDataSetChanged();
 //		list.c
 		Log.e("adapter over", "over");
 		list.setAdapter(adapter);
