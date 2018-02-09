@@ -9,10 +9,12 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class StudentAdapter extends BaseAdapter {
 	public List<StudentListEntity> entitys;
@@ -42,7 +44,7 @@ public class StudentAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null){
 			convertView = LayoutInflater.from(context).inflate(R.layout.layout_item_student_list, null);
@@ -64,7 +66,14 @@ public class StudentAdapter extends BaseAdapter {
 		holder.Sname.setText(entity.getName());
 		holder.Sgrade.setText(String.valueOf(entity.getGrade()));
 		holder.Sscool.setText(entity.getSchool());
-		
+		holder.btn_doit.setTag(position);
+		holder.btn_doit.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(context, "该功能尚未开通", Toast.LENGTH_SHORT).show();				
+			}
+		});
 		convertView.setTag(holder);
 		return convertView;
 	}

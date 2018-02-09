@@ -10,9 +10,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TeacherAdapter extends BaseAdapter {
 	public List<StudentListEntity> entitys;
@@ -67,6 +69,14 @@ public class TeacherAdapter extends BaseAdapter {
 		holder.Sscool.setText(String.valueOf(entity.getSchool()));
 		holder.btn_doit.setText(String.valueOf(entity.getBtn_name()));
 		convertView.setTag(holder);
+		holder.btn_doit.setTag(position);
+		holder.btn_doit.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(context, "该功能尚未开通", Toast.LENGTH_SHORT).show();				
+			}
+		});
 		return convertView;
 	}
 	

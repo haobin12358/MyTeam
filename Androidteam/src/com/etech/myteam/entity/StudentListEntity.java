@@ -22,6 +22,7 @@ public class StudentListEntity {
 			setName((String) jsonobj.get("Sname"));
 			setGrade((Integer) jsonobj.get("Sgrade"));
 			setId((String) jsonobj.get("Sid"));
+			setBtn_name("邀请");
 		}catch (Exception e){
 			e.printStackTrace();
 			Log.e("Student list error","error");
@@ -35,6 +36,7 @@ public class StudentListEntity {
 			setName(jsonobj.optString("Tname"));
 			setTtime(jsonobj.optInt("Ttime"));			
 			setSchool(jsonobj.optString("Tschool"));
+			setBtn_name("邀请");
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.e("Teacher list error","error");
@@ -50,6 +52,7 @@ public class StudentListEntity {
 			setStart_time(jsonobj.optString("Cstart"));
 			setEnd_time(jsonobj.optString("Cend"));
 			setName(jsonobj.optString("Cname"));
+			setBtn_name("去组队");
 		} catch (Exception e) {
 			Log.e("Competition list error","error");
 		}
