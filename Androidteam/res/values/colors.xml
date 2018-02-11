@@ -23,4 +23,7 @@
     <color name="cRedBG">#990000</color>
     <color name="back_color">#00CCFF</color>
     <color name="register_color">#000000</color>
+    
+    <color name="qing_hui">#484848</color>
+    <color name="yin_bo">#CC00FF</color>
 </resources>
