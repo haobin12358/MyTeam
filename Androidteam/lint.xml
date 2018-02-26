@@ -3,4 +3,5 @@
     <issue id="NewApi" severity="ignore">
         <ignore path="src/com/etech/myteam/fragment/PersonFragment.java" />
     </issue>
+    <issue id="ResourceAsColor" severity="ignore" />
 </lint>

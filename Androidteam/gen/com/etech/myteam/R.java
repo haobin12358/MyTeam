@@ -37,7 +37,9 @@ public final class R {
         public static final int cToolLine=0x7f050003;
         public static final int cTranslucent=0x7f050008;
         public static final int cWhite=0x7f050002;
+        public static final int qing_hui=0x7f050016;
         public static final int register_color=0x7f050015;
+        public static final int yin_bo=0x7f050017;
     }
     public static final class dimen {
         public static final int img=0x7f060014;
@@ -86,27 +88,28 @@ public final class R {
         public static final int btn_ok_selector=0x7f020007;
         public static final int btn_red=0x7f020008;
         public static final int dialog_bottom_bg=0x7f020009;
-        public static final int ic_arrow=0x7f02000a;
-        public static final int ic_launcher=0x7f02000b;
-        public static final int ic_main_tab_1=0x7f02000c;
-        public static final int ic_main_tab_1_p=0x7f02000d;
-        public static final int ic_main_tab_2=0x7f02000e;
-        public static final int ic_main_tab_2_p=0x7f02000f;
-        public static final int ic_main_tab_3=0x7f020010;
-        public static final int ic_main_tab_3_p=0x7f020011;
-        public static final int ic_main_tab_4=0x7f020012;
-        public static final int ic_main_tab_4_p=0x7f020013;
-        public static final int ic_main_tab_5=0x7f020014;
-        public static final int ic_main_tab_5_p=0x7f020015;
-        public static final int ic_titlebar_back=0x7f020016;
-        public static final int iconfont_tixing=0x7f020017;
-        public static final int like=0x7f020018;
-        public static final int returnto=0x7f020019;
-        public static final int search=0x7f02001a;
-        public static final int selector_main_tab_1=0x7f02001b;
-        public static final int selector_main_tab_2=0x7f02001c;
-        public static final int selector_main_tab_3=0x7f02001d;
-        public static final int userphoto=0x7f02001e;
+        public static final int editsharp=0x7f02000a;
+        public static final int ic_arrow=0x7f02000b;
+        public static final int ic_launcher=0x7f02000c;
+        public static final int ic_main_tab_1=0x7f02000d;
+        public static final int ic_main_tab_1_p=0x7f02000e;
+        public static final int ic_main_tab_2=0x7f02000f;
+        public static final int ic_main_tab_2_p=0x7f020010;
+        public static final int ic_main_tab_3=0x7f020011;
+        public static final int ic_main_tab_3_p=0x7f020012;
+        public static final int ic_main_tab_4=0x7f020013;
+        public static final int ic_main_tab_4_p=0x7f020014;
+        public static final int ic_main_tab_5=0x7f020015;
+        public static final int ic_main_tab_5_p=0x7f020016;
+        public static final int ic_titlebar_back=0x7f020017;
+        public static final int iconfont_tixing=0x7f020018;
+        public static final int like=0x7f020019;
+        public static final int returnto=0x7f02001a;
+        public static final int search=0x7f02001b;
+        public static final int selector_main_tab_1=0x7f02001c;
+        public static final int selector_main_tab_2=0x7f02001d;
+        public static final int selector_main_tab_3=0x7f02001e;
+        public static final int userphoto=0x7f02001f;
     }
     public static final class id {
         public static final int addview=0x7f090020;
