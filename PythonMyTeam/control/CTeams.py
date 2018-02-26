@@ -168,6 +168,7 @@ class CTeams():
 
         return result_response
 
+    # 个人的团队
     def myteams(self):
         if not self.steams.status:  # 校验数据库是否连接异常
             return system_error
@@ -360,6 +361,12 @@ class CTeams():
         sno = data["Sno"]
         suniversity = data["Suniversity"]
         sid = self.sstudent.get_sid_by_sno_suniversity(sno, suniversity)
+        no_student = {}
+        no_student["status"] = 405
+        no_student["status_code"] = 405301
+        no_student["messages"] = "please make sure the no or the university is true"
+        if not sid:
+            return no_student
         sid_list = self.steams.get_sid_list_by_teid(teid)
         if sid in sid_list:
             return have_invate_this_users
